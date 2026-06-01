@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sagi Hammer</title>
+    <style>
+      :root {
+        --ink: #2f3337;
+        --muted: #686d73;
+        --blue: #173e59;
+        --blue-2: #255a78;
+        --line: #d8dde2;
+        --paper: #ffffff;
+        --bg: #edf1f4;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        min-height: 100%;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: Arial, Helvetica, sans-serif;
+        line-height: 1.35;
+      }
+
+      body {
+        padding: 32px;
+      }
+
+      h1,
+      h2,
+      h3,
+      p,
+      ul {
+        margin: 0;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: underline;
+        text-underline-offset: 2px;
+      }
+
+      .page {
+        display: grid;
+        grid-template-columns: 285px 1fr;
+        width: 900px;
+        min-height: 1180px;
+        margin: 0 auto;
+        overflow: hidden;
+        background: var(--paper);
+        box-shadow: 0 18px 60px rgba(15, 35, 50, 0.18);
+
+        & .section {
+          margin-bottom: 28px;
+        }
+
+        & .section-title {
+          font-size: 22px;
+          font-weight: 800;
+          letter-spacing: 5px;
+          text-transform: uppercase;
+          color: var(--blue);
+          padding-bottom: 7px;
+          margin-bottom: 12px;
+          border-bottom: 3px solid var(--blue);
+        }
+
+        & .sidebar {
+          padding: 44px 38px 40px;
+          color: white;
+          background: var(--blue);
+
+          & .section {
+            margin-bottom: 27px;
+          }
+
+          & .section-title {
+            color: #fff;
+            border-bottom-color: #fff;
+          }
+
+          & :is(.contact-list, .simple-list, .tech-list) {
+            padding: 0;
+            list-style: none;
+          }
+
+          & .contact-list {
+            & li {
+              display: grid;
+              grid-template-columns: 24px 1fr;
+              align-items: start;
+              gap: 12px;
+              margin-bottom: 15px;
+              font-size: 14px;
+            }
+          }
+
+          & .icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 18px;
+            padding-top: 1px;
+            opacity: 0.92;
+
+            & svg {
+              width: 16px;
+              height: 16px;
+              fill: none;
+              stroke: currentColor;
+              stroke-width: 2;
+              stroke-linecap: round;
+              stroke-linejoin: round;
+            }
+          }
+
+          & .side-small {
+            color: rgba(255, 255, 255, 0.92);
+            font-size: 14px;
+          }
+
+          & .edu-date {
+            margin-top: 8px;
+            font-size: 17px;
+            font-weight: 800;
+            letter-spacing: 1px;
+          }
+
+          & .edu-school {
+            margin-top: 2px;
+            font-size: 13px;
+            font-weight: 800;
+            text-transform: uppercase;
+          }
+
+          & .edu-degree {
+            margin-top: 3px;
+            font-size: 13px;
+          }
+
+          & .tech-list {
+            & > li {
+              position: relative;
+              margin-bottom: 7px;
+              padding-left: 12px;
+              font-size: 13px;
+
+              &::before {
+                content: "•";
+                position: absolute;
+                top: 0;
+                left: 0;
+              }
+            }
+
+            & strong {
+              display: block;
+              font-size: 14px;
+            }
+          }
+
+          & .simple-list {
+            & li {
+              position: relative;
+              margin-bottom: 8px;
+              padding-left: 14px;
+              font-size: 14px;
+
+              &::before {
+                content: "•";
+                position: absolute;
+                top: 0;
+                left: 0;
+              }
+            }
+          }
+        }
+
+        & .main {
+          padding: 44px 50px 48px;
+
+          & .name {
+            margin-bottom: 8px;
+            color: var(--blue);
+            font-size: 42px;
+            font-weight: 400;
+            line-height: 1;
+            letter-spacing: -1px;
+
+            & strong {
+              color: #54565a;
+              font-weight: 800;
+            }
+          }
+
+          & .role {
+            margin-bottom: 16px;
+            color: #6a6d70;
+            font-size: 22px;
+            letter-spacing: 0.4px;
+            text-transform: uppercase;
+          }
+
+          & .title-mark {
+            width: 72px;
+            height: 4px;
+            margin-bottom: 35px;
+            background: var(--blue);
+          }
+
+          & .profile-text {
+            color: #60656b;
+            font-size: 15px;
+            text-align: justify;
+          }
+
+          & .timeline {
+            position: relative;
+            padding-left: 25px;
+            border-left: 3px solid var(--blue);
+          }
+
+          & .job {
+            position: relative;
+            padding-bottom: 14px;
+
+            &:last-child {
+              padding-bottom: 0;
+            }
+
+            &::before {
+              content: "";
+              position: absolute;
+              top: 4px;
+              left: -32px;
+              width: 11px;
+              height: 11px;
+              border-radius: 50%;
+              background: var(--blue);
+              box-shadow: 0 0 0 4px white;
+            }
+
+            & .job-head {
+              display: grid;
+              grid-template-columns: 1fr auto;
+              align-items: baseline;
+              gap: 16px;
+              margin-bottom: 2px;
+            }
+
+            & h3 {
+              color: #55595d;
+              font-size: 17px;
+              font-weight: 800;
+              text-transform: uppercase;
+
+              &.company-personal {
+                text-transform: none;
+              }
+            }
+
+            & .date {
+              color: #74787d;
+              font-size: 14px;
+              font-weight: 600;
+              white-space: nowrap;
+            }
+
+            & .job-title {
+              margin-bottom: 3px;
+              color: #50555a;
+              font-size: 16px;
+            }
+
+            & ul {
+              padding-left: 18px;
+              color: #555a60;
+              font-size: 14px;
+            }
+
+            & li {
+              margin-bottom: 2px;
+            }
+          }
+        }
+      }
+
+      @media print {
+        body {
+          padding: 0;
+          background: #fff;
+        }
+
+        .page {
+          width: 100%;
+          min-height: 100vh;
+          box-shadow: none;
+        }
+      }
+
+      @media (max-width: 900px) {
+        body {
+          padding: 0;
+        }
+
+        .page {
+          width: 100%;
+          grid-template-columns: 1fr;
+        }
+
+        .page .sidebar {
+          padding: 34px 28px;
+        }
+
+        .page .main {
+          padding: 42px 28px;
+        }
+
+        .page .main .name {
+          font-size: 34px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <article class="page">
+      <aside class="sidebar">
+        <section class="section">
+          <h2 class="section-title">Contact</h2>
+          <ul class="contact-list">
+            <li>
+              <span class="icon"
+                ><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path
+                    d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" /></svg></span
+              ><span><a href="https://www.linkedin.com/in/sagi-hammer-88980819a/" target="_blank" rel="noopener">Sagi Hammer on LinkedIn</a></span>
+            </li>
+            <li>
+              <span class="icon"
+                ><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <rect width="20" height="16" x="2" y="4" rx="2" />
+                  <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" /></svg></span
+              ><span><a href="mailto:contact@sagihammer.com">contact@sagihammer.com</a></span>
+            </li>
+            <li>
+              <span class="icon"
+                ><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+                  <circle cx="12" cy="10" r="3" /></svg></span
+              ><span>Israel, Holon Shenkar</span>
+            </li>
+            <li>
+              <span class="icon"
+                ><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+                  <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" /></svg></span
+              ><span><a href="https://github.com/HaMMeRSI" target="_blank" rel="noopener">@HaMMeRSI on GitHub</a><br /><a href="https://www.linkedin.com/in/sagi-hammer-88980819a/" target="_blank" rel="noopener">Sagi Hammer on LinkedIn</a></span>
+            </li>
+          </ul>
+        </section>
+
+        <section class="section">
+          <h2 class="section-title">Education</h2>
+          <div class="side-small">
+            <div class="edu-date">2015 - 2018</div>
+            <div class="edu-school">The College of Management Academic</div>
+            <div class="edu-degree">• B.Sc. in Computer Science</div>
+
+            <div class="edu-date">2014</div>
+            <div class="edu-school">Mamram Programming Course</div>
+          </div>
+        </section>
+
+        <section class="section">
+          <h2 class="section-title">Technologies</h2>
+          <ul class="tech-list side-small">
+            <li><strong>Frontend:</strong>React, SolidJS, Vue, AngularJS, Vite, TypeScript, Webpack</li>
+            <li><strong>Backend:</strong>.NET Core, Node.js, Express.js, tRPC, REST API, GraphQL</li>
+            <li><strong>Cloud &amp; DevOps:</strong>AWS, GCloud, Azure, Git</li>
+            <li><strong>Game Development &amp; XR:</strong>Unity GE, OpenXR</li>
+            <li><strong>Blockchain &amp; Web3:</strong>Solidity, Smart Contracts, NFTs, Solana RPCs &amp; Web3 Providers</li>
+          </ul>
+        </section>
+
+        <section class="section">
+          <h2 class="section-title">Assets</h2>
+          <ul class="simple-list side-small">
+            <li>Teamplayer</li>
+            <li>Able to work under pressure</li>
+            <li>Analytical thinking and problem solving</li>
+            <li>Highly passionate</li>
+          </ul>
+        </section>
+
+        <section class="section">
+          <h2 class="section-title">Languages</h2>
+          <ul class="simple-list side-small">
+            <li>Hebrew, English, Russian</li>
+          </ul>
+        </section>
+      </aside>
+
+      <main class="main">
+        <header>
+          <h1 class="name"><strong>SAGI</strong> HAMMER</h1>
+          <div class="title-mark" aria-hidden="true"></div>
+        </header>
+
+        <section class="section">
+          <p class="profile-text">
+            Experienced Senior Software Engineer at D-ID, leading key projects from initiation to execution. Co-founder &amp; CTO of Reality Shift Ltd., specializing in full-stack
+            development, 3D gaming, cloud solutions (SaaS, PaaS, IaaS), and blockchain technologies (smart contracts, NFTs, RPC APIs). Seeking a challenging role in an innovative,
+            fast-paced environment with a talented team.
+          </p>
+        </section>
+
+        <section class="section">
+          <h2 class="section-title">Work Experience</h2>
+          <div class="timeline">
+            <section class="job">
+              <div class="job-head">
+                <h3 class="company-personal">Personal</h3>
+                <div class="date">PRESENT</div>
+              </div>
+              <ul>
+                <li><a href="https://gepeta.app" target="_blank" rel="noopener">Gepeta.app</a>: AI-driven personal finance &amp; expense tracking SaaS, helping users manage budgets efficiently.</li>
+                <li>A Web3 tool for tracking profit &amp; loss across Solana-based wallets.</li>
+              </ul>
+            </section>
+
+            <section class="job">
+              <div class="job-head">
+                <h3>Q.E.D Science</h3>
+                <div class="date">MAY 2025 - PRESENT</div>
+              </div>
+              <div class="job-title">Founding Engineer</div>
+              <ul>
+                <li>Led the architecture and development of the core platform from the ground up.</li>
+                <li>Built an AI Agent that automates editorial grant discovery, eligibility matching, and application drafting.</li>
+              </ul>
+            </section>
+
+            <section class="job">
+              <div class="job-head">
+                <h3>D-ID</h3>
+                <div class="date">2021 - 2025</div>
+              </div>
+              <div class="job-title">Senior FullStack Engineer</div>
+              <ul>
+                <li>Designed, developed, and led the foundation of key projects: Studio D-ID, Chat D-ID, and Agents D-ID, ensuring their long-term success and integration.</li>
+                <li>Contributing to D-ID API.</li>
+              </ul>
+            </section>
+
+            <section class="job">
+              <div class="job-head">
+                <h3>Reality Shift Ltd.</h3>
+                <div class="date">2020 - 2021</div>
+              </div>
+              <div class="job-title">Co-Founder / CTO</div>
+              <ul>
+                <li>Developed the VR game Terragon: Symbol Of Magic.</li>
+                <li>Worked on a hand gesture recognition system based on image processing using machine learning.</li>
+                <li>Implemented a random level generation algorithm for the game's various stages.</li>
+                <li>Developed an AI for the enemies in the game, including animations and sound synchronization.</li>
+              </ul>
+            </section>
+
+            <section class="job">
+              <div class="job-head">
+                <h3>Israeli Defense Forces</h3>
+                <div class="date">2018 - 2020</div>
+              </div>
+              <div class="job-title">Software Architect</div>
+              <ul>
+                <li>Designed and implemented a scalable solution using micro frontend architecture to modernize an old monolithic system.</li>
+                <li>Introduced webpack build to an old TSC project.</li>
+                <li>Led the gradual transition from AngularJS to React.</li>
+              </ul>
+            </section>
+
+            <section class="job">
+              <div class="job-head">
+                <h3>Israeli Defense Forces</h3>
+                <div class="date">2014 - 2018</div>
+              </div>
+              <div class="job-title">Software Developer</div>
+              <ul>
+                <li>Developed multiple web apps projects from scratch.</li>
+                <li>Developed mapping solutions using ESRI and NEMI/NeWMI.</li>
+                <li>Developed an ASP.Net infrastructure to replace an existing WCF infrastructure.</li>
+                <li>Developed multiple directives and components in AngularJS.</li>
+              </ul>
+            </section>
+          </div>
+        </section>
+      </main>
+    </article>
+  </body>
+</html>

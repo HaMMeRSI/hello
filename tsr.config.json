@@ -1,0 +1,35 @@
+{
+  "target": "react",
+  "routesDirectory": "./src/routes",
+  "generatedRouteTree": "./src/routeTree.gen.ts",
+  "virtualRouteConfig": {
+    "type": "root",
+    "file": "__root.tsx",
+    "children": [
+      {
+        "type": "index",
+        "file": "index/index.tsx"
+      },
+      {
+        "type": "route",
+        "path": "/experience",
+        "file": "experience/index.tsx"
+      },
+      {
+        "type": "route",
+        "path": "/projects",
+        "file": "projects/index.tsx"
+      },
+      {
+        "type": "route",
+        "path": "/stack",
+        "file": "stack/index.tsx"
+      },
+      {
+        "type": "route",
+        "path": "/contact",
+        "file": "contact/index.tsx"
+      }
+    ]
+  }
+}
