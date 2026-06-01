@@ -24,7 +24,10 @@ const router = createRouter({
       const to = normalizePath(toLocation.pathname);
       if (from === to) return false;
 
-      return from === HOME ? ['home-leave'] : ['push'];
+      if (from === HOME) return ['home-leave'];
+      if (to === HOME) return ['home-enter'];
+
+      return ['push'];
     },
   },
 });

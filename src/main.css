@@ -127,6 +127,60 @@ ol {
   }
 }
 
+/* ------------------------------------------------------------------
+   Entering home — mirror the home-leave transition so returning to /
+   does not use the generic push animation or capture home's mount
+   animations mid-state.
+   ------------------------------------------------------------------ */
+:root:active-view-transition-type(home-enter)::view-transition-old(root) {
+  animation-name: slideOutToRight;
+}
+
+:root:active-view-transition-type(home-enter)::view-transition-new(root) {
+  animation-name: slideInFromLeft;
+}
+
+:root:active-view-transition-type(home-enter) .page,
+:root:active-view-transition-type(home-leave) .page {
+  animation: none;
+}
+
+:root:active-view-transition-type(home-enter) .page :is(.hero-name, .hero-tagline, .hero-actions, .blue-underline::after),
+:root:active-view-transition-type(home-leave) .page :is(.hero-name, .hero-tagline, .hero-actions, .blue-underline::after) {
+  animation: none;
+}
+
+:root:active-view-transition-type(home-enter) .blue-underline::after,
+:root:active-view-transition-type(home-leave) .blue-underline::after {
+  width: 100%;
+}
+
+@keyframes slideOutToRight {
+  from {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    filter: blur(4px);
+    transform: translateX(7%);
+  }
+}
+
+@keyframes slideInFromLeft {
+  from {
+    opacity: 0;
+    filter: blur(5px);
+    transform: translateX(-9%);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateX(0);
+  }
+}
+
 @keyframes slideInFromRight {
   from {
     opacity: 0;
