@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="121" height="82" viewBox="0 0 121 82" role="img" aria-labelledby="title desc">
+  <title id="title">SH logo</title>
+  <desc id="desc">Bold SH logotype in dark navy.</desc>
+  <text
+    x="60.5"
+    y="51"
+    text-anchor="middle"
+    fill="#111827"
+    stroke="#fff"
+    stroke-width="0.8"
+    stroke-linejoin="round"
+    vector-effect="non-scaling-stroke"
+    paint-order="stroke fill"
+    font-family="Inter, Avenir Next, Montserrat, Arial Black, sans-serif"
+    font-size="42"
+    font-weight="900"
+    letter-spacing="-3">SH</text>
+</svg>

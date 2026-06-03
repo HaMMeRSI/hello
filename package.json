@@ -4,27 +4,22 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "routes:generate": "tsr generate",
-    "build": "tsr generate && tsc -b && vite build",
-    "preview": "vite preview",
+    "dev": "astro dev",
+    "build": "astro check && astro build",
+    "preview": "astro preview",
+    "check": "astro check",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "deploy:vps": "node ./devops/scripts/vps/deploy.ts"
   },
   "dependencies": {
-    "@tanstack/react-router": "^1.170.10",
-    "@vitejs/plugin-react": "latest",
-    "lucide-react": "^1.17.0",
-    "react": "latest",
-    "react-dom": "latest",
-    "typescript": "latest",
-    "vite": "latest"
+    "astro": "latest",
+    "sharp": "^0.34.5",
+    "typescript": "latest"
   },
   "devDependencies": {
-    "@tanstack/router-cli": "1.167.12",
-    "@tanstack/router-plugin": "^1.168.13",
-    "@types/react": "latest",
-    "@types/react-dom": "latest",
+    "@astrojs/check": "^0.9.9",
+    "@types/node": "^25.9.1",
     "prettier": "^3.8.3"
   }
 }

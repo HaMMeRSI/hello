@@ -1,0 +1,12 @@
+node_modules
+dist
+.astro
+.tanstack
+.git
+.github
+.codex-screenshots
+.DS_Store
+.env
+.env.*
+*.log
+devops

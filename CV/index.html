@@ -7,12 +7,15 @@
     <style>
       :root {
         --ink: #2f3337;
-        --muted: #686d73;
         --blue: #173e59;
-        --blue-2: #255a78;
-        --line: #d8dde2;
         --paper: #ffffff;
         --bg: #edf1f4;
+        --accent: #e8b765;
+        --accent-soft: rgba(232, 183, 101, 0.16);
+        --accent-line: rgba(232, 183, 101, 0.55);
+        --page-width: 900rem;
+        --page-height: 1180rem;
+        font-size: 1px;
       }
 
       * {
@@ -30,282 +33,394 @@
       }
 
       body {
-        padding: 32px;
+        padding: 32rem;
+        font-size: 16rem;
       }
 
-      h1,
-      h2,
-      h3,
-      p,
-      ul {
+      :where(h1, h2, h3, p, ul) {
         margin: 0;
       }
 
       a {
         color: inherit;
         text-decoration: underline;
-        text-underline-offset: 2px;
+        text-underline-offset: 2rem;
       }
 
       .page {
         display: grid;
-        grid-template-columns: 285px 1fr;
-        width: 900px;
-        min-height: 1180px;
+        grid-template-columns: 285rem 1fr;
+        width: var(--page-width);
+        min-height: var(--page-height);
         margin: 0 auto;
         overflow: hidden;
         background: var(--paper);
-        box-shadow: 0 18px 60px rgba(15, 35, 50, 0.18);
+        box-shadow: 0 18rem 60rem rgba(15, 35, 50, 0.18);
+      }
 
-        & .section {
-          margin-bottom: 28px;
-        }
+      .section {
+        margin-bottom: 28rem;
+      }
 
-        & .section-title {
-          font-size: 22px;
-          font-weight: 800;
-          letter-spacing: 5px;
-          text-transform: uppercase;
-          color: var(--blue);
-          padding-bottom: 7px;
-          margin-bottom: 12px;
-          border-bottom: 3px solid var(--blue);
-        }
+      .section-title {
+        display: inline-block;
+        max-width: 100%;
+        font-size: 22rem;
+        font-weight: 800;
+        letter-spacing: 2rem;
+        text-transform: uppercase;
+        color: var(--blue);
+        padding-bottom: 3rem;
+        margin-bottom: 12rem;
+        border-bottom: 3rem solid var(--blue);
+      }
 
-        & .sidebar {
-          padding: 44px 38px 40px;
-          color: white;
-          background: var(--blue);
+      .main {
+        grid-column: 2;
+        grid-row: 1;
+        padding: 44rem 50rem 48rem;
+      }
 
-          & .section {
-            margin-bottom: 27px;
-          }
+      .name {
+        margin-bottom: 8rem;
+        color: var(--blue);
+        font-size: 42rem;
+        font-weight: 400;
+        line-height: 1;
+        letter-spacing: -1rem;
+      }
 
-          & .section-title {
-            color: #fff;
-            border-bottom-color: #fff;
-          }
+      .name strong {
+        color: #54565a;
+        font-weight: 800;
+      }
 
-          & :is(.contact-list, .simple-list, .tech-list) {
-            padding: 0;
-            list-style: none;
-          }
+      .role {
+        margin-bottom: 16rem;
+        color: #6a6d70;
+        font-size: 14rem;
+        font-weight: 300;
+        letter-spacing: 0.4rem;
+      }
 
-          & .contact-list {
-            & li {
-              display: grid;
-              grid-template-columns: 24px 1fr;
-              align-items: start;
-              gap: 12px;
-              margin-bottom: 15px;
-              font-size: 14px;
-            }
-          }
+      .intro::after {
+        content: "";
+        display: block;
+        width: 72rem;
+        height: 4rem;
+        margin-bottom: 35rem;
+        background: var(--blue);
+      }
 
-          & .icon {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 18px;
-            padding-top: 1px;
-            opacity: 0.92;
+      .profile-text {
+        color: #60656b;
+        font-size: 15rem;
+        text-align: justify;
+      }
 
-            & svg {
-              width: 16px;
-              height: 16px;
-              fill: none;
-              stroke: currentColor;
-              stroke-width: 2;
-              stroke-linecap: round;
-              stroke-linejoin: round;
-            }
-          }
+      .rail {
+        position: relative;
+        padding-left: 25rem;
+        border-left: 3rem solid var(--blue);
+      }
 
-          & .side-small {
-            color: rgba(255, 255, 255, 0.92);
-            font-size: 14px;
-          }
+      .rail-entry {
+        position: relative;
+        padding-bottom: var(--entry-gap, 14rem);
+      }
 
-          & .edu-date {
-            margin-top: 8px;
-            font-size: 17px;
-            font-weight: 800;
-            letter-spacing: 1px;
-          }
+      .rail-entry:last-child {
+        padding-bottom: 0;
+      }
 
-          & .edu-school {
-            margin-top: 2px;
-            font-size: 13px;
-            font-weight: 800;
-            text-transform: uppercase;
-          }
+      .rail-entry::before {
+        content: "";
+        position: absolute;
+        top: 4rem;
+        left: -32rem;
+        width: 11rem;
+        height: 11rem;
+        border-radius: 50%;
+        background: var(--blue);
+        box-shadow: 0 0 0 4rem white;
+      }
 
-          & .edu-degree {
-            margin-top: 3px;
-            font-size: 13px;
-          }
+      .product {
+        --entry-gap: 12rem;
+      }
 
-          & .tech-list {
-            & > li {
-              position: relative;
-              margin-bottom: 7px;
-              padding-left: 12px;
-              font-size: 13px;
+      .product h3,
+      .job h3 {
+        color: #55595d;
+        font-size: 17rem;
+        font-weight: 800;
+      }
 
-              &::before {
-                content: "•";
-                position: absolute;
-                top: 0;
-                left: 0;
-              }
-            }
+      .product h3 {
+        margin-bottom: 3rem;
+        line-height: 1.25;
+      }
 
-            & strong {
-              display: block;
-              font-size: 14px;
-            }
-          }
+      .product h3 a {
+        color: inherit;
+        text-decoration: none;
+      }
 
-          & .simple-list {
-            & li {
-              position: relative;
-              margin-bottom: 8px;
-              padding-left: 14px;
-              font-size: 14px;
+      .product p,
+      .job ul {
+        color: #555a60;
+        font-size: 14rem;
+      }
 
-              &::before {
-                content: "•";
-                position: absolute;
-                top: 0;
-                left: 0;
-              }
-            }
-          }
-        }
+      .product p {
+        line-height: 1.45;
+      }
 
-        & .main {
-          padding: 44px 50px 48px;
+      .job-head {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        align-items: baseline;
+        gap: 16rem;
+        margin-bottom: 2rem;
+      }
 
-          & .name {
-            margin-bottom: 8px;
-            color: var(--blue);
-            font-size: 42px;
-            font-weight: 400;
-            line-height: 1;
-            letter-spacing: -1px;
+      .job h3 {
+        text-transform: uppercase;
+      }
 
-            & strong {
-              color: #54565a;
-              font-weight: 800;
-            }
-          }
+      .date {
+        color: #74787d;
+        font-size: 14rem;
+        font-weight: 600;
+        white-space: nowrap;
+      }
 
-          & .role {
-            margin-bottom: 16px;
-            color: #6a6d70;
-            font-size: 22px;
-            letter-spacing: 0.4px;
-            text-transform: uppercase;
-          }
+      .job-title {
+        margin-bottom: 3rem;
+        color: #50555a;
+        font-size: 16rem;
+      }
 
-          & .title-mark {
-            width: 72px;
-            height: 4px;
-            margin-bottom: 35px;
-            background: var(--blue);
-          }
+      .job ul {
+        padding-left: 18rem;
+      }
 
-          & .profile-text {
-            color: #60656b;
-            font-size: 15px;
-            text-align: justify;
-          }
+      .job li {
+        margin-bottom: 2rem;
+      }
 
-          & .timeline {
-            position: relative;
-            padding-left: 25px;
-            border-left: 3px solid var(--blue);
-          }
+      .sidebar {
+        grid-column: 1;
+        grid-row: 1;
+        padding: 44rem 38rem 40rem;
+        color: white;
+        background: var(--blue);
+      }
 
-          & .job {
-            position: relative;
-            padding-bottom: 14px;
+      .sidebar .section {
+        margin-bottom: 27rem;
+      }
 
-            &:last-child {
-              padding-bottom: 0;
-            }
+      .sidebar .section-title {
+        color: #fff;
+        border-bottom-color: #fff;
+      }
 
-            &::before {
-              content: "";
-              position: absolute;
-              top: 4px;
-              left: -32px;
-              width: 11px;
-              height: 11px;
-              border-radius: 50%;
-              background: var(--blue);
-              box-shadow: 0 0 0 4px white;
-            }
+      .contact-list,
+      .simple-list,
+      .tech-list {
+        padding: 0;
+        list-style: none;
+      }
 
-            & .job-head {
-              display: grid;
-              grid-template-columns: 1fr auto;
-              align-items: baseline;
-              gap: 16px;
-              margin-bottom: 2px;
-            }
+      .contact-list li {
+        display: grid;
+        grid-template-columns: 24rem 1fr;
+        align-items: center;
+        gap: 12rem;
+        margin-bottom: 15rem;
+        font-size: 14rem;
+      }
 
-            & h3 {
-              color: #55595d;
-              font-size: 17px;
-              font-weight: 800;
-              text-transform: uppercase;
+      .contact-list a {
+        display: flex;
+        align-items: center;
+        line-height: 1.2;
+      }
 
-              &.company-personal {
-                text-transform: none;
-              }
-            }
+      .website-cta {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        align-items: center;
+        gap: 10rem;
+        margin-bottom: 24rem;
+        padding: 10rem 12rem;
+        border-radius: 8rem;
+        border: 1rem solid rgba(255, 255, 255, 0.22);
+        color: #fff;
+        text-decoration: none;
+        background: rgba(255, 255, 255, 0.025);
+      }
 
-            & .date {
-              color: #74787d;
-              font-size: 14px;
-              font-weight: 600;
-              white-space: nowrap;
-            }
+      .website-cta__icon,
+      .icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
 
-            & .job-title {
-              margin-bottom: 3px;
-              color: #50555a;
-              font-size: 16px;
-            }
+      .website-cta__icon {
+        width: 28rem;
+        height: 28rem;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.08);
+        color: rgba(255, 255, 255, 0.86);
+      }
 
-            & ul {
-              padding-left: 18px;
-              color: #555a60;
-              font-size: 14px;
-            }
+      .website-cta__icon svg,
+      .icon svg {
+        width: 16rem;
+        height: 16rem;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
 
-            & li {
-              margin-bottom: 2px;
-            }
-          }
-        }
+      .website-cta__text {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        min-width: 0;
+      }
+
+      .website-cta__label {
+        font-size: 8rem;
+        font-weight: 700;
+        letter-spacing: 1.2rem;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.7);
+      }
+
+      .website-cta__url {
+        display: flex;
+        align-items: center;
+        gap: 6rem;
+        font-size: 14rem;
+        font-weight: 700;
+        letter-spacing: 0.1rem;
+        line-height: 1.15;
+      }
+
+      .icon {
+        width: 18rem;
+        padding-top: 0;
+        opacity: 0.92;
+      }
+
+      .icon .brand-icon {
+        fill: currentColor;
+        stroke: none;
+      }
+
+      .side-small {
+        color: rgba(255, 255, 255, 0.92);
+        font-size: 14rem;
+      }
+
+      .edu-date {
+        margin-top: 8rem;
+        font-size: 17rem;
+        font-weight: 800;
+        letter-spacing: 1rem;
+      }
+
+      .edu-school {
+        margin-top: 2rem;
+        font-size: 13rem;
+        font-weight: 800;
+        text-transform: uppercase;
+      }
+
+      .edu-degree {
+        margin-top: 3rem;
+        font-size: 13rem;
+      }
+
+      .tech-list {
+        --bullet-gap: 7rem;
+        --bullet-indent: 12rem;
+        --bullet-size: 13rem;
+      }
+
+      .simple-list {
+        --bullet-gap: 8rem;
+        --bullet-indent: 14rem;
+        --bullet-size: 14rem;
+      }
+
+      :where(.tech-list, .simple-list) > li {
+        position: relative;
+        margin-bottom: var(--bullet-gap);
+        padding-left: var(--bullet-indent);
+        font-size: var(--bullet-size);
+      }
+
+      :where(.tech-list, .simple-list) > li::before {
+        content: "•";
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+
+      .tech-list strong {
+        display: block;
+        font-size: 14rem;
+      }
+
+      @page {
+        size: A4;
+        margin: 0;
       }
 
       @media print {
+        :root {
+          --paper-width: 210mm;
+          --paper-height: 297mm;
+          --page-width: var(--paper-width);
+          --page-height: var(--paper-height);
+          font-size: 0.205mm;
+        }
+
+        html,
         body {
-          padding: 0;
+          width: var(--paper-width);
+          height: var(--paper-height);
+          min-height: var(--paper-height);
+          overflow: visible;
           background: #fff;
         }
 
+        body {
+          padding: 0;
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+        }
+
         .page {
-          width: 100%;
-          min-height: 100vh;
+          grid-template-columns: 66.5mm 1fr;
+          min-height: var(--page-height);
+          margin: 0;
           box-shadow: none;
+        }
+
+        .rail-entry {
+          break-inside: avoid;
         }
       }
 
-      @media (max-width: 900px) {
+      @media screen and (max-width: 900px) {
         body {
           padding: 0;
         }
@@ -315,53 +430,175 @@
           grid-template-columns: 1fr;
         }
 
-        .page .sidebar {
-          padding: 34px 28px;
+        .main {
+          grid-column: 1;
+          grid-row: 1;
+          padding: 42rem 28rem;
         }
 
-        .page .main {
-          padding: 42px 28px;
+        .sidebar {
+          grid-column: 1;
+          grid-row: 2;
+          padding: 34rem 28rem;
         }
 
-        .page .main .name {
-          font-size: 34px;
+        .name {
+          font-size: 34rem;
         }
       }
     </style>
   </head>
   <body>
     <article class="page">
+      <main class="main">
+        <header class="intro">
+          <h1 class="name"><strong>SAGI</strong> HAMMER</h1>
+          <p class="role">Senior Software Engineer / AI Product Engineer</p>
+        </header>
+
+        <p class="section profile-text">
+          Senior software and AI product engineer with experience building end-to-end products across agentic AI, SaaS, browser tooling, APIs, and React & TypeScript platforms.
+          Recent work spans independent products, founding-stage engineering at Q.E.D Science, and core product foundations for D-ID Studio, D-ID Chat, D-ID Agents, and API surfaces.
+        </p>
+
+        <section class="section">
+          <h2 class="section-title">Personal Products</h2>
+          <div class="rail">
+            <article class="rail-entry product">
+              <h3>
+                <a href="https://chapeta.net" target="_blank" rel="noopener">Chapeta.net</a>
+              </h3>
+              <p>Native macOS AI agent harness - like Claude Code, but nicer.</p>
+            </article>
+            <article class="rail-entry product">
+              <h3>
+                <a href="https://gepeta.app" target="_blank" rel="noopener">Gepeta.app</a>
+              </h3>
+              <p>AI life-tracking SaaS/PWA and iOS app that turns text, voice, photos, and spreadsheets into structured personal records.</p>
+            </article>
+            <article class="rail-entry product">
+              <h3>
+                <a href="https://fastedit.net" target="_blank" rel="noopener">FastEdit.net</a>
+              </h3>
+              <p>Privacy-first browser media editor for local conversion, compression, cropping, trimming, batching, and export workflows.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="section">
+          <h2 class="section-title">Work Experience</h2>
+          <div class="rail">
+            <section class="rail-entry job">
+              <header class="job-head">
+                <h3>Q.E.D Science</h3>
+                <div class="date">2025 - Present</div>
+              </header>
+              <div class="job-title">Founding Engineer</div>
+              <ul>
+                <li>Owned the full product pipeline: frontend workflows, backend orchestration, data flow, and the AI engine at the center of the platform.</li>
+                <li>Built tool-backed AI workflows for editorial grant discovery, fit checks, evidence collection, drafting, review, and repeatable research operations.</li>
+              </ul>
+            </section>
+
+            <section class="rail-entry job">
+              <header class="job-head">
+                <h3>D-ID</h3>
+                <div class="date">2021 - 2025</div>
+              </header>
+              <div class="job-title">Senior Full-Stack Engineer</div>
+              <ul>
+                <li>Helped build the foundations of D-ID Studio, D-ID Chat, and D-ID Agents, leading key work from initiation through execution and long-term integration.</li>
+                <li>Contributed to the D-ID API and product-facing engineering systems for AI video workflows.</li>
+              </ul>
+            </section>
+
+            <section class="rail-entry job">
+              <header class="job-head">
+                <h3>Reality Shift Ltd.</h3>
+                <div class="date">2020 - 2021</div>
+              </header>
+              <div class="job-title">Co-Founder / CTO</div>
+              <ul>
+                <li>Developed the VR game Terragon: Symbol of Magic.</li>
+                <li>Built a hand gesture recognition pipeline based on image processing and machine learning.</li>
+                <li>Implemented procedural level generation, enemy AI, animation timing, and sound synchronization systems.</li>
+              </ul>
+            </section>
+
+            <section class="rail-entry job">
+              <header class="job-head">
+                <h3>Israeli Defense Forces</h3>
+                <div class="date">2018 - 2020</div>
+              </header>
+              <div class="job-title">Software Architect</div>
+              <ul>
+                <li>Designed and implemented a scalable micro frontend architecture to modernize a legacy monolith.</li>
+                <li>Introduced webpack builds to an older TypeScript project.</li>
+                <li>Led the gradual transition from AngularJS to React.</li>
+              </ul>
+            </section>
+
+            <section class="rail-entry job">
+              <header class="job-head">
+                <h3>Israeli Defense Forces</h3>
+                <div class="date">2014 - 2018</div>
+              </header>
+              <div class="job-title">Software Developer</div>
+              <ul>
+                <li>Built multiple web application projects from the ground up.</li>
+                <li>Developed mapping solutions using ESRI and NEMI/NeWMI.</li>
+                <li>Developed ASP.NET infrastructure to replace an existing WCF infrastructure.</li>
+                <li>Built AngularJS directives and components for internal platforms.</li>
+              </ul>
+            </section>
+          </div>
+        </section>
+      </main>
+
       <aside class="sidebar">
+        <a class="website-cta" href="https://sagihammer.com" target="_blank" rel="noopener">
+          <span class="website-cta__icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <circle cx="12" cy="12" r="10" />
+              <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
+              <path d="M2 12h20" />
+            </svg>
+          </span>
+          <span class="website-cta__text">
+            <span class="website-cta__label">Portfolio</span>
+            <span class="website-cta__url">sagihammer.com</span>
+          </span>
+        </a>
+
         <section class="section">
           <h2 class="section-title">Contact</h2>
           <ul class="contact-list">
             <li>
-              <span class="icon"
-                ><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                  <path
-                    d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" /></svg></span
-              ><span><a href="https://www.linkedin.com/in/sagi-hammer-88980819a/" target="_blank" rel="noopener">Sagi Hammer on LinkedIn</a></span>
-            </li>
-            <li>
-              <span class="icon"
-                ><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <span class="icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                   <rect width="20" height="16" x="2" y="4" rx="2" />
-                  <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" /></svg></span
-              ><span><a href="mailto:contact@sagihammer.com">contact@sagihammer.com</a></span>
+                  <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+                </svg>
+              </span>
+              <a href="mailto:contact@sagihammer.com">contact@sagihammer.com</a>
             </li>
             <li>
-              <span class="icon"
-                ><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                  <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
-                  <circle cx="12" cy="10" r="3" /></svg></span
-              ><span>Israel, Holon Shenkar</span>
+              <span class="icon">
+                <svg class="brand-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path
+                    d="M12 .3C5.37.3 0 5.67 0 12.3c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58v-2.23c-3.34.73-4.04-1.42-4.04-1.42-.55-1.39-1.33-1.76-1.33-1.76-1.09-.74.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.49.99.11-.77.42-1.3.76-1.6-2.66-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.29-1.55 3.3-1.23 3.3-1.23.65 1.66.24 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.81 5.62-5.49 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.83.58A12.01 12.01 0 0 0 24 12.3C24 5.67 18.63.3 12 .3Z" />
+                </svg>
+              </span>
+              <a href="https://github.com/HaMMeRSI" target="_blank" rel="noopener">@HaMMeRSI</a>
             </li>
             <li>
-              <span class="icon"
-                ><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                  <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
-                  <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" /></svg></span
-              ><span><a href="https://github.com/HaMMeRSI" target="_blank" rel="noopener">@HaMMeRSI on GitHub</a><br /><a href="https://www.linkedin.com/in/sagi-hammer-88980819a/" target="_blank" rel="noopener">Sagi Hammer on LinkedIn</a></span>
+              <span class="icon">
+                <svg class="brand-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path
+                    d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43c-1.14 0-2.06-.93-2.06-2.06s.92-2.06 2.06-2.06S7.4 4.23 7.4 5.37s-.92 2.06-2.06 2.06Zm1.78 13.02H3.56V9h3.56v11.45ZM22.23 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.23 0Z" />
+                </svg>
+              </span>
+              <a href="https://www.linkedin.com/in/sagi-hammer-88980819a/" target="_blank" rel="noopener">Sagi Hammer</a>
             </li>
           </ul>
         </section>
@@ -370,7 +607,7 @@
           <h2 class="section-title">Education</h2>
           <div class="side-small">
             <div class="edu-date">2015 - 2018</div>
-            <div class="edu-school">The College of Management Academic</div>
+            <div class="edu-school">The College of Management Academic Studies</div>
             <div class="edu-degree">• B.Sc. in Computer Science</div>
 
             <div class="edu-date">2014</div>
@@ -381,21 +618,22 @@
         <section class="section">
           <h2 class="section-title">Technologies</h2>
           <ul class="tech-list side-small">
-            <li><strong>Frontend:</strong>React, SolidJS, Vue, AngularJS, Vite, TypeScript, Webpack</li>
-            <li><strong>Backend:</strong>.NET Core, Node.js, Express.js, tRPC, REST API, GraphQL</li>
-            <li><strong>Cloud &amp; DevOps:</strong>AWS, GCloud, Azure, Git</li>
-            <li><strong>Game Development &amp; XR:</strong>Unity GE, OpenXR</li>
-            <li><strong>Blockchain &amp; Web3:</strong>Solidity, Smart Contracts, NFTs, Solana RPCs &amp; Web3 Providers</li>
+            <li><strong>AI Engineering:</strong> LLM apps, RAG, agents &amp; harnesses, tool calling</li>
+            <li><strong>Frontend:</strong> React, SolidJS, Vue, AngularJS, Vite, TypeScript, Webpack</li>
+            <li><strong>Backend:</strong> .NET Core, Node.js, Express.js, tRPC, REST API, GraphQL</li>
+            <li><strong>Cloud &amp; DevOps:</strong> AWS, Google Cloud, Azure, Git</li>
+            <li><strong>Game Development &amp; XR:</strong> Unity, OpenXR</li>
+            <li><strong>Blockchain &amp; Web3:</strong> Solidity, Smart Contracts, NFTs, Solana RPCs &amp; Web3 Providers</li>
           </ul>
         </section>
 
         <section class="section">
-          <h2 class="section-title">Assets</h2>
+          <h2 class="section-title">Focus</h2>
           <ul class="simple-list side-small">
-            <li>Teamplayer</li>
-            <li>Able to work under pressure</li>
-            <li>Analytical thinking and problem solving</li>
-            <li>Highly passionate</li>
+            <li>AI product ownership from concept to launch</li>
+            <li>Agentic workflow and tool orchestration</li>
+            <li>Full-stack platform architecture</li>
+            <li>AI agents, SaaS, and media systems</li>
           </ul>
         </section>
 
@@ -406,102 +644,6 @@
           </ul>
         </section>
       </aside>
-
-      <main class="main">
-        <header>
-          <h1 class="name"><strong>SAGI</strong> HAMMER</h1>
-          <div class="title-mark" aria-hidden="true"></div>
-        </header>
-
-        <section class="section">
-          <p class="profile-text">
-            Experienced Senior Software Engineer at D-ID, leading key projects from initiation to execution. Co-founder &amp; CTO of Reality Shift Ltd., specializing in full-stack
-            development, 3D gaming, cloud solutions (SaaS, PaaS, IaaS), and blockchain technologies (smart contracts, NFTs, RPC APIs). Seeking a challenging role in an innovative,
-            fast-paced environment with a talented team.
-          </p>
-        </section>
-
-        <section class="section">
-          <h2 class="section-title">Work Experience</h2>
-          <div class="timeline">
-            <section class="job">
-              <div class="job-head">
-                <h3 class="company-personal">Personal</h3>
-                <div class="date">PRESENT</div>
-              </div>
-              <ul>
-                <li><a href="https://gepeta.app" target="_blank" rel="noopener">Gepeta.app</a>: AI-driven personal finance &amp; expense tracking SaaS, helping users manage budgets efficiently.</li>
-                <li>A Web3 tool for tracking profit &amp; loss across Solana-based wallets.</li>
-              </ul>
-            </section>
-
-            <section class="job">
-              <div class="job-head">
-                <h3>Q.E.D Science</h3>
-                <div class="date">MAY 2025 - PRESENT</div>
-              </div>
-              <div class="job-title">Founding Engineer</div>
-              <ul>
-                <li>Led the architecture and development of the core platform from the ground up.</li>
-                <li>Built an AI Agent that automates editorial grant discovery, eligibility matching, and application drafting.</li>
-              </ul>
-            </section>
-
-            <section class="job">
-              <div class="job-head">
-                <h3>D-ID</h3>
-                <div class="date">2021 - 2025</div>
-              </div>
-              <div class="job-title">Senior FullStack Engineer</div>
-              <ul>
-                <li>Designed, developed, and led the foundation of key projects: Studio D-ID, Chat D-ID, and Agents D-ID, ensuring their long-term success and integration.</li>
-                <li>Contributing to D-ID API.</li>
-              </ul>
-            </section>
-
-            <section class="job">
-              <div class="job-head">
-                <h3>Reality Shift Ltd.</h3>
-                <div class="date">2020 - 2021</div>
-              </div>
-              <div class="job-title">Co-Founder / CTO</div>
-              <ul>
-                <li>Developed the VR game Terragon: Symbol Of Magic.</li>
-                <li>Worked on a hand gesture recognition system based on image processing using machine learning.</li>
-                <li>Implemented a random level generation algorithm for the game's various stages.</li>
-                <li>Developed an AI for the enemies in the game, including animations and sound synchronization.</li>
-              </ul>
-            </section>
-
-            <section class="job">
-              <div class="job-head">
-                <h3>Israeli Defense Forces</h3>
-                <div class="date">2018 - 2020</div>
-              </div>
-              <div class="job-title">Software Architect</div>
-              <ul>
-                <li>Designed and implemented a scalable solution using micro frontend architecture to modernize an old monolithic system.</li>
-                <li>Introduced webpack build to an old TSC project.</li>
-                <li>Led the gradual transition from AngularJS to React.</li>
-              </ul>
-            </section>
-
-            <section class="job">
-              <div class="job-head">
-                <h3>Israeli Defense Forces</h3>
-                <div class="date">2014 - 2018</div>
-              </div>
-              <div class="job-title">Software Developer</div>
-              <ul>
-                <li>Developed multiple web apps projects from scratch.</li>
-                <li>Developed mapping solutions using ESRI and NEMI/NeWMI.</li>
-                <li>Developed an ASP.Net infrastructure to replace an existing WCF infrastructure.</li>
-                <li>Developed multiple directives and components in AngularJS.</li>
-              </ul>
-            </section>
-          </div>
-        </section>
-      </main>
     </article>
   </body>
 </html>

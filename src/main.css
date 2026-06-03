@@ -28,6 +28,12 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+*::-webkit-scrollbar {
+  display: none;
 }
 
 html,
@@ -75,15 +81,17 @@ ol {
   mix-blend-mode: normal;
 }
 
-/* The frosted nav stays put while content moves beneath it — see
-   .route-header { view-transition-name: site-header } in __root.css. */
-::view-transition-group(site-header) {
-  animation-duration: 460ms;
-  animation-timing-function: var(--ease-expo);
+/* The fixed header is route-stable, so keep its named view-transition still. */
+::view-transition-group(site-header),
+::view-transition-old(site-header),
+::view-transition-new(site-header) {
+  animation: none;
+  animation-duration: 0ms;
+  mix-blend-mode: normal;
 }
 
 /* ------------------------------------------------------------------
-   Default — the new page always slides in from the right; the outgoing
+   Default: the new page always slides in from the right; the outgoing
    page disappears instantly (no exit animation).
    ------------------------------------------------------------------ */
 ::view-transition-old(root) {
@@ -106,7 +114,7 @@ ol {
 }
 
 /* ------------------------------------------------------------------
-   Leaving home — the home page itself slides off to the left while the
+   Leaving home: the home page itself slides off to the left while the
    incoming page slides in from the right (new-page slide is inherited
    from the default rule above).
    ------------------------------------------------------------------ */
@@ -128,16 +136,12 @@ ol {
 }
 
 /* ------------------------------------------------------------------
-   Entering home — mirror the home-leave transition so returning to /
-   does not use the generic push animation or capture home's mount
-   animations mid-state.
+   Entering home: swap immediately so the browser never exposes the plain
+   document background between the outgoing page and home's painted shell.
    ------------------------------------------------------------------ */
-:root:active-view-transition-type(home-enter)::view-transition-old(root) {
-  animation-name: slideOutToRight;
-}
-
+:root:active-view-transition-type(home-enter)::view-transition-old(root),
 :root:active-view-transition-type(home-enter)::view-transition-new(root) {
-  animation-name: slideInFromLeft;
+  animation: none;
 }
 
 :root:active-view-transition-type(home-enter) .page,

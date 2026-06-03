@@ -1,0 +1,129 @@
+.site-shell {
+  --page-x: clamp(1rem, 4vw, 3.5rem);
+  width: 100%;
+  height: 100dvh;
+  min-height: 100dvh;
+  overflow-x: hidden;
+  overflow-y: auto;
+  color: var(--dark);
+  background: #fdfdfb;
+
+  & :is(.route-header, .nav) {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    view-transition-name: site-header;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    --header-bg: #fdfdfb;
+    --header-fade-size: clamp(1.25rem, 3vw, 2.5rem);
+    isolation: isolate;
+    padding-block: 10px;
+    padding-inline: 30px;
+    background: transparent;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: calc(100% + var(--header-fade-size));
+      z-index: -1;
+      pointer-events: none;
+      background: var(--header-bg);
+      -webkit-mask-image: linear-gradient(
+        to bottom,
+        #000 0%,
+        #000 36%,
+        rgba(0, 0, 0, 0.86) 48%,
+        transparent 100%
+      );
+      mask-image: linear-gradient(
+        to bottom,
+        #000 0%,
+        #000 36%,
+        rgba(0, 0, 0, 0.86) 48%,
+        transparent 100%
+      );
+    }
+
+    & :is(.route-logo, .nav-logo) {
+      display: inline-flex;
+      align-items: center;
+      line-height: 0;
+
+      & img {
+        display: block;
+        width: clamp(3.1rem, 6vw, 4rem);
+        height: auto;
+      }
+    }
+
+    @media (max-width: 860px) {
+      justify-content: flex-end;
+      padding: 1rem var(--page-x) 0;
+      background: transparent;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+      -webkit-mask-image: none;
+      mask-image: none;
+      pointer-events: none;
+
+      &::before {
+        content: none;
+      }
+
+      & :is(.route-logo, .nav-logo) {
+        pointer-events: auto;
+      }
+    }
+
+    & :is(.route-links, .nav-links) {
+      display: flex;
+      gap: clamp(1rem, 3vw, 2.5rem);
+      max-width: max(0px, calc(100vw - 18rem));
+      overflow: hidden;
+      white-space: nowrap;
+
+      @media (max-width: 860px) {
+        display: none;
+      }
+
+      & :is(.route-link, a) {
+        position: relative;
+        color: var(--gray-600);
+        font-family: var(--font-display);
+        font-size: 0.95rem;
+        font-weight: 800;
+        transition: color 0.25s;
+
+        &::after {
+          content: '';
+          position: absolute;
+          bottom: -4px;
+          left: 50%;
+          width: 0;
+          height: 2px;
+          border-radius: 1px;
+          background: var(--blue);
+          transition:
+            width 0.3s var(--ease-expo),
+            left 0.3s var(--ease-expo);
+        }
+
+        &:hover {
+          color: var(--dark);
+        }
+
+        &:hover::after {
+          left: 0;
+          width: 100%;
+        }
+      }
+    }
+  }
+}

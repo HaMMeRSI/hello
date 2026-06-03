@@ -1,0 +1,163 @@
+---
+import Icon from '../../components/Icon.astro';
+import Layout from '../../components/Layout.astro';
+import { contactChannels as channels, profile } from '../../content/profile/contact';
+import '../../styles/story.css';
+import './index.css';
+---
+
+<Layout title={`Contact | ${profile.name}`} description={`Contact ${profile.name} for software engineering, AI product, and platform work.`}>
+  <main class="story-page">
+    <div class="story">
+      <header class="story-intro">
+        <p class="story-kicker">say hello</p>
+        <h1 class="story-title">
+          Let's build <span class="ink">the hard part.</span>
+        </h1>
+        <p class="story-lede">
+          If you’re building something ambitious and need someone who can move between product, code, and messy unknowns, reach out. I’m easy to start with: send the problem, the
+          context, and where you want to get.
+        </p>
+        <div class="story-meta" aria-label="Contact details">
+          <span class="story-meta-item contact-clock">
+            <span class="contact-dot" aria-hidden="true"></span>
+            <span class="story-meta-label">send a message</span>
+            <span class="story-meta-value contact-time" data-contact-time>--:-- Israel</span>
+          </span>
+          <span class="story-meta-item">
+            <span class="story-meta-label">speaks</span>
+            <span class="story-meta-value">Hebrew · English · Russian</span>
+          </span>
+        </div>
+      </header>
+
+      <header class="story-break">
+        <h2>Reach out</h2>
+      </header>
+
+      <div class="contact-lines">
+        {
+          channels.map((channel, i) => {
+            const index = String(i + 1).padStart(2, '0');
+            const linkProps = channel.external ? { target: '_blank', rel: 'noopener' } : {};
+
+            if (channel.copy) {
+              return (
+                <div class="contact-line reveal" data-copy-line data-copied="false">
+                  <span class="contact-index" aria-hidden="true">
+                    {index}
+                  </span>
+                  <a class="contact-body" href={channel.href}>
+                    <span class="contact-label">{channel.label}</span>
+                    <span class="contact-value">{channel.value}</span>
+                  </a>
+                  <button type="button" class="contact-action" data-copy-value={channel.copy} aria-label="Copy email address">
+                    <Icon name="copy" size={22} />
+                  </button>
+                </div>
+              );
+            }
+
+            return (
+              <a class="contact-line reveal" href={channel.href} {...linkProps}>
+                <span class="contact-index" aria-hidden="true">
+                  {index}
+                </span>
+                <span class="contact-body">
+                  <span class="contact-label">{channel.label}</span>
+                  <span class="contact-value">{channel.value}</span>
+                </span>
+                <span class="contact-arrow" aria-hidden="true">
+                  <Icon name="externalLink" size={22} />
+                </span>
+              </a>
+            );
+          })
+        }
+      </div>
+
+      <footer class="story-next">
+        <a href="/" class="next-link">
+          <small>start over</small>
+          <strong>
+            Back home
+            <Icon name="arrowRight" size={24} />
+          </strong>
+        </a>
+        <a href="/projects" class="story-aside-link">
+          Review the work again
+        </a>
+      </footer>
+    </div>
+  </main>
+</Layout>
+
+<script>
+  const timeFormatter = new Intl.DateTimeFormat('en-GB', {
+    hour: '2-digit',
+    minute: '2-digit',
+    timeZone: 'Asia/Jerusalem',
+  });
+
+  const timeElements = document.querySelectorAll<HTMLElement>('[data-contact-time]');
+  const copyButtons = document.querySelectorAll<HTMLButtonElement>('[data-copy-value]');
+  const cleanupController = new AbortController();
+  const resetTimers = new Map<HTMLElement, number>();
+
+  const setCopyState = (button: HTMLButtonElement, line: HTMLElement, copied: boolean) => {
+    line.dataset.copied = String(copied);
+    button.setAttribute('aria-label', copied ? 'Email copied to clipboard' : 'Copy email address');
+  };
+
+  const updateTime = () => {
+    const localTime = `${timeFormatter.format(new Date())} Israel`;
+    timeElements.forEach(element => {
+      element.textContent = localTime;
+    });
+  };
+
+  const queueCopyReset = (button: HTMLButtonElement, line: HTMLElement) => {
+    window.clearTimeout(resetTimers.get(line));
+
+    const resetTimer = window.setTimeout(() => {
+      resetTimers.delete(line);
+      setCopyState(button, line, false);
+    }, 1800);
+
+    resetTimers.set(line, resetTimer);
+  };
+
+  const copyValue = async (button: HTMLButtonElement) => {
+    const text = button.dataset.copyValue;
+    if (!text) return;
+
+    try {
+      await navigator.clipboard.writeText(text);
+      const line = button.closest<HTMLElement>('[data-copy-line]');
+      if (!line) return;
+
+      setCopyState(button, line, true);
+      queueCopyReset(button, line);
+    } catch {
+      return;
+    }
+  };
+
+  updateTime();
+  const timeInterval = window.setInterval(updateTime, 15_000);
+
+  copyButtons.forEach(button => {
+    button.addEventListener('click', () => void copyValue(button), { signal: cleanupController.signal });
+  });
+
+  document.addEventListener(
+    'astro:before-swap',
+    () => {
+      cleanupController.abort();
+      window.clearInterval(timeInterval);
+      resetTimers.forEach(timer => window.clearTimeout(timer));
+      resetTimers.clear();
+    },
+    { once: true }
+  );
+</script>
