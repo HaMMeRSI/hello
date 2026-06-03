@@ -1,7 +1,3 @@
-/* ============================================================
-   Story layout - shared across detail pages
-   ============================================================ */
-
 .story-page {
   position: relative;
   min-height: 100dvh;
@@ -20,6 +16,10 @@
       text-wrap: pretty;
     }
 
+    & .story-section {
+      display: block;
+    }
+
     & .ink {
       position: relative;
       display: inline-block;
@@ -35,7 +35,6 @@
         height: 0.13em;
         background: var(--blue);
         opacity: 0.86;
-        /* clip-path: polygon(0 87%, 100% 0, 100% 100%, 0 100%); */
         border-radius: 999px;
         transform: rotate(-1.2deg) scaleX(0);
         transform-origin: left center;
@@ -99,6 +98,7 @@
         & .story-meta-item {
           display: inline-flex;
           align-items: center;
+          flex-wrap: wrap;
           gap: 0.5rem;
           color: var(--dark);
           font-family: var(--font-display);
@@ -285,23 +285,5 @@
 @keyframes inkGrow {
   to {
     transform: rotate(-0.8deg) scaleX(1);
-  }
-}
-
-/* The arrowhead drifts along the "continue" rail to hint at what's next. */
-@keyframes railNudge {
-  0%,
-  72%,
-  100% {
-    transform: translateX(0);
-  }
-  86% {
-    transform: translateX(5px);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .story .story-next .next-link strong svg {
-    animation: none;
   }
 }

@@ -88,12 +88,6 @@
         @media (max-width: 860px) {
           margin-bottom: clamp(1.7rem, 5dvh, 2.35rem);
         }
-
-        & .name-stroke {
-          position: relative;
-          display: inline-block;
-        }
-
       }
 
       & :is(.hero-tagline, .hero-actions) {
@@ -201,11 +195,11 @@
           gap: 0.55rem;
           padding: 0.9rem 0.5rem;
           color: var(--dark);
+          transition: color 0.25s;
 
           @media (max-width: 860px) {
             padding: 0;
           }
-          transition: color 0.25s;
 
           &:hover {
             color: var(--blue);
@@ -245,8 +239,7 @@
 }
 
 html,
-body,
-#root {
+body {
   @media (max-width: 860px) {
     height: auto;
     min-height: 100dvh;

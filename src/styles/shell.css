@@ -8,7 +8,7 @@
   color: var(--dark);
   background: #fdfdfb;
 
-  & :is(.route-header, .nav) {
+  & .route-header {
     position: fixed;
     top: 0;
     left: 0;
@@ -35,23 +35,11 @@
       z-index: -1;
       pointer-events: none;
       background: var(--header-bg);
-      -webkit-mask-image: linear-gradient(
-        to bottom,
-        #000 0%,
-        #000 36%,
-        rgba(0, 0, 0, 0.86) 48%,
-        transparent 100%
-      );
-      mask-image: linear-gradient(
-        to bottom,
-        #000 0%,
-        #000 36%,
-        rgba(0, 0, 0, 0.86) 48%,
-        transparent 100%
-      );
+      -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 36%, rgba(0, 0, 0, 0.86) 48%, transparent 100%);
+      mask-image: linear-gradient(to bottom, #000 0%, #000 36%, rgba(0, 0, 0, 0.86) 48%, transparent 100%);
     }
 
-    & :is(.route-logo, .nav-logo) {
+    & .route-logo {
       display: inline-flex;
       align-items: center;
       line-height: 0;
@@ -59,6 +47,7 @@
       & img {
         display: block;
         width: clamp(3.1rem, 6vw, 4rem);
+        aspect-ratio: 121 / 82;
         height: auto;
       }
     }
@@ -77,12 +66,12 @@
         content: none;
       }
 
-      & :is(.route-logo, .nav-logo) {
+      & .route-logo {
         pointer-events: auto;
       }
     }
 
-    & :is(.route-links, .nav-links) {
+    & .route-links {
       display: flex;
       gap: clamp(1rem, 3vw, 2.5rem);
       max-width: max(0px, calc(100vw - 18rem));
@@ -93,7 +82,7 @@
         display: none;
       }
 
-      & :is(.route-link, a) {
+      & .route-link {
         position: relative;
         color: var(--gray-600);
         font-family: var(--font-display);

@@ -19,12 +19,27 @@ const rowBackground = project.rowBackground ?? 'transparent';
 const accentStyle = `--accent: ${project.accent}; --preview-bg: ${previewBackground}; --row-bg: ${rowBackground};`;
 const previewLoading = eager ? 'eager' : 'lazy';
 const previewFetchPriority = eager ? 'high' : undefined;
+
 function isLocalImage(asset: ProjectMediaAsset | undefined): asset is ImageMetadata {
   return typeof asset === 'object' && asset !== null && 'src' in asset && 'width' in asset && 'height' in asset;
 }
 
-const backdropAsset = activeMedia ? (activeMedia.type === 'image' ? activeMedia.src : activeMedia.poster) : project.coverFit === 'contain' ? undefined : project.cover;
-const backdropSrc = getAssetUrl(backdropAsset);
+function getImageProps(
+  asset: ProjectMediaAsset,
+  alt: string,
+  loading: 'eager' | 'lazy' = previewLoading,
+  fetchpriority: 'high' | undefined = loading === previewLoading ? previewFetchPriority : undefined
+) {
+  return {
+    src: getAssetUrl(asset) ?? '',
+    alt,
+    loading,
+    decoding: 'async' as const,
+    ...(fetchpriority ? { fetchpriority } : {}),
+    ...(isLocalImage(asset) ? { width: asset.width, height: asset.height } : {}),
+  };
+}
+
 const clientMedia = media.map(item => ({
   type: item.type,
   src: getAssetUrl(item.src) ?? '',
@@ -41,30 +56,23 @@ function initials(name: string) {
     .map(word => word[0]?.toUpperCase())
     .join('');
 }
+
+const titleId = `project-${project.slug}-title`;
 ---
 
-<article class="project-feature reveal" style={accentStyle} data-project-carousel data-media={JSON.stringify(clientMedia)} data-active-index="0">
-  <div class="feature-media">
-    <div class:list={['project-preview', project.coverFit === 'contain' && !activeMedia && 'project-preview-contain']} aria-label={`${project.name} preview`}>
+<article class="project-feature reveal" style={accentStyle} aria-labelledby={titleId} data-project-carousel data-media={JSON.stringify(clientMedia)} data-active-index="0">
+  <figure class="feature-media">
+    <div class:list={['project-preview', project.coverFit === 'contain' && !activeMedia && 'project-preview-contain']} role="group" aria-label={`${project.name} preview`}>
       <span class="project-preview-frame" data-preview-frame>
-        {backdropSrc && <span class="project-preview-backdrop" style={`background-image: url('${backdropSrc}')`} aria-hidden="true"></span>}
         {
           activeMedia ? (
             activeMedia.type === 'image' ? (
-              isLocalImage(activeMedia.src) ? (
-                <img src={activeMedia.src.src} alt={activeMedia.alt} loading={previewLoading} decoding="async" fetchpriority={previewFetchPriority} width={activeMedia.src.width} height={activeMedia.src.height} />
-              ) : (
-                <img src={activeMedia.src} alt={activeMedia.alt} loading={previewLoading} decoding="async" fetchpriority={previewFetchPriority} />
-              )
+              <img {...getImageProps(activeMedia.src, activeMedia.alt)} />
             ) : (
               <button type="button" class="project-video-poster" data-video-poster aria-label={`Play ${activeMedia.alt}`}>
                 {
                   activeMedia.poster ? (
-                    isLocalImage(activeMedia.poster) ? (
-                      <img src={activeMedia.poster.src} alt="" loading={previewLoading} decoding="async" fetchpriority={previewFetchPriority} width={activeMedia.poster.width} height={activeMedia.poster.height} />
-                    ) : (
-                      <img src={activeMedia.poster} alt="" loading={previewLoading} decoding="async" fetchpriority={previewFetchPriority} />
-                    )
+                    <img {...getImageProps(activeMedia.poster, '')} />
                   ) : (
                     <span class="project-video-poster-fallback" aria-hidden="true"></span>
                   )
@@ -75,11 +83,7 @@ function initials(name: string) {
               </button>
             )
           ) : project.cover ? (
-            isLocalImage(project.cover) ? (
-              <img src={project.cover.src} alt={`${project.name} preview`} loading={previewLoading} decoding="async" fetchpriority={previewFetchPriority} width={project.cover.width} height={project.cover.height} />
-            ) : (
-              <img src={project.cover} alt={`${project.name} preview`} loading={previewLoading} decoding="async" fetchpriority={previewFetchPriority} />
-            )
+            <img {...getImageProps(project.cover, `${project.name} preview`)} />
           ) : (
             <span class="project-preview-placeholder" aria-hidden="true">
               <span class="project-preview-mark">{initials(project.name)}</span>
@@ -91,7 +95,7 @@ function initials(name: string) {
       {
         canStep && (
           <>
-            <div class="project-carousel-controls" aria-label={`${project.name} carousel controls`}>
+            <div class="project-carousel-controls" role="group" aria-label={`${project.name} carousel controls`}>
               <button type="button" class="project-carousel-button project-carousel-prev" data-carousel-step="-1" aria-label={`Previous ${project.name} media`}>
                 <Icon name="chevronLeft" size={24} />
               </button>
@@ -120,19 +124,10 @@ function initials(name: string) {
             >
               <span class="project-thumb-frame" aria-hidden="true">
                 {item.type === 'image' ? (
-                  isLocalImage(item.src) ? (
-                    <img src={item.src.src} alt="" loading="lazy" decoding="async" width={item.src.width} height={item.src.height} />
-                  ) : (
-                    <img src={item.src} alt="" loading="lazy" decoding="async" />
-                  )
+                  <img {...getImageProps(item.src, '', 'lazy', undefined)} />
                 ) : (
                   <>
-                    {item.poster &&
-                      (isLocalImage(item.poster) ? (
-                        <img src={item.poster.src} alt="" loading="lazy" decoding="async" width={item.poster.width} height={item.poster.height} />
-                      ) : (
-                        <img src={item.poster} alt="" loading="lazy" decoding="async" />
-                      ))}
+                    {item.poster && <img {...getImageProps(item.poster, '', 'lazy', undefined)} />}
                     <span class="project-thumb-video" aria-hidden="true">
                       <Icon name="play" size={12} />
                     </span>
@@ -144,16 +139,16 @@ function initials(name: string) {
         </div>
       )
     }
-  </div>
+  </figure>
 
   <div class="feature-content">
     <p class="project-tag">
-      {project.type} <span class="project-tag-dot"></span> {project.status}
+      {project.type} <span class="project-tag-dot" aria-hidden="true"></span> {project.status}
     </p>
-    <h3 class="project-name">
+    <h3 class="project-name" id={titleId}>
       {
         project.url ? (
-          <a class="project-link" href={project.url} target="_blank" rel="noreferrer" aria-label={`Open ${project.name} website in a new tab`}>
+          <a class="project-link" href={project.url} target="_blank" rel="noopener noreferrer" aria-label={`Open ${project.name} website in a new tab`}>
             {project.name}
             <span class="project-link-arrow" aria-hidden="true">
               <Icon name="externalLink" size={14} />
@@ -190,7 +185,7 @@ function initials(name: string) {
 
 <script>
   import type { ProjectMedia } from '../content/profile/projects';
-  import { getMediaBackdrop, getYouTubeEmbedUrl } from '../lib/project-media';
+  import { getYouTubeEmbedUrl } from '../lib/project-media';
 
   const carouselSelector = '[data-project-carousel]';
   const stepSelector = '[data-carousel-step]';
@@ -284,20 +279,6 @@ function initials(name: string) {
     const activeMedia = media[activeIndex];
     const frame = feature.querySelector<HTMLElement>('[data-preview-frame]');
     if (!frame) return;
-
-    const backdropSrc = getMediaBackdrop(activeMedia);
-    let backdrop = frame.querySelector<HTMLElement>('.project-preview-backdrop');
-    if (backdropSrc) {
-      if (!backdrop) {
-        backdrop = document.createElement('span');
-        backdrop.className = 'project-preview-backdrop';
-        backdrop.setAttribute('aria-hidden', 'true');
-        frame.prepend(backdrop);
-      }
-      backdrop.style.backgroundImage = `url("${backdropSrc}")`;
-    } else {
-      backdrop?.remove();
-    }
 
     frame.querySelector(':scope > img, :scope > video, :scope > iframe, :scope > .project-video-poster')?.remove();
     frame.append(createMediaElement(activeMedia, activateVideo));

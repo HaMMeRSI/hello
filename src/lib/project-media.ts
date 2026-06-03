@@ -9,11 +9,6 @@ export function getOrderedMedia(media: ProjectMedia[] = []) {
   return [...media].sort((a, b) => Number(a.type === 'video') - Number(b.type === 'video'));
 }
 
-export function getMediaBackdrop(media: ProjectMedia | null) {
-  if (!media) return undefined;
-  return getAssetUrl(media.type === 'image' ? media.src : media.poster);
-}
-
 function getYouTubeVideoId(url: URL, hostname: string) {
   const [firstPathSegment, secondPathSegment] = url.pathname.split('/').filter(Boolean);
 

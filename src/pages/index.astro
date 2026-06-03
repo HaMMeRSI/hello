@@ -7,11 +7,11 @@ import './index.css';
 ---
 
 <Layout title={profile.name} description={profile.headline}>
-  <div class="page">
-    <main class="hero">
+  <main class="page">
+    <section class="hero" aria-labelledby="hero-title">
       <div class="hero-content">
-        <h1 class="hero-name">
-          <span class="name-stroke">Sagi</span>
+        <h1 class="hero-name" id="hero-title">
+          Sagi
           <br />
           Hammer
         </h1>
@@ -35,6 +35,6 @@ import './index.css';
       <div class="hero-illustration">
         <LightbulbStage />
       </div>
-    </main>
-  </div>
+    </section>
+  </main>
 </Layout>

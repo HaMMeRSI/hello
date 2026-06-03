@@ -2,8 +2,13 @@
   --contact-mono: ui-monospace, 'SF Mono', 'JetBrains Mono', menlo, monospace;
   --contact-live: #1fb27a;
 
-  /* Live availability indicator in the intro meta */
   & .contact-clock {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+  }
+
+  & .contact-clock-label {
     display: inline-flex;
     align-items: center;
     gap: 0.55rem;
@@ -44,6 +49,7 @@
     display: grid;
     gap: 0.2rem;
     margin-top: 0.75rem;
+    font-style: normal;
 
     & .contact-line {
       position: relative;
@@ -56,11 +62,8 @@
       text-decoration: none;
       outline: 0;
       overflow: visible;
-      transition:
-        padding-inline 0.42s var(--ease-expo),
-        background-color 0.42s var(--ease-expo);
+      transition: padding-inline 0.42s var(--ease-expo);
 
-      /* growing left accent bar */
       &::before {
         content: '';
         position: absolute;
@@ -72,17 +75,6 @@
         background: var(--blue);
         transform: translateY(-50%);
         transition: height 0.42s var(--ease-expo);
-      }
-
-      /* faint wash that bleeds in from the left edge */
-      &::after {
-        content: '';
-        position: absolute;
-        inset: 0;
-        z-index: -1;
-        background: transparent;
-        opacity: 0;
-        transition: opacity 0.42s var(--ease-expo);
       }
 
       & .contact-index {
@@ -172,7 +164,6 @@
         }
       }
 
-      /* hover / keyboard focus on the row or any control inside it */
       &:hover,
       &:focus-within {
         padding-inline: clamp(0.75rem, 2.4vw, 1.5rem);
@@ -181,11 +172,6 @@
       &:hover::before,
       &:focus-within::before {
         height: 58%;
-      }
-
-      &:hover::after,
-      &:focus-within::after {
-        opacity: 1;
       }
 
       &:hover .contact-index,
@@ -206,7 +192,6 @@
         transform: translate(0.4rem, -0.4rem);
       }
 
-      /* email "copied" confirmation state */
       &[data-copied='true'] .contact-action {
         color: var(--blue);
       }
@@ -244,18 +229,6 @@
       }
     }
   }
-
-  & .story-signoff {
-    margin-top: clamp(1.75rem, 4vw, 2.5rem);
-    color: var(--gray-600);
-    font-family: var(--font-hand);
-    font-size: clamp(1.25rem, 3vw, 1.7rem);
-    font-weight: 700;
-
-    & .ink {
-      color: var(--dark);
-    }
-  }
 }
 
 @keyframes contactPulse {
@@ -277,10 +250,9 @@
     }
 
     & .contact-lines .contact-line {
-      transition: background-color 0.2s ease;
+      transition: none;
 
       &::before,
-      &::after,
       & .contact-index,
       & .contact-value,
       & .contact-arrow,

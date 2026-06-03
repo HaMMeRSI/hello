@@ -9,9 +9,9 @@ import './index.css';
 
 <Layout title={`Experience | ${profile.name}`} description="Sagi Hammer's software engineering experience across AI products, defense, startups, 3D, XR, and product platforms.">
   <main class="story-page">
-    <div class="story">
+    <section class="story" aria-labelledby="experience-title">
       <header class="story-intro">
-        <h1 class="story-title">
+        <h1 class="story-title" id="experience-title">
           The road,
           <br />
           <span class="ink">so far.</span>
@@ -20,54 +20,60 @@ import './index.css';
           For 10 years, I’ve built end-to-end software across defense, AI video, AI harnesses, agents, automation infrastructure, media, and XR, taking projects from unclear
           requirements through system design, infrastructure, implementation, and launch.
         </p>
-        <div class="story-meta" aria-label="Experience highlights">
-          <span class="story-meta-item">
-            <span class="story-meta-label">now</span> Q.E.D Science + independent AI products
-          </span>
-          <span class="story-meta-item">
-            <span class="story-meta-label">proof</span> Q.E.D Science · Chapeta · Gepeta · FastEdit · D-ID · Terragon
-          </span>
+        <dl class="story-meta" aria-label="Experience highlights">
+          <div class="story-meta-item">
+            <dt class="story-meta-label">now</dt>
+            <dd class="story-meta-value">Q.E.D Science + independent AI products</dd>
+          </div>
+          <div class="story-meta-item">
+            <dt class="story-meta-label">proof</dt>
+            <dd class="story-meta-value">Q.E.D Science · Chapeta · Gepeta · FastEdit · D-ID · Terragon</dd>
+          </div>
+        </dl>
+      </header>
+
+      <section class="story-section" aria-labelledby="timeline-title">
+        <div class="story-break">
+          <h2 id="timeline-title">The timeline</h2>
         </div>
-      </header>
 
-      <header class="story-break">
-        <h2>The timeline</h2>
-      </header>
+        <div class="journey">
+          {
+            experience.map(item => (
+              <article class="milestone reveal">
+                <p class="milestone-period">{item.period}</p>
+                <h3 class="milestone-company">{item.company}</h3>
+                <p class="milestone-role">{item.role}</p>
+                <p class="milestone-summary">{item.summary}</p>
+                <ul class="milestone-points">
+                  {item.points.map(point => (
+                    <li>{point}</li>
+                  ))}
+                </ul>
+                <p class="milestone-stack">{item.stack.join('  ·  ')}</p>
+              </article>
+            ))
+          }
+        </div>
+      </section>
 
-      <div class="journey">
-        {
-          experience.map(item => (
-            <article class="milestone reveal">
-              <p class="milestone-period">{item.period}</p>
-              <h3 class="milestone-company">{item.company}</h3>
-              <p class="milestone-role">{item.role}</p>
-              <p class="milestone-summary">{item.summary}</p>
-              <ul class="milestone-points">
-                {item.points.map(point => (
-                  <li>{point}</li>
-                ))}
-              </ul>
-              <p class="milestone-stack">{item.stack.join('  ·  ')}</p>
-            </article>
-          ))
-        }
-      </div>
+      <section class="story-section" aria-labelledby="foundations-title">
+        <div class="story-break">
+          <h2 id="foundations-title">Foundations</h2>
+        </div>
 
-      <header class="story-break">
-        <h2>Foundations</h2>
-      </header>
-
-      <ul class="footnotes reveal">
-        {
-          education.map(item => (
-            <li class="footnote">
-              <strong>{item.school}</strong>
-              <span>{item.credential}</span>
-              <em>{item.period}</em>
-            </li>
-          ))
-        }
-      </ul>
+        <ul class="footnotes reveal">
+          {
+            education.map(item => (
+              <li class="footnote">
+                <strong>{item.school}</strong>
+                <span>{item.credential}</span>
+                <em>{item.period}</em>
+              </li>
+            ))
+          }
+        </ul>
+      </section>
 
       <footer class="story-next">
         <a href="/stack" class="next-link">
@@ -81,6 +87,6 @@ import './index.css';
           Jump to contact
         </a>
       </footer>
-    </div>
+    </section>
   </main>
 </Layout>
