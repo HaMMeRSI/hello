@@ -1,0 +1,32 @@
+---
+import Icon from '../Icon/index.astro';
+import './index.css';
+
+interface Props {
+  href: string;
+  eyebrow: string;
+  label: string;
+  asideHref?: string;
+  asideLabel?: string;
+}
+
+const { href, eyebrow, label, asideHref, asideLabel } = Astro.props;
+---
+
+<footer class="story-next">
+  <a href={href} class="next-link">
+    <small>{eyebrow}</small>
+    <strong>
+      {label}
+      <Icon name="arrowRight" size={24} />
+    </strong>
+  </a>
+
+  {
+    asideHref && asideLabel && (
+      <a href={asideHref} class="story-aside-link">
+        {asideLabel}
+      </a>
+    )
+  }
+</footer>

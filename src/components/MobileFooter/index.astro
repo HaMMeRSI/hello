@@ -1,0 +1,56 @@
+---
+import { Github, Linkedin, Mail } from 'lucide-astro';
+import shLogo from '../../assets/logo/sh.svg?url';
+import { navItems, profile } from '../../content/profile/site';
+import './index.css';
+
+const footerLinks = navItems.filter(item => item.to !== '/');
+
+const socialLinks = [
+  {
+    label: 'Email',
+    href: `mailto:${profile.email}`,
+    external: false,
+    Icon: Mail,
+  },
+  {
+    label: 'LinkedIn',
+    href: profile.linkedin,
+    external: true,
+    Icon: Linkedin,
+  },
+  {
+    label: 'GitHub',
+    href: profile.github,
+    external: true,
+    Icon: Github,
+  },
+] as const;
+---
+
+<footer class="mobile-footer">
+  <a class="mobile-footer-logo" href="/" aria-label={`${profile.name} home`}>
+    <img src={shLogo} alt="" aria-hidden="true" />
+  </a>
+
+  <nav class="mobile-footer-nav" aria-label="Footer navigation">
+    {footerLinks.map(link => <a href={link.to}>{link.label}</a>)}
+  </nav>
+
+  <hr class="mobile-footer-rule" aria-hidden="true" />
+
+  <nav class="mobile-footer-socials" aria-label="Contact links">
+    {
+      socialLinks.map(link => {
+        const linkProps = link.external ? { target: '_blank', rel: 'noopener' } : {};
+        const Icon = link.Icon;
+
+        return (
+          <a href={link.href} aria-label={link.label} {...linkProps}>
+            <Icon size={16} aria-hidden="true" focusable="false" />
+          </a>
+        );
+      })
+    }
+  </nav>
+</footer>

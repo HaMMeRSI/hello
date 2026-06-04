@@ -7,8 +7,16 @@
   "arrowParens": "avoid",
   "endOfLine": "auto",
   "bracketSameLine": true,
+  "plugins": ["prettier-plugin-astro"],
   "embeddedLanguageFormatting": "off",
   "overrides": [
+    {
+      "files": "*.astro",
+      "options": {
+        "parser": "astro",
+        "embeddedLanguageFormatting": "auto"
+      }
+    },
     {
       "files": "*.yml",
       "options": {

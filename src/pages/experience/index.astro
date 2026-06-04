@@ -1,6 +1,6 @@
 ---
-import Icon from '../../components/Icon.astro';
-import Layout from '../../components/Layout.astro';
+import Layout from '../../components/Layout/index.astro';
+import StoryNext from '../../components/StoryNext/index.astro';
 import { profile } from '../../content/profile/site';
 import { education, experience } from '../../content/profile/experience';
 import '../../styles/story.css';
@@ -17,7 +17,7 @@ import './index.css';
           <span class="ink">so far.</span>
         </h1>
         <p class="story-lede">
-          For 10 years, I’ve built end-to-end software across defense, AI video, AI harnesses, agents, automation infrastructure, media, and XR, taking projects from unclear
+          For 10 years, I&apos;ve built end-to-end software across defense, AI video, AI harnesses, agents, automation infrastructure, media, and XR, taking projects from unclear
           requirements through system design, infrastructure, implementation, and launch.
         </p>
         <dl class="story-meta" aria-label="Experience highlights">
@@ -75,18 +75,7 @@ import './index.css';
         </ul>
       </section>
 
-      <footer class="story-next">
-        <a href="/stack" class="next-link">
-          <small>keep reading</small>
-          <strong>
-            The technical stack
-            <Icon name="arrowRight" size={24} />
-          </strong>
-        </a>
-        <a href="/contact" class="story-aside-link">
-          Jump to contact
-        </a>
-      </footer>
+      <StoryNext href="/stack" eyebrow="keep reading" label="The technical stack" asideHref="/contact" asideLabel="Jump to contact" />
     </section>
   </main>
 </Layout>

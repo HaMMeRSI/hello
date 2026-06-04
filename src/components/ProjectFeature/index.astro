@@ -1,7 +1,8 @@
 ---
-import type { Project, ProjectMediaAsset } from '../content/profile/projects';
-import { getAssetUrl, getOrderedMedia } from '../lib/project-media';
-import Icon from './Icon.astro';
+import type { Project, ProjectMediaAsset } from '../../content/profile/projects';
+import { getAssetUrl, getOrderedMedia } from '../../lib/project-media';
+import Icon from '../Icon/index.astro';
+import './index.css';
 
 interface Props {
   project: Project;
@@ -11,12 +12,15 @@ interface Props {
 const { project, eager = false } = Astro.props;
 const media = getOrderedMedia(project.media);
 const activeMedia = media[0] ?? null;
-const canStep = media.length > 1;
+const hasGallery = media.length > 1;
+const highlights = project.highlights ?? [];
+const hasHighlights = highlights.length > 0;
 const previewBackground =
   project.coverBackground ??
   `radial-gradient(circle at 18% 16%, color-mix(in srgb, ${project.accent} 18%, transparent), transparent 34%), radial-gradient(circle at 84% 82%, rgba(var(--dark-rgb), 0.06), transparent 36%), linear-gradient(135deg, #ffffff 0%, color-mix(in srgb, ${project.accent} 7%, #fdfdfb) 100%)`;
 const rowBackground = project.rowBackground ?? 'transparent';
 const accentStyle = `--accent: ${project.accent}; --preview-bg: ${previewBackground}; --row-bg: ${rowBackground};`;
+const previewClasses = ['project-preview', project.coverFit === 'contain' && !activeMedia && 'project-preview-contain'];
 const previewLoading = eager ? 'eager' : 'lazy';
 const previewFetchPriority = eager ? 'high' : undefined;
 
@@ -40,6 +44,8 @@ function getImageProps(
   };
 }
 
+const getThumbnailImageProps = (asset: ProjectMediaAsset) => getImageProps(asset, '', 'lazy', undefined);
+
 const clientMedia = media.map(item => ({
   type: item.type,
   src: getAssetUrl(item.src) ?? '',
@@ -62,7 +68,7 @@ const titleId = `project-${project.slug}-title`;
 
 <article class="project-feature reveal" style={accentStyle} aria-labelledby={titleId} data-project-carousel data-media={JSON.stringify(clientMedia)} data-active-index="0">
   <figure class="feature-media">
-    <div class:list={['project-preview', project.coverFit === 'contain' && !activeMedia && 'project-preview-contain']} role="group" aria-label={`${project.name} preview`}>
+    <div class:list={previewClasses} role="group" aria-label={`${project.name} preview`}>
       <span class="project-preview-frame" data-preview-frame>
         {
           activeMedia ? (
@@ -70,13 +76,7 @@ const titleId = `project-${project.slug}-title`;
               <img {...getImageProps(activeMedia.src, activeMedia.alt)} />
             ) : (
               <button type="button" class="project-video-poster" data-video-poster aria-label={`Play ${activeMedia.alt}`}>
-                {
-                  activeMedia.poster ? (
-                    <img {...getImageProps(activeMedia.poster, '')} />
-                  ) : (
-                    <span class="project-video-poster-fallback" aria-hidden="true"></span>
-                  )
-                }
+                {activeMedia.poster ? <img {...getImageProps(activeMedia.poster, '')} /> : <span class="project-video-poster-fallback" aria-hidden="true" />}
                 <span class="project-video-play" aria-hidden="true">
                   <Icon name="play" size={22} />
                 </span>
@@ -93,7 +93,7 @@ const titleId = `project-${project.slug}-title`;
       </span>
 
       {
-        canStep && (
+        hasGallery && (
           <>
             <div class="project-carousel-controls" role="group" aria-label={`${project.name} carousel controls`}>
               <button type="button" class="project-carousel-button project-carousel-prev" data-carousel-step="-1" aria-label={`Previous ${project.name} media`}>
@@ -112,7 +112,7 @@ const titleId = `project-${project.slug}-title`;
     </div>
 
     {
-      media.length > 1 && (
+      hasGallery && (
         <div class="feature-slider" role="group" aria-label={`${project.name} gallery thumbnails`}>
           {media.map((item, index) => (
             <button
@@ -120,14 +120,13 @@ const titleId = `project-${project.slug}-title`;
               class:list={['project-thumb', index === 0 && 'project-thumb-active']}
               data-carousel-thumb={index}
               aria-label={`Show ${item.alt}`}
-              aria-pressed={index === 0 ? 'true' : 'false'}
-            >
+              aria-pressed={index === 0 ? 'true' : 'false'}>
               <span class="project-thumb-frame" aria-hidden="true">
                 {item.type === 'image' ? (
-                  <img {...getImageProps(item.src, '', 'lazy', undefined)} />
+                  <img {...getThumbnailImageProps(item.src)} />
                 ) : (
                   <>
-                    {item.poster && <img {...getImageProps(item.poster, '', 'lazy', undefined)} />}
+                    {item.poster && <img {...getThumbnailImageProps(item.poster)} />}
                     <span class="project-thumb-video" aria-hidden="true">
                       <Icon name="play" size={12} />
                     </span>
@@ -143,7 +142,9 @@ const titleId = `project-${project.slug}-title`;
 
   <div class="feature-content">
     <p class="project-tag">
-      {project.type} <span class="project-tag-dot" aria-hidden="true"></span> {project.status}
+      {project.type}
+      <span class="project-tag-dot" aria-hidden="true"></span>
+      {project.status}
     </p>
     <h3 class="project-name" id={titleId}>
       {
@@ -162,9 +163,9 @@ const titleId = `project-${project.slug}-title`;
     <p class="project-summary">{project.summary}</p>
 
     {
-      project.highlights && project.highlights.length > 0 && (
+      hasHighlights && (
         <ul class="project-highlights">
-          {project.highlights.map(highlight => (
+          {highlights.map(highlight => (
             <li>{highlight}</li>
           ))}
         </ul>
@@ -172,29 +173,31 @@ const titleId = `project-${project.slug}-title`;
     }
 
     <ul class="project-chips">
-      {
-        project.details.map(detail => (
-          <li class="project-chip">
-            {detail}
-          </li>
-        ))
-      }
+      {project.details.map(detail => <li class="project-chip">{detail}</li>)}
     </ul>
   </div>
+
+  <template data-play-icon-template>
+    <Icon name="play" size={22} />
+  </template>
 </article>
 
 <script>
-  import type { ProjectMedia } from '../content/profile/projects';
-  import { getYouTubeEmbedUrl } from '../lib/project-media';
+  import { getYouTubeEmbedUrl } from '../../lib/project-media';
 
   const carouselSelector = '[data-project-carousel]';
+  const previewFrameSelector = '[data-preview-frame]';
   const stepSelector = '[data-carousel-step]';
   const thumbSelector = '[data-carousel-thumb]';
+  const carouselCountSelector = '[data-carousel-count]';
   const videoPosterSelector = '[data-video-poster]';
+  const playIconTemplateSelector = '[data-play-icon-template]';
 
-  type ClientProjectMedia = Omit<ProjectMedia, 'src' | 'poster'> & {
+  type ClientProjectMedia = {
+    type: 'image' | 'video';
     src: string;
     poster?: string;
+    alt: string;
   };
 
   const getMediaFromDataset = (feature: HTMLElement) => {
@@ -206,16 +209,16 @@ const titleId = `project-${project.slug}-title`;
     }
   };
 
-  const createImageElement = (media: ClientProjectMedia) => {
+  const createRuntimeImage = (src: string, alt: string) => {
     const image = document.createElement('img');
-    image.src = media.src;
-    image.alt = media.alt;
+    image.src = src;
+    image.alt = alt;
     image.loading = 'eager';
     image.decoding = 'async';
     return image;
   };
 
-  const createVideoPoster = (media: ClientProjectMedia) => {
+  const createVideoPoster = (feature: HTMLElement, media: ClientProjectMedia) => {
     const button = document.createElement('button');
     button.type = 'button';
     button.className = 'project-video-poster';
@@ -223,12 +226,7 @@ const titleId = `project-${project.slug}-title`;
     button.setAttribute('aria-label', `Play ${media.alt}`);
 
     if (media.poster) {
-      const image = document.createElement('img');
-      image.src = media.poster;
-      image.alt = '';
-      image.loading = 'eager';
-      image.decoding = 'async';
-      button.append(image);
+      button.append(createRuntimeImage(media.poster, ''));
     } else {
       const fallback = document.createElement('span');
       fallback.className = 'project-video-poster-fallback';
@@ -239,7 +237,8 @@ const titleId = `project-${project.slug}-title`;
     const play = document.createElement('span');
     play.className = 'project-video-play';
     play.setAttribute('aria-hidden', 'true');
-    play.innerHTML = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 3 20 12 6 21 6 3"></polygon></svg>';
+    const playIconTemplate = feature.querySelector<HTMLTemplateElement>(playIconTemplateSelector);
+    if (playIconTemplate) play.append(playIconTemplate.content.cloneNode(true));
     button.append(play);
     return button;
   };
@@ -251,7 +250,7 @@ const titleId = `project-${project.slug}-title`;
       iframe.src = `${embedUrl}?autoplay=1`;
       iframe.title = media.alt;
       iframe.loading = 'lazy';
-      iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+      iframe.allow = ['accelerometer', 'autoplay', 'clipboard-write', 'encrypted-media', 'gyroscope', 'picture-in-picture', 'web-share'].join('; ');
       iframe.allowFullscreen = true;
       return iframe;
     }
@@ -267,29 +266,35 @@ const titleId = `project-${project.slug}-title`;
     return video;
   };
 
-  const createMediaElement = (media: ClientProjectMedia, activateVideo = false) => {
-    if (media.type === 'image') return createImageElement(media);
-    return activateVideo ? createPlayableVideoElement(media) : createVideoPoster(media);
+  const getActiveIndex = (feature: HTMLElement) => Number(feature.dataset.activeIndex || 0);
+
+  const createMediaElement = (feature: HTMLElement, media: ClientProjectMedia, activateVideo = false) => {
+    if (media.type === 'image') return createRuntimeImage(media.src, media.alt);
+    return activateVideo ? createPlayableVideoElement(media) : createVideoPoster(feature, media);
+  };
+
+  const wrapIndex = (index: number, length: number) => {
+    const safeIndex = Number.isFinite(index) ? index : 0;
+    return ((safeIndex % length) + length) % length;
   };
 
   const setCarouselIndex = (feature: HTMLElement, media: ClientProjectMedia[], nextIndex: number, activateVideo = false) => {
     if (!media.length) return;
 
-    const activeIndex = (nextIndex + media.length) % media.length;
+    const activeIndex = wrapIndex(nextIndex, media.length);
     const activeMedia = media[activeIndex];
-    const frame = feature.querySelector<HTMLElement>('[data-preview-frame]');
+    const frame = feature.querySelector<HTMLElement>(previewFrameSelector);
     if (!frame) return;
 
-    frame.querySelector(':scope > img, :scope > video, :scope > iframe, :scope > .project-video-poster')?.remove();
-    frame.append(createMediaElement(activeMedia, activateVideo));
+    frame.replaceChildren(createMediaElement(feature, activeMedia, activateVideo));
     frame.style.animation = 'none';
     void frame.offsetWidth;
     frame.style.animation = '';
 
     feature.dataset.activeIndex = String(activeIndex);
-    const count = feature.querySelector<HTMLElement>('[data-carousel-count]');
+    const count = feature.querySelector<HTMLElement>(carouselCountSelector);
     if (count) count.textContent = `${activeIndex + 1} / ${media.length}`;
-    feature.querySelectorAll<HTMLButtonElement>('[data-carousel-thumb]').forEach(thumb => {
+    feature.querySelectorAll<HTMLButtonElement>(thumbSelector).forEach(thumb => {
       const isActive = Number(thumb.dataset.carouselThumb) === activeIndex;
       thumb.classList.toggle('project-thumb-active', isActive);
       thumb.setAttribute('aria-pressed', isActive ? 'true' : 'false');
@@ -308,15 +313,13 @@ const titleId = `project-${project.slug}-title`;
 
       const posterButton = event.target.closest<HTMLButtonElement>(videoPosterSelector);
       if (posterButton && feature.contains(posterButton)) {
-        const currentIndex = Number(feature.dataset.activeIndex || 0);
-        setCarouselIndex(feature, media, currentIndex, true);
+        setCarouselIndex(feature, media, getActiveIndex(feature), true);
         return;
       }
 
       const stepButton = event.target.closest<HTMLButtonElement>(stepSelector);
       if (stepButton && feature.contains(stepButton)) {
-        const currentIndex = Number(feature.dataset.activeIndex || 0);
-        setCarouselIndex(feature, media, currentIndex + Number(stepButton.dataset.carouselStep || 0));
+        setCarouselIndex(feature, media, getActiveIndex(feature) + Number(stepButton.dataset.carouselStep || 0));
         return;
       }
 
@@ -327,5 +330,10 @@ const titleId = `project-${project.slug}-title`;
     });
   };
 
-  document.querySelectorAll<HTMLElement>(carouselSelector).forEach(initCarousel);
+  const initCarousels = () => {
+    document.querySelectorAll<HTMLElement>(carouselSelector).forEach(initCarousel);
+  };
+
+  document.addEventListener('astro:page-load', initCarousels);
+  initCarousels();
 </script>

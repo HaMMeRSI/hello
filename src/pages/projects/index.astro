@@ -1,7 +1,7 @@
 ---
-import Icon from '../../components/Icon.astro';
-import Layout from '../../components/Layout.astro';
-import ProjectFeature from '../../components/ProjectFeature.astro';
+import Layout from '../../components/Layout/index.astro';
+import ProjectFeature from '../../components/ProjectFeature/index.astro';
+import StoryNext from '../../components/StoryNext/index.astro';
 import { profile } from '../../content/profile/site';
 import { projects } from '../../content/profile/projects';
 import '../../styles/story.css';
@@ -41,18 +41,7 @@ import './index.css';
         </div>
       </section>
 
-      <footer class="story-next">
-        <a href="/experience" class="next-link">
-          <small>keep reading</small>
-          <strong>
-            The experience timeline
-            <Icon name="arrowRight" size={24} />
-          </strong>
-        </a>
-        <a href="/contact" class="story-aside-link">
-          Jump to contact
-        </a>
-      </footer>
+      <StoryNext href="/experience" eyebrow="keep reading" label="The experience timeline" asideHref="/contact" asideLabel="Jump to contact" />
     </section>
   </main>
 </Layout>

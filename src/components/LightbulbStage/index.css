@@ -1,5 +1,10 @@
 .lightbulb-stage {
   --lb-cycle: 6.6s;
+  --lb-shift-y: -7%;
+  --lb-move-x: 18px;
+  --lb-move-y: 14px;
+  --lb-rotate-x: -5deg;
+  --lb-rotate-y: 7.4deg;
   position: relative;
   width: clamp(22rem, min(64vw, 177.778cqh), var(--bulb-stage-max));
   aspect-ratio: 16 / 9;
@@ -7,7 +12,8 @@
   overflow: visible;
   isolation: isolate;
   margin-left: -100px;
-  transform: perspective(1200px) translate3d(calc(var(--mx, 0) * 18px), calc(-7% + var(--my, 0) * 14px), 0) rotateX(calc(var(--my, 0) * -5deg)) rotateY(calc(var(--mx, 0) * 7.4deg));
+  transform: perspective(1200px) translate3d(calc(var(--mx, 0) * var(--lb-move-x)), calc(var(--lb-shift-y) + var(--my, 0) * var(--lb-move-y)), 0)
+    rotateX(calc(var(--my, 0) * var(--lb-rotate-x))) rotateY(calc(var(--mx, 0) * var(--lb-rotate-y)));
 
   &::before,
   &::after,
@@ -316,9 +322,13 @@
 
 @media (max-width: 860px) {
   .lightbulb-stage {
+    --lb-shift-y: 0%;
+    --lb-move-x: 12px;
+    --lb-move-y: 10px;
+    --lb-rotate-x: -3deg;
+    --lb-rotate-y: 4.5deg;
     width: min(94vw, calc(var(--hero-illustration-height) * 16 / 9));
     max-width: min(100%, var(--bulb-stage-max));
-    transform: perspective(1200px) translate3d(calc(var(--mx, 0) * 12px), calc(var(--my, 0) * 10px), 0) rotateX(calc(var(--my, 0) * -3deg)) rotateY(calc(var(--mx, 0) * 4.5deg));
     margin-left: 0;
   }
 

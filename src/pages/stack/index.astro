@@ -1,6 +1,6 @@
 ---
-import Icon from '../../components/Icon.astro';
-import Layout from '../../components/Layout.astro';
+import Layout from '../../components/Layout/index.astro';
+import StoryNext from '../../components/StoryNext/index.astro';
 import { profile } from '../../content/profile/site';
 import { skillGroups } from '../../content/profile/stack';
 import '../../styles/story.css';
@@ -18,8 +18,8 @@ import './index.css';
           <span class="ink">with taste.</span>
         </h1>
         <p class="story-lede">
-          Frontend, backend, cloud, AI, game/XR, and on-chain systems. I care less about naming every tool and more about picking the right one, shipping cleanly,
-          and keeping the work maintainable.
+          Frontend, backend, cloud, AI, game/XR, and on-chain systems. I care less about naming every tool and more about picking the right one, shipping cleanly, and keeping the
+          work maintainable.
         </p>
         <dl class="story-meta" aria-label="Technical focus">
           <div class="story-meta-item">
@@ -53,18 +53,7 @@ import './index.css';
         </dl>
       </section>
 
-      <footer class="story-next">
-        <a href="/contact" class="next-link">
-          <small>last chapter</small>
-          <strong>
-            Let's talk
-            <Icon name="arrowRight" size={24} />
-          </strong>
-        </a>
-        <a href="/contact" class="story-aside-link">
-          Jump to contact
-        </a>
-      </footer>
+      <StoryNext href="/contact" eyebrow="last chapter" label="Let's talk" asideHref="/contact" asideLabel="Jump to contact" />
     </section>
   </main>
 </Layout>

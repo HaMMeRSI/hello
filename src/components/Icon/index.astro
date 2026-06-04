@@ -1,0 +1,31 @@
+---
+import { ArrowRight, ChevronLeft, ChevronRight, Copy, Download, ExternalLink, Play } from 'lucide-astro';
+import './index.css';
+
+type IconName = 'arrowRight' | 'chevronLeft' | 'chevronRight' | 'copy' | 'download' | 'externalLink' | 'play';
+
+interface Props {
+  name: IconName;
+  size?: number;
+  fill?: string;
+  class?: string;
+}
+
+const icons = {
+  arrowRight: ArrowRight,
+  chevronLeft: ChevronLeft,
+  chevronRight: ChevronRight,
+  copy: Copy,
+  download: Download,
+  externalLink: ExternalLink,
+  play: Play,
+};
+
+const { name, size = 16 } = Astro.props;
+const fill = Astro.props.fill ?? (name === 'play' ? 'currentColor' : 'none');
+const className = Astro.props.class;
+const IconComponent = icons[name];
+const iconClass = ['icon', className].filter(Boolean).join(' ');
+---
+
+<IconComponent class={iconClass} size={size} fill={fill} aria-hidden="true" />

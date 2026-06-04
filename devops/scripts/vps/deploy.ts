@@ -26,10 +26,7 @@ const sshRoot = (cmd: string, silent = false) => run(`ssh ${sshOptions} ${ROOT_H
 
 function remoteCertificateExists() {
   try {
-    sshRoot(
-      `timeout 5 bash -lc 'test -f /etc/letsencrypt/live/${certificateName}/fullchain.pem && test -f /etc/letsencrypt/live/${certificateName}/privkey.pem'`,
-      true,
-    );
+    sshRoot(`timeout 5 bash -lc 'test -f /etc/letsencrypt/live/${certificateName}/fullchain.pem && test -f /etc/letsencrypt/live/${certificateName}/privkey.pem'`, true);
     return true;
   } catch {
     return false;
@@ -47,12 +44,8 @@ function remotePublicIpv4() {
 function resolveRemoteIpv4(domain: string) {
   try {
     const output = sshRoot(
-      [
-        `timeout 5 dig +short @1.1.1.1 ${domain} A || true`,
-        `timeout 5 dig +short @8.8.8.8 ${domain} A || true`,
-        `timeout 5 dig +short @9.9.9.9 ${domain} A || true`,
-      ].join('; '),
-      true,
+      [`timeout 5 dig +short @1.1.1.1 ${domain} A || true`, `timeout 5 dig +short @8.8.8.8 ${domain} A || true`, `timeout 5 dig +short @9.9.9.9 ${domain} A || true`].join('; '),
+      true
     );
     const ips = output.match(/\b(?:\d{1,3}\.){3}\d{1,3}\b/g) ?? [];
     if (ips.length > 0) return [...new Set(ips)];
@@ -67,9 +60,7 @@ function resolveRemoteIpv4(domain: string) {
 
 function domainsPointAtVps() {
   const serverIp = remotePublicIpv4();
-  const mismatches = nginxDomains
-    .map((domain) => ({ domain, ips: resolveRemoteIpv4(domain) }))
-    .filter(({ ips }) => !ips.includes(serverIp));
+  const mismatches = nginxDomains.map(domain => ({ domain, ips: resolveRemoteIpv4(domain) })).filter(({ ips }) => !ips.includes(serverIp));
 
   if (mismatches.length === 0) return true;
 
@@ -86,9 +77,7 @@ function installHttpBootstrapConfig() {
   const enabledConfig = `/etc/nginx/sites-enabled/${config.nginx.siteName}`;
 
   run(`rsync -az --partial -e "ssh ${sshOptions}" ${src} ${ROOT_HOST}:${config.nginx.remoteTempPath}`, true);
-  sshRoot(
-    `mkdir -p /var/www/certbot && cp ${config.nginx.remoteTempPath} ${remoteConfig} && ln -sf ${remoteConfig} ${enabledConfig} && nginx -t && systemctl reload nginx`,
-  );
+  sshRoot(`mkdir -p /var/www/certbot && cp ${config.nginx.remoteTempPath} ${remoteConfig} && ln -sf ${remoteConfig} ${enabledConfig} && nginx -t && systemctl reload nginx`);
   console.log(green('✓ HTTP nginx bootstrap synced'));
 }
 
@@ -99,10 +88,8 @@ function issueCertificateIfPossible() {
 
   try {
     sshRoot('command -v certbot >/dev/null', true);
-    const domainArgs = nginxDomains.map((domain) => `-d ${domain}`).join(' ');
-    sshRoot(
-      `certbot certonly --webroot -w /var/www/certbot ${domainArgs} --email ${config.nginx.certbotEmail} --agree-tos --non-interactive --keep-until-expiring`,
-    );
+    const domainArgs = nginxDomains.map(domain => `-d ${domain}`).join(' ');
+    sshRoot(`certbot certonly --webroot -w /var/www/certbot ${domainArgs} --email ${config.nginx.certbotEmail} --agree-tos --non-interactive --keep-until-expiring`);
     return remoteCertificateExists();
   } catch {
     console.log(red('! Certbot could not issue the certificate. Leaving HTTP bootstrap config enabled.'));

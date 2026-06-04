@@ -1,40 +1,33 @@
 ---
-import './LightbulbStage.css';
-import brushBottomBlue from '../assets/lightbulb/assets/brush_bottom_blue.webp?url';
-import brushPaleBlue from '../assets/lightbulb/assets/brush_pale_blue.webp?url';
-import bulbFilaments from '../assets/lightbulb/assets/bulb_filaments.webp?url';
-import bulbFull from '../assets/lightbulb/assets/bulb_full.webp?url';
-import bulbInnerHighlightArc from '../assets/lightbulb/assets/bulb_inner_highlight_arc.webp?url';
-import doodleArrowLeftDashed from '../assets/lightbulb/assets/doodle_arrow_left_dashed.webp?url';
-import doodleBlueStar from '../assets/lightbulb/assets/doodle_blue_star.webp?url';
-import doodleCircle from '../assets/lightbulb/assets/doodle_circle.webp?url';
-import doodleDiagonalArrows from '../assets/lightbulb/assets/doodle_diagonal_arrows.webp?url';
-import doodleDiamond from '../assets/lightbulb/assets/doodle_diamond.webp?url';
-import doodleSparkLeft from '../assets/lightbulb/assets/doodle_spark_left.webp?url';
-import doodleTinyDot from '../assets/lightbulb/assets/doodle_tiny_dot.webp?url';
-import doodleTinyX from '../assets/lightbulb/assets/doodle_tiny_x.webp?url';
-import doodleVerticalDots from '../assets/lightbulb/assets/doodle_vertical_dots.webp?url';
-import doodleXLarge from '../assets/lightbulb/assets/doodle_x_large.webp?url';
-import paintInsideBulbBlue from '../assets/lightbulb/assets/paint_inside_bulb_blue.webp?url';
+import './index.css';
 
 const lightbulbLayers = [
-  { className: 'lb-brush-pale', src: brushPaleBlue },
-  { className: 'lb-brush-bottom', src: brushBottomBlue },
-  { className: 'lb-paint-inside', src: paintInsideBulbBlue },
-  { className: 'lb-bulb', src: bulbFull },
-  { className: 'lb-filaments', src: bulbFilaments },
-  { className: 'lb-arc', src: bulbInnerHighlightArc },
-  { className: 'lb-doodle lb-circle', src: doodleCircle },
-  { className: 'lb-doodle lb-spark-left', src: doodleSparkLeft },
-  { className: 'lb-doodle lb-diag-arrows', src: doodleDiagonalArrows },
-  { className: 'lb-doodle lb-diamond', src: doodleDiamond },
-  { className: 'lb-doodle lb-right-arrow', src: doodleArrowLeftDashed },
-  { className: 'lb-doodle lb-x-large', src: doodleXLarge },
-  { className: 'lb-doodle lb-tiny-dot', src: doodleTinyDot },
-  { className: 'lb-doodle lb-tiny-x', src: doodleTinyX },
-  { className: 'lb-doodle lb-vertical-dots', src: doodleVerticalDots },
-  { className: 'lb-doodle lb-blue-star', src: doodleBlueStar },
-];
+  ['lb-brush-pale', 'brush_pale_blue'],
+  ['lb-brush-bottom', 'brush_bottom_blue'],
+  ['lb-paint-inside', 'paint_inside_bulb_blue'],
+  ['lb-bulb', 'bulb_full'],
+  ['lb-filaments', 'bulb_filaments'],
+  ['lb-arc', 'bulb_inner_highlight_arc'],
+  ['lb-doodle lb-circle', 'doodle_circle'],
+  ['lb-doodle lb-spark-left', 'doodle_spark_left'],
+  ['lb-doodle lb-diag-arrows', 'doodle_diagonal_arrows'],
+  ['lb-doodle lb-diamond', 'doodle_diamond'],
+  ['lb-doodle lb-right-arrow', 'doodle_arrow_left_dashed'],
+  ['lb-doodle lb-x-large', 'doodle_x_large'],
+  ['lb-doodle lb-tiny-dot', 'doodle_tiny_dot'],
+  ['lb-doodle lb-tiny-x', 'doodle_tiny_x'],
+  ['lb-doodle lb-vertical-dots', 'doodle_vertical_dots'],
+  ['lb-doodle lb-blue-star', 'doodle_blue_star'],
+] as const;
+
+const lightbulbAssets = import.meta.glob('../../assets/lightbulb/assets/*.webp', {
+  eager: true,
+  import: 'default',
+  query: '?url',
+}) as Record<string, string>;
+
+const assetUrl = (name: string) => lightbulbAssets[`../../assets/lightbulb/assets/${name}.webp`];
+const microFlecks = ['one', 'two', 'three', 'four'] as const;
 ---
 
 <div class="lightbulb-stage" role="img" aria-label="Animated creative spark illustration">
@@ -42,26 +35,22 @@ const lightbulbLayers = [
   <span class="lb-glow"></span>
   <span class="lb-halo"></span>
 
-  {
-    lightbulbLayers.map(({ className, src }) => (
-      <img class={`lb-asset ${className}`} src={src} alt="" decoding="async" />
-    ))
-  }
+  {lightbulbLayers.map(([className, assetName]) => <img class:list={['lb-asset', className]} src={assetUrl(assetName)} alt="" decoding="async" />)}
 
-  <span class="lb-micro lb-one"></span>
-  <span class="lb-micro lb-two"></span>
-  <span class="lb-micro lb-three"></span>
-  <span class="lb-micro lb-four"></span>
+  {microFlecks.map(fleck => <span class={`lb-micro lb-${fleck}`} />)}
 </div>
 
 <script is:inline data-astro-rerun>
   (() => {
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-    if (reduceMotion.matches) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
+    const PARTICLE_COUNT = 70;
+    const STAGE_SELECTOR = '.lightbulb-stage';
     const clampMotion = value => Math.max(-1, Math.min(1, value));
+    const randomOffset = amount => (Math.random() - 0.5) * amount;
+    const cappedDpr = () => Math.max(1, Math.min(2, window.devicePixelRatio || 1));
 
-    document.querySelectorAll('.lightbulb-stage').forEach(stage => {
+    const initStage = stage => {
       if (stage.dataset.lightbulbInteractive === 'true') return;
       stage.dataset.lightbulbInteractive = 'true';
 
@@ -74,7 +63,6 @@ const lightbulbLayers = [
       let burstTimer = 0;
       let gyroActive = false;
       let gyroOrigin;
-      let resize;
       let visible = true;
       let cleaned = false;
       let observer;
@@ -82,8 +70,10 @@ const lightbulbLayers = [
 
       const canvas = stage.querySelector('.lb-particles');
       const ctx = canvas?.getContext('2d');
-      let dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
-      let particles = [];
+      const particles = [];
+      let dpr = cappedDpr();
+
+      const isPaused = () => cleaned || !visible || document.hidden;
 
       const stopMotion = () => {
         if (!motionRaf) return;
@@ -99,7 +89,7 @@ const lightbulbLayers = [
 
       const tickMotion = () => {
         motionRaf = 0;
-        if (cleaned || !visible || document.hidden) return;
+        if (isPaused()) return;
 
         mx += (tx - mx) * 0.12;
         my += (ty - my) * 0.12;
@@ -107,12 +97,12 @@ const lightbulbLayers = [
         stage.style.setProperty('--my', my.toFixed(4));
 
         if (Math.abs(tx - mx) > 0.001 || Math.abs(ty - my) > 0.001 || gyroActive) {
-          motionRaf = requestAnimationFrame(tickMotion);
+          startMotion();
         }
       };
 
       const startMotion = () => {
-        if (motionRaf || cleaned || !visible || document.hidden) return;
+        if (motionRaf || isPaused()) return;
         motionRaf = requestAnimationFrame(tickMotion);
       };
 
@@ -135,10 +125,10 @@ const lightbulbLayers = [
       };
 
       const startGyro = () => {
-        if (gyroActive) return;
+        if (gyroActive || !OrientationEvent) return;
         gyroActive = true;
         gyroOrigin = undefined;
-        window.addEventListener('deviceorientation', onGyro);
+        window.addEventListener('deviceorientation', onGyro, { passive: true });
         startMotion();
       };
 
@@ -159,11 +149,15 @@ const lightbulbLayers = [
 
       const resizeCanvas = () => {
         if (!canvas || !ctx) return;
-        dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+        dpr = cappedDpr();
         const width = stage.clientWidth;
         const height = stage.clientHeight;
-        canvas.width = Math.round(width * dpr);
-        canvas.height = Math.round(height * dpr);
+        const pixelWidth = Math.round(width * dpr);
+        const pixelHeight = Math.round(height * dpr);
+
+        if (canvas.width !== pixelWidth) canvas.width = pixelWidth;
+        if (canvas.height !== pixelHeight) canvas.height = pixelHeight;
+
         canvas.style.width = `${width}px`;
         canvas.style.height = `${height}px`;
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -171,13 +165,10 @@ const lightbulbLayers = [
 
       const tickParticles = () => {
         particleRaf = 0;
-        if (cleaned || !visible || document.hidden || !canvas || !ctx) return;
+        if (isPaused() || !canvas || !ctx) return;
 
-        ctx.save();
-        ctx.setTransform(1, 0, 0, 1, 0, 0);
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.restore();
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        ctx.clearRect(0, 0, canvas.width / dpr, canvas.height / dpr);
 
         let activeParticles = 0;
         for (const particle of particles) {
@@ -218,30 +209,30 @@ const lightbulbLayers = [
       };
 
       const startParticles = () => {
-        if (particleRaf || !particles.length || cleaned || !visible || document.hidden) return;
+        if (particleRaf || !particles.length || isPaused()) return;
         particleRaf = requestAnimationFrame(tickParticles);
       };
 
       const burst = () => {
-        if (!canvas || !ctx || cleaned || !visible || document.hidden) return;
+        if (!canvas || !ctx || isPaused()) return;
         const width = stage.clientWidth;
         const height = stage.clientHeight;
         const cx = width * 0.49;
         const cy = height * 0.42;
 
-        for (let i = 0; i < 70; i++) {
+        for (let i = 0; i < PARTICLE_COUNT; i++) {
           const angle = -Math.PI * 0.92 + Math.random() * Math.PI * 1.84;
           const speed = 1.2 + Math.random() * 5.4;
           const blue = Math.random() > 0.36;
 
           particles.push({
-            x: cx + (Math.random() - 0.5) * 120,
-            y: cy + (Math.random() - 0.5) * 80,
-            vx: Math.cos(angle) * speed + (Math.random() - 0.5) * 1.6,
+            x: cx + randomOffset(120),
+            y: cy + randomOffset(80),
+            vx: Math.cos(angle) * speed + randomOffset(1.6),
             vy: Math.sin(angle) * speed - 1.6,
             r: blue ? 1 + Math.random() * 3.6 : 0.9 + Math.random() * 2.2,
             rot: Math.random() * Math.PI * 2,
-            spin: (Math.random() - 0.5) * 0.16,
+            spin: randomOffset(0.16),
             life: 0,
             max: 92 + Math.random() * 72,
             color: blue ? 'rgba(67,85,219,' : 'rgba(0,0,0,',
@@ -251,8 +242,8 @@ const lightbulbLayers = [
         startParticles();
       };
 
-      const onVisibilityChange = () => {
-        if (document.hidden) {
+      const syncPlayback = () => {
+        if (isPaused()) {
           stopMotion();
           stopParticles();
           return;
@@ -270,11 +261,11 @@ const lightbulbLayers = [
         observer?.disconnect();
         window.removeEventListener('pagehide', cleanup);
         document.removeEventListener('astro:before-swap', cleanup);
-        document.removeEventListener('visibilitychange', onVisibilityChange);
+        document.removeEventListener('visibilitychange', syncPlayback);
         window.removeEventListener('mousemove', onMove);
         window.removeEventListener('pointerdown', enableGyro);
-        if (resize) window.removeEventListener('resize', resize);
-        if (gyroActive) window.removeEventListener('deviceorientation', onGyro);
+        window.removeEventListener('resize', resizeCanvas);
+        window.removeEventListener('deviceorientation', onGyro);
         window.clearTimeout(burstTimer);
         stopMotion();
         stopParticles();
@@ -283,20 +274,14 @@ const lightbulbLayers = [
       if ('IntersectionObserver' in window) {
         observer = new IntersectionObserver(entries => {
           visible = entries.some(entry => entry.isIntersecting);
-          if (visible) {
-            startMotion();
-            startParticles();
-          } else {
-            stopMotion();
-            stopParticles();
-          }
+          syncPlayback();
         });
         observer.observe(stage);
       }
 
       window.addEventListener('pagehide', cleanup);
       document.addEventListener('astro:before-swap', cleanup);
-      document.addEventListener('visibilitychange', onVisibilityChange);
+      document.addEventListener('visibilitychange', syncPlayback);
       window.addEventListener('mousemove', onMove, { passive: true });
 
       const prefersCoarsePointer = window.matchMedia('(hover: none), (pointer: coarse)').matches;
@@ -309,11 +294,12 @@ const lightbulbLayers = [
       }
 
       if (canvas && ctx) {
-        resize = resizeCanvas;
-        resize();
-        window.addEventListener('resize', resize);
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
         burstTimer = window.setTimeout(burst, 1250);
       }
-    });
+    };
+
+    document.querySelectorAll(STAGE_SELECTOR).forEach(initStage);
   })();
 </script>

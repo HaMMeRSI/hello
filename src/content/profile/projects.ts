@@ -77,7 +77,8 @@ export const projects: Project[] = [
     slug: 'chapeta',
     type: 'Native macOS AI agent',
     status: 'Active product',
-    summary: 'Instant AI everywhere on the Mac. One shortcut summons an agent that acts across apps, files, the terminal, and the screen — and drives a goal to completion while you stay in control.',
+    summary:
+      'Instant AI everywhere on the Mac. One shortcut summons an agent that acts across apps, files, the terminal, and the screen — and drives a goal to completion while you stay in control.',
     highlights: [
       'Challenge: go past chat-in-a-box AI to a real agentic harness that takes a goal and accomplishes the mission on a live desktop.',
       'Role: built the SwiftUI/AppKit menu-bar app end to end — model routing across 100+ models, the agentic loop, tool orchestration (files, shell, AppleScript, screenshots, computer use), subagents, and graduated approvals.',
@@ -135,7 +136,8 @@ export const projects: Project[] = [
     slug: 'fastedit',
     type: 'Last-mile media editor',
     status: 'Shipped product',
-    summary: 'A local-first last-mile media editor for the file fixes that happen right before posting, sending, or publishing — convert, compress, trim, crop, redact, and export without uploading private files.',
+    summary:
+      'A local-first last-mile media editor for the file fixes that happen right before posting, sending, or publishing — convert, compress, trim, crop, redact, and export without uploading private files.',
     highlights: [
       'Challenge: help users finish the small but blocking media tasks that usually send them hunting across upload-based tools.',
       'Role: built the local editing engine for stills, animations, and short video, with fit-to-size export, presets, timeline tools, overlays, filters, blur/redaction, and batch flows.',

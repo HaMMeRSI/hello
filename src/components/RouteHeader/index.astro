@@ -1,6 +1,7 @@
 ---
-import shLogo from '../assets/logo/sh.svg?url';
-import { navItems, profile } from '../content/profile/site';
+import shLogo from '../../assets/logo/sh.svg?url';
+import { navItems, profile } from '../../content/profile/site';
+import './index.css';
 
 const headerLinks = navItems.filter(item => item.to !== '/');
 ---
@@ -11,6 +12,12 @@ const headerLinks = navItems.filter(item => item.to !== '/');
   </a>
 
   <nav class="route-links" aria-label="Primary navigation">
-    {headerLinks.map(item => <a href={item.to} class="route-link">{item.label}</a>)}
+    {
+      headerLinks.map(item => (
+        <a href={item.to} class="route-link">
+          {item.label}
+        </a>
+      ))
+    }
   </nav>
 </header>

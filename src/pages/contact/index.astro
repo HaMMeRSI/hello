@@ -1,6 +1,7 @@
 ---
-import Icon from '../../components/Icon.astro';
-import Layout from '../../components/Layout.astro';
+import Icon from '../../components/Icon/index.astro';
+import Layout from '../../components/Layout/index.astro';
+import StoryNext from '../../components/StoryNext/index.astro';
 import { contactChannels as channels, profile } from '../../content/profile/contact';
 import '../../styles/story.css';
 import './index.css';
@@ -15,8 +16,8 @@ import './index.css';
           Let's build <span class="ink">the hard part.</span>
         </h1>
         <p class="story-lede">
-          If you’re building something ambitious and need someone who can move between product, code, and messy unknowns, reach out. I’m easy to start with: send the problem, the
-          context, and where you want to get.
+          If you&apos;re building something ambitious and need someone who can move between product, code, and messy unknowns, reach out. I&apos;m easy to start with: send the
+          problem, the context, and where you want to get.
         </p>
         <dl class="story-meta" aria-label="Contact details">
           <div class="story-meta-item contact-clock">
@@ -80,18 +81,7 @@ import './index.css';
         </address>
       </section>
 
-      <footer class="story-next">
-        <a href="/" class="next-link">
-          <small>start over</small>
-          <strong>
-            Back home
-            <Icon name="arrowRight" size={24} />
-          </strong>
-        </a>
-        <a href="/projects" class="story-aside-link">
-          Review the work again
-        </a>
-      </footer>
+      <StoryNext href="/" eyebrow="start over" label="Back home" asideHref="/projects" asideLabel="Review the work again" />
     </section>
   </main>
 </Layout>
