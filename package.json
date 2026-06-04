@@ -13,6 +13,7 @@
     "deploy:vps": "node ./devops/scripts/vps/deploy.ts"
   },
   "dependencies": {
+    "@astrojs/sitemap": "^3.7.3",
     "astro": "latest",
     "lucide-astro": "0.468.0",
     "sharp": "^0.34.5",

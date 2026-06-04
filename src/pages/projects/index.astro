@@ -4,11 +4,63 @@ import ProjectFeature from '../../components/ProjectFeature/index.astro';
 import StoryNext from '../../components/StoryNext/index.astro';
 import { profile } from '../../content/profile/site';
 import { projects } from '../../content/profile/projects';
+import { getAssetUrl } from '../../lib/project-media';
 import '../../styles/story.css';
 import './index.css';
+
+const personId = new URL('/#person', profile.siteUrl).toString();
+const projectsUrl = new URL('/projects', profile.siteUrl).toString();
+const projectListId = `${projectsUrl}#project-list`;
+const projectSchemaNodes = projects.map(project => {
+  const projectType = project.type.toLowerCase();
+  const schemaType = projectType.includes('game') ? 'VideoGame' : projectType.includes('product engineering') ? 'CreativeWork' : 'SoftwareApplication';
+  const imageSrc = getAssetUrl(project.media?.find(item => item.type === 'image')?.src ?? project.cover ?? project.media?.find(item => item.poster)?.poster);
+  const projectId = `${projectsUrl}#project-${project.slug}`;
+  const projectPageUrl = `${projectsUrl}#project-${project.slug}-title`;
+
+  return {
+    '@type': schemaType,
+    '@id': projectId,
+    name: project.name,
+    description: project.summary,
+    url: project.url ?? projectPageUrl,
+    mainEntityOfPage: {
+      '@id': projectPageUrl,
+    },
+    creator: {
+      '@id': personId,
+    },
+    genre: project.type,
+    keywords: project.details,
+    ...(schemaType === 'SoftwareApplication' ? { applicationCategory: project.type } : {}),
+    ...(imageSrc ? { image: new URL(imageSrc, profile.siteUrl).toString() } : {}),
+  };
+});
+const projectsStructuredData = [
+  {
+    '@type': 'ItemList',
+    '@id': projectListId,
+    name: 'Selected work',
+    description: 'Selected software engineering projects by Sagi Hammer.',
+    itemListElement: projects.map((project, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      item: {
+        '@id': `${projectsUrl}#project-${project.slug}`,
+      },
+    })),
+  },
+  ...projectSchemaNodes,
+];
 ---
 
-<Layout title={`Projects | ${profile.name}`} description="Selected work by Sagi Hammer across AI agents, SaaS, media tools, VR, and AI video products.">
+<Layout
+  title={`${profile.name} | AI, SaaS & Web3 Projects`}
+  description="Selected work by Sagi Hammer across AI agents, SaaS, media tools, VR, and AI video products."
+  pageType="CollectionPage"
+  breadcrumbLabel="Projects"
+  pageMainEntity={projectListId}
+  structuredData={projectsStructuredData}>
   <main class="story-page">
     <section class="story" aria-labelledby="projects-title">
       <header class="story-intro">

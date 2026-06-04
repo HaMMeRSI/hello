@@ -2,16 +2,117 @@
 import { ClientRouter } from 'astro:transitions';
 import MobileFooter from '../MobileFooter/index.astro';
 import RouteHeader from '../RouteHeader/index.astro';
-import { profile } from '../../content/profile/site';
+import { navItems, profile, profileSchema } from '../../content/profile/site';
 import '../../main.css';
 import './index.css';
+
+type StructuredDataNode = Record<string, unknown>;
 
 interface Props {
   title?: string;
   description?: string;
+  pageType?: string;
+  breadcrumbLabel?: string;
+  pageMainEntity?: string | StructuredDataNode;
+  structuredData?: StructuredDataNode[];
 }
 
-const { title = profile.name, description = profile.headline } = Astro.props;
+const { title = profile.name, description = profile.headline, pageType = 'ProfilePage', breadcrumbLabel, pageMainEntity, structuredData: extraStructuredData = [] } = Astro.props;
+
+const normalizePath = (pathname: string) => {
+  const withoutIndex = pathname.replace(/\/index\.html$/, '/');
+  return withoutIndex.length > 1 && withoutIndex.endsWith('/') ? withoutIndex.slice(0, -1) : withoutIndex;
+};
+
+const toAbsoluteUrl = (path: string) => new URL(path, profile.siteUrl).toString();
+const canonicalUrl = new URL(normalizePath(Astro.url.pathname), profile.siteUrl);
+const canonicalHref = canonicalUrl.toString();
+const canonicalPath = normalizePath(canonicalUrl.pathname);
+const personId = new URL('/#person', profile.siteUrl).toString();
+const websiteId = new URL('/#website', profile.siteUrl).toString();
+const pageId = `${canonicalHref}${pageType === 'ProfilePage' ? '#profile-page' : '#webpage'}`;
+const breadcrumbId = `${canonicalHref}#breadcrumb`;
+const sameAs = [profile.linkedin, profile.github].filter(Boolean);
+const pageLabel = breadcrumbLabel ?? navItems.find(item => normalizePath(item.to) === canonicalPath)?.label ?? title.replace(` | ${profile.name}`, '');
+const breadcrumbItems = [{ name: 'Home', item: toAbsoluteUrl('/') }, ...(canonicalPath === '/' ? [] : [{ name: pageLabel, item: canonicalHref }])];
+const breadcrumbNode =
+  breadcrumbItems.length > 1
+    ? {
+        '@type': 'BreadcrumbList',
+        '@id': breadcrumbId,
+        itemListElement: breadcrumbItems.map((item, index) => ({
+          '@type': 'ListItem',
+          position: index + 1,
+          name: item.name,
+          item: item.item,
+        })),
+      }
+    : null;
+const resolvedPageMainEntity = pageMainEntity ? (typeof pageMainEntity === 'string' ? { '@id': pageMainEntity } : pageMainEntity) : { '@id': personId };
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebSite',
+      '@id': websiteId,
+      url: toAbsoluteUrl('/'),
+      name: profile.name,
+      description: profile.headline,
+      inLanguage: 'en',
+      author: {
+        '@id': personId,
+      },
+      publisher: {
+        '@id': personId,
+      },
+    },
+    {
+      '@type': 'Person',
+      '@id': personId,
+      name: profile.name,
+      email: profile.email,
+      jobTitle: profileSchema.jobTitle,
+      description: profile.headline,
+      url: profile.siteUrl,
+      sameAs,
+      knowsLanguage: profileSchema.knowsLanguage,
+      knowsAbout: profileSchema.knowsAbout,
+      worksFor: profileSchema.worksFor,
+      affiliation: profileSchema.affiliation,
+      alumniOf: profileSchema.alumniOf,
+      hasOccupation: {
+        '@type': 'Occupation',
+        name: profileSchema.jobTitle,
+        skills: profileSchema.knowsAbout.join(', '),
+      },
+      mainEntityOfPage: {
+        '@id': toAbsoluteUrl('/'),
+      },
+    },
+    {
+      '@type': pageType,
+      '@id': pageId,
+      url: canonicalHref,
+      name: title,
+      description,
+      isPartOf: {
+        '@id': websiteId,
+      },
+      inLanguage: 'en',
+      about: {
+        '@id': personId,
+      },
+      mainEntity: resolvedPageMainEntity,
+      author: {
+        '@id': personId,
+      },
+      ...(breadcrumbNode ? { breadcrumb: { '@id': breadcrumbId } } : {}),
+    },
+    ...(breadcrumbNode ? [breadcrumbNode] : []),
+    ...extraStructuredData,
+  ],
+};
+const structuredDataJson = JSON.stringify(structuredData).replace(/</g, '\\u003c');
 ---
 
 <!doctype html>
@@ -20,8 +121,20 @@ const { title = profile.name, description = profile.headline } = Astro.props;
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
+    <meta name="author" content={profile.name} />
+    <link rel="canonical" href={canonicalHref} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={profile.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalHref} />
+    <meta property="og:locale" content="en_US" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>{title}</title>
+    <script type="application/ld+json" is:inline set:html={structuredDataJson} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&display=swap" rel="stylesheet" />

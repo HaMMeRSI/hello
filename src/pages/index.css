@@ -14,7 +14,7 @@
 
   @media (max-width: 860px) {
     --page-x: clamp(1rem, 5vw, 1.75rem);
-    --hero-top: clamp(2.25rem, 7dvh, 5.25rem);
+    --hero-top: clamp(2.25rem, 10dvh, 6.25rem);
     --hero-bottom: clamp(1.5rem, 6dvh, 2.5rem);
     --hero-gap: clamp(2.5rem, 5.5dvh, 1.35rem);
     --hero-name-size: clamp(3.5rem, 11.34vw, 4.617rem);

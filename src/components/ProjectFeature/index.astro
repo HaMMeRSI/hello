@@ -76,7 +76,7 @@ const titleId = `project-${project.slug}-title`;
               <img {...getImageProps(activeMedia.src, activeMedia.alt)} />
             ) : (
               <button type="button" class="project-video-poster" data-video-poster aria-label={`Play ${activeMedia.alt}`}>
-                {activeMedia.poster ? <img {...getImageProps(activeMedia.poster, '')} /> : <span class="project-video-poster-fallback" aria-hidden="true" />}
+                {activeMedia.poster ? <img {...getImageProps(activeMedia.poster, '')} alt="" /> : <span class="project-video-poster-fallback" aria-hidden="true" />}
                 <span class="project-video-play" aria-hidden="true">
                   <Icon name="play" size={22} />
                 </span>
@@ -123,10 +123,10 @@ const titleId = `project-${project.slug}-title`;
               aria-pressed={index === 0 ? 'true' : 'false'}>
               <span class="project-thumb-frame" aria-hidden="true">
                 {item.type === 'image' ? (
-                  <img {...getThumbnailImageProps(item.src)} />
+                  <img {...getThumbnailImageProps(item.src)} alt="" />
                 ) : (
                   <>
-                    {item.poster && <img {...getThumbnailImageProps(item.poster)} />}
+                    {item.poster && <img {...getThumbnailImageProps(item.poster)} alt="" />}
                     <span class="project-thumb-video" aria-hidden="true">
                       <Icon name="play" size={12} />
                     </span>

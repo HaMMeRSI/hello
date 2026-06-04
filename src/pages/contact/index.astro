@@ -7,7 +7,11 @@ import '../../styles/story.css';
 import './index.css';
 ---
 
-<Layout title={`Contact | ${profile.name}`} description={`Contact ${profile.name} for software engineering, AI product, and platform work.`}>
+<Layout
+  title={`${profile.name} | Contact for Full-Stack & AI Product Work`}
+  description={`Contact ${profile.name} for software engineering, AI product, and platform work.`}
+  pageType="ContactPage"
+  breadcrumbLabel="Contact">
   <main class="story-page">
     <section class="story" aria-labelledby="contact-title">
       <header class="story-intro">
