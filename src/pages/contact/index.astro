@@ -47,7 +47,7 @@ import './index.css';
           {
             channels.map((channel, i) => {
               const index = String(i + 1).padStart(2, '0');
-              const linkProps = channel.external ? { target: '_blank', rel: 'noopener' } : {};
+              const linkProps = channel.external ? { target: '_blank', rel: 'noopener noreferrer' } : {};
 
               if (channel.copy) {
                 return (

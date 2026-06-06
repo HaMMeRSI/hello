@@ -1,6 +1,5 @@
 ---
 import { Github, Linkedin, Mail } from 'lucide-astro';
-import shLogo from '../../assets/logo/sh.svg?url';
 import { navItems, profile } from '../../content/profile/site';
 import './index.css';
 
@@ -30,7 +29,7 @@ const socialLinks = [
 
 <footer class="mobile-footer">
   <a class="mobile-footer-logo" href="/" aria-label={`${profile.name} home`}>
-    <img src={shLogo} alt="" aria-hidden="true" />
+    <img src="/logo/sh.svg" alt="" aria-hidden="true" width="898" height="643" />
   </a>
 
   <nav class="mobile-footer-nav" aria-label="Footer navigation">
@@ -42,7 +41,7 @@ const socialLinks = [
   <nav class="mobile-footer-socials" aria-label="Contact links">
     {
       socialLinks.map(link => {
-        const linkProps = link.external ? { target: '_blank', rel: 'noopener' } : {};
+        const linkProps = link.external ? { target: '_blank', rel: 'noopener noreferrer' } : {};
         const Icon = link.Icon;
 
         return (

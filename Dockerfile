@@ -3,11 +3,11 @@
 # ============================================
 FROM node:22-slim AS builder
 
-RUN corepack enable && corepack prepare pnpm@10.28.0 --activate
+RUN corepack enable && corepack prepare pnpm@11.1.2 --activate
 
 WORKDIR /app
 
-COPY package.json pnpm-lock.yaml ./
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 RUN --mount=type=cache,id=pnpm-sagi-hammer,target=/root/.local/share/pnpm/store \
     pnpm install --frozen-lockfile
 

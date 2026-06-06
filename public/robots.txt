@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://sagihammer.com/sitemap.xml
+Sitemap: https://sagihammer.com/sitemap-index.xml

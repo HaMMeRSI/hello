@@ -1,5 +1,4 @@
 ---
-import shLogo from '../../assets/logo/sh.svg?url';
 import { navItems, profile } from '../../content/profile/site';
 import './index.css';
 
@@ -8,7 +7,7 @@ const headerLinks = navItems.filter(item => item.to !== '/');
 
 <header class="route-header">
   <a href="/" class="route-logo" aria-label={`${profile.name} home`}>
-    <img src={shLogo} alt="" aria-hidden="true" width="121" height="82" decoding="sync" fetchpriority="high" />
+    <img src="/logo/sh.svg" alt="" aria-hidden="true" width="898" height="643" decoding="sync" fetchpriority="high" />
   </a>
 
   <nav class="route-links" aria-label="Primary navigation">
