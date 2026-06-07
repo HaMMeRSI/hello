@@ -13,10 +13,28 @@ const headerLinks = navItems.filter(item => item.to !== '/');
   <nav class="route-links" aria-label="Primary navigation">
     {
       headerLinks.map(item => (
-        <a href={item.to} class="route-link">
+        <a href={item.to} class="route-link" data-nav-link data-nav-destination={item.to} data-nav-label={item.label}>
           {item.label}
         </a>
       ))
     }
   </nav>
 </header>
+
+<script is:inline>
+  function setupNavLinks() {
+    document.querySelectorAll('[data-nav-link]').forEach(function (el) {
+      el.removeEventListener('click', el._phNavHandler);
+      el._phNavHandler = function () {
+        window.posthog?.capture('nav_clicked', {
+          destination: el.dataset.navDestination,
+          label: el.dataset.navLabel,
+        });
+      };
+      el.addEventListener('click', el._phNavHandler);
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', setupNavLinks);
+  document.addEventListener('astro:page-load', setupNavLinks);
+</script>

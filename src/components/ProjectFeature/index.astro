@@ -66,7 +66,15 @@ function initials(name: string) {
 const titleId = `project-${project.slug}-title`;
 ---
 
-<article class="project-feature reveal" style={accentStyle} aria-labelledby={titleId} data-project-carousel data-media={JSON.stringify(clientMedia)} data-active-index="0">
+<article
+  class="project-feature reveal"
+  style={accentStyle}
+  aria-labelledby={titleId}
+  data-project-carousel
+  data-media={JSON.stringify(clientMedia)}
+  data-active-index="0"
+  data-project-name={project.name}
+  data-project-slug={project.slug}>
   <figure class="feature-media">
     <div class:list={previewClasses} role="group" aria-label={`${project.name} preview`}>
       <span class="project-preview-frame" data-preview-frame>
@@ -149,7 +157,7 @@ const titleId = `project-${project.slug}-title`;
     <h3 class="project-name" id={titleId}>
       {
         project.url ? (
-          <a class="project-link" href={project.url} target="_blank" rel="noopener noreferrer" aria-label={`Open ${project.name} website in a new tab`}>
+          <a class="project-link" href={project.url} target="_blank" rel="noopener noreferrer" aria-label={`Open ${project.name} website in a new tab`} data-project-link>
             {project.name}
             <span class="project-link-arrow" aria-hidden="true">
               <Icon name="externalLink" size={14} />
@@ -308,24 +316,39 @@ const titleId = `project-${project.slug}-title`;
     if (!media.length) return;
 
     feature.dataset.carouselReady = 'true';
+
+    const projectName = feature.dataset.projectName ?? '';
+    const projectSlug = feature.dataset.projectSlug ?? '';
+
+    const projectLink = feature.querySelector<HTMLAnchorElement>('[data-project-link]');
+    if (projectLink) {
+      projectLink.addEventListener('click', () => {
+        window.posthog?.capture('project_link_clicked', { project_name: projectName, project_slug: projectSlug });
+      });
+    }
+
     feature.addEventListener('click', event => {
       if (!(event.target instanceof Element)) return;
 
       const posterButton = event.target.closest<HTMLButtonElement>(videoPosterSelector);
       if (posterButton && feature.contains(posterButton)) {
+        window.posthog?.capture('project_video_played', { project_name: projectName, project_slug: projectSlug });
         setCarouselIndex(feature, media, getActiveIndex(feature), true);
         return;
       }
 
       const stepButton = event.target.closest<HTMLButtonElement>(stepSelector);
       if (stepButton && feature.contains(stepButton)) {
-        setCarouselIndex(feature, media, getActiveIndex(feature) + Number(stepButton.dataset.carouselStep || 0));
+        const nextIndex = getActiveIndex(feature) + Number(stepButton.dataset.carouselStep || 0);
+        setCarouselIndex(feature, media, nextIndex);
+        window.posthog?.capture('project_carousel_navigated', { project_name: projectName, project_slug: projectSlug, method: 'arrow' });
         return;
       }
 
       const thumbButton = event.target.closest<HTMLButtonElement>(thumbSelector);
       if (thumbButton && feature.contains(thumbButton)) {
         setCarouselIndex(feature, media, Number(thumbButton.dataset.carouselThumb || 0));
+        window.posthog?.capture('project_carousel_navigated', { project_name: projectName, project_slug: projectSlug, method: 'thumbnail' });
       }
     });
   };

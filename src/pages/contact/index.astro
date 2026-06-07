@@ -51,11 +51,11 @@ import './index.css';
 
               if (channel.copy) {
                 return (
-                  <div class="contact-line reveal" data-copy-line data-copied="false">
+                  <div class="contact-line reveal" data-copy-line data-copied="false" data-channel-id={channel.id}>
                     <span class="contact-index" aria-hidden="true">
                       {index}
                     </span>
-                    <a class="contact-body" href={channel.href}>
+                    <a class="contact-body" href={channel.href} data-contact-link data-channel-id={channel.id}>
                       <span class="contact-label">{channel.label}</span>
                       <span class="contact-value">{channel.value}</span>
                     </a>
@@ -67,7 +67,7 @@ import './index.css';
               }
 
               return (
-                <a class="contact-line reveal" href={channel.href} {...linkProps}>
+                <a class="contact-line reveal" href={channel.href} {...linkProps} data-contact-link data-channel-id={channel.id}>
                   <span class="contact-index" aria-hidden="true">
                     {index}
                   </span>
@@ -136,6 +136,8 @@ import './index.css';
 
       setCopyState(button, line, true);
       queueCopyReset(button, line);
+
+      window.posthog?.capture('email_copied');
     } catch {
       return;
     }
@@ -147,6 +149,22 @@ import './index.css';
   copyButtons.forEach(button => {
     button.addEventListener('click', () => void copyValue(button), { signal: cleanupController.signal });
   });
+
+  document.querySelectorAll<HTMLAnchorElement>('[data-contact-link]').forEach(link => {
+    link.addEventListener(
+      'click',
+      () => {
+        const channelId = link.dataset.channelId ?? '';
+        if (channelId === 'cv') {
+          window.posthog?.capture('resume_download_clicked', { source: 'contact_page' });
+        }
+        window.posthog?.capture('contact_channel_clicked', { channel: channelId });
+      },
+      { signal: cleanupController.signal }
+    );
+  });
+
+  window.posthog?.capture('contact_page_viewed');
 
   document.addEventListener(
     'astro:before-swap',

@@ -1,6 +1,7 @@
 ---
 import { ClientRouter } from 'astro:transitions';
 import MobileFooter from '../MobileFooter/index.astro';
+import PostHog from '../PostHog/index.astro';
 import RouteHeader from '../RouteHeader/index.astro';
 import { navItems, profile, profileSchema } from '../../content/profile/site';
 import '../../main.css';
@@ -145,6 +146,7 @@ const structuredDataJson = JSON.stringify(structuredData).replace(/</g, '\\u003c
     <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700;6..12,900;6..12,1000&display=optional" rel="stylesheet" />
     <ClientRouter />
+    <PostHog />
     <script>
       const normalizeTransitionPath = (path: string) => (path.length > 1 && path.endsWith('/') ? path.slice(0, -1) : path);
 

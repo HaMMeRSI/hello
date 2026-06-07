@@ -21,11 +21,11 @@ import './index.css';
           Creator at <span class="blue-underline">heart</span>.
         </p>
         <div class="hero-actions">
-          <a href="/projects" class="btn-primary">
+          <a href="/projects" class="btn-primary" data-hero-cta="view_work">
             View My Work
             <Icon name="arrowRight" size={16} />
           </a>
-          <a href="/CV/" class="btn-ghost">
+          <a href="/CV/" class="btn-ghost" data-hero-cta="download_resume">
             Download Resume
             <Icon name="download" size={16} />
           </a>
@@ -38,3 +38,18 @@ import './index.css';
     </section>
   </main>
 </Layout>
+
+<script is:inline>
+  function setupHeroCtas() {
+    document.querySelectorAll('[data-hero-cta]').forEach(function (el) {
+      el.removeEventListener('click', el._phHeroHandler);
+      el._phHeroHandler = function () {
+        window.posthog?.capture('hero_cta_clicked', { cta: el.dataset.heroCta });
+      };
+      el.addEventListener('click', el._phHeroHandler);
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', setupHeroCtas);
+  document.addEventListener('astro:page-load', setupHeroCtas);
+</script>
