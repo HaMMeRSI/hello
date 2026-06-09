@@ -58,6 +58,7 @@ const structuredData = {
       '@id': websiteId,
       url: toAbsoluteUrl('/'),
       name: profile.name,
+      alternateName: new URL(profile.siteUrl).hostname.replace(/^www\./, ''),
       description: profile.headline,
       inLanguage: 'en',
       author: {

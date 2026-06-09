@@ -1,8 +1,8 @@
 export const profile = {
   initials: 'SH',
   name: 'Sagi Hammer',
-  role: 'Software Engineer',
-  headline: 'Senior full-stack engineer building AI products, product platforms, Web3 tools, and 3D/XR systems.',
+  role: 'Hands-on Solutions Architect',
+  headline: 'Hands-on Solutions Architect with 15+ years of experience delivering successful AI, SaaS, and immersive XR products from idea to production.',
   tagline: 'Engineer by mindset. Creator at heart.',
   email: 'contact@sagihammer.com',
   siteUrl: 'https://sagihammer.com',
@@ -12,10 +12,10 @@ export const profile = {
 };
 
 export const profileSchema = {
-  jobTitle: 'Senior Full-Stack Software Engineer',
+  jobTitle: 'Hands-on Solutions Architect',
   knowsLanguage: ['Hebrew', 'English', 'Russian'],
   knowsAbout: [
-    'Full-stack engineering',
+    'Solutions architecture',
     'AI product engineering',
     'Agentic AI systems',
     'Tool orchestration',
