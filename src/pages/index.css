@@ -117,7 +117,7 @@
           &::after {
             content: '';
             position: absolute;
-            bottom: 0.02em;
+            bottom: 0.25em;
             left: 0;
             width: 0;
             height: 0.14em;
