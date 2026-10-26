@@ -1,0 +1,56 @@
+---
+import { getCollection, render } from 'astro:content';
+import Layout from '../../../components/Layout/index.astro';
+import StoryNext from '../../../components/StoryNext/index.astro';
+import { profile } from '../../../content/profile/site';
+import '../../../styles/story.css';
+import './index.css';
+
+export async function getStaticPaths() {
+  const posts = (await getCollection('writing')).sort((a, b) => a.data.order - b.data.order);
+  return posts.map((post, index) => ({
+    params: { slug: post.id },
+    props: { post, next: posts[(index + 1) % posts.length] },
+  }));
+}
+
+const { post, next } = Astro.props;
+const { Content } = await render(post);
+const postUrl = new URL(`/writing/${post.id}`, profile.siteUrl).toString();
+const personId = new URL('/#person', profile.siteUrl).toString();
+const article = {
+  '@type': 'BlogPosting',
+  '@id': `${postUrl}#article`,
+  headline: post.data.title,
+  description: post.data.hook,
+  url: postUrl,
+  inLanguage: 'en',
+  author: { '@id': personId },
+  publisher: { '@id': personId },
+  mainEntityOfPage: { '@id': postUrl },
+};
+---
+
+<Layout
+  title={`${post.data.title} | ${profile.name}`}
+  description={post.data.hook}
+  pageType="WebPage"
+  breadcrumbLabel={post.data.title}
+  pageMainEntity={article['@id']}
+  structuredData={[article]}>
+  <main class="story-page">
+    <article class="story">
+      <header class="story-intro">
+        <p class="story-kicker">{post.data.kicker}</p>
+        <h1 class="story-title post-title">{post.data.title}</h1>
+        <p class="story-lede">{post.data.hook}</p>
+      </header>
+
+      <div class="prose">
+        <Content />
+      </div>
+
+      <StoryNext href={`/writing/${next.id}`} eyebrow="next piece" label={next.data.title} asideHref="/writing" asideLabel="All writing" />
+    </article>
+  </main>
+</Layout>

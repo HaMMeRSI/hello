@@ -1,0 +1,100 @@
+---
+/* The home page below the hero: a dark stage where a brick light bulb
+   gets built while the essays scroll past, one full-height chapter per
+   piece, cards alternating sides. The last chapter switches it on. */
+import { getCollection } from 'astro:content';
+import plan from '../../lib/lego/bulb.js';
+import Icon from '../Icon/index.astro';
+import './index.css';
+
+const posts = (await getCollection('writing')).sort((a, b) => a.data.order - b.data.order);
+const steps = plan.steps.length;
+const bricks = plan.steps.flat().length;
+---
+
+<section class="writing-scroll" aria-labelledby="writing-title">
+  <div class="ws-stage">
+    <canvas aria-hidden="true"></canvas>
+
+    <aside class="ws-manual" aria-label="Build progress">
+      <div class="ws-manual-head">
+        <span class="ws-label">Step</span>
+        <span class="ws-num">
+          <span data-step>01</span>
+          <span class="ws-of">/ {String(steps).padStart(2, '0')}</span>
+        </span>
+      </div>
+      <ul class="ws-parts" data-parts></ul>
+      <div class="ws-track"><div class="ws-fill" data-fill></div></div>
+    </aside>
+
+    <div class="ws-hint" data-hint>Scroll to build</div>
+    <div class="ws-drag-hint" aria-hidden="true">Drag to rotate</div>
+  </div>
+
+  <header class="ws-chapter left hero">
+    <div class="ws-card reveal">
+      <span class="ws-label">writing</span>
+      <h2 id="writing-title">Problems, <em>written down</em>.</h2>
+      <p>Each piece starts with a problem I lived with and ends with the app that solved it. Scroll, and a bulb gets built while you read.</p>
+    </div>
+  </header>
+
+  {
+    posts.map((post, index) => {
+      const [before, after] = post.data.title.split(post.data.emphasis);
+
+      return (
+        <article class:list={['ws-chapter', index % 2 ? 'left' : 'right']}>
+          <div class="ws-card reveal">
+            <span class="ws-label">
+              {String(index + 1).padStart(2, '0')} · {post.data.kicker}
+            </span>
+            {/* one expression, so formatting never slips whitespace between the parts */}
+            <h3>{[before, <em>{post.data.emphasis}</em>, after]}</h3>
+            <p>{post.data.hook}</p>
+            <a href={`/writing/${post.id}`} class="ws-read" data-track="writing_card_clicked" data-track-props={JSON.stringify({ slug: post.id })}>
+              Read the piece
+              <Icon name="arrowRight" size={16} />
+            </a>
+          </div>
+        </article>
+      );
+    })
+  }
+
+  <div class="ws-chapter center end">
+    <div class="ws-card reveal">
+      <h3>
+        Switch it <em>on</em>.
+      </h3>
+      <p>{bricks} bricks in {steps} steps, all standing on the red one. Every piece above is the same move: see the problem, define it, hand it to the AI.</p>
+      <div class="ws-end-actions">
+        <a href="/start" class="ws-btn-primary" data-track="writing_end_clicked" data-track-props={JSON.stringify({ cta: 'start_papp' })}>
+          Build your first PaPP
+          <Icon name="arrowRight" size={16} />
+        </a>
+        <a href="/writing" class="ws-btn-ghost" data-track="writing_end_clicked" data-track-props={JSON.stringify({ cta: 'all_writing' })}>
+          All writing
+          <Icon name="arrowRight" size={16} />
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import plan from '../../lib/lego/bulb.js';
+  import { run } from '../../lib/lego/engine.js';
+
+  // Runs on every navigation; only the home page has the stage.
+  let stop: (() => void) | undefined;
+  document.addEventListener('astro:page-load', () => {
+    const stage = document.querySelector<HTMLElement>('.writing-scroll');
+    if (stage) stop = run(plan, stage, document.querySelector('.site-shell')!);
+  });
+  document.addEventListener('astro:before-swap', () => {
+    stop?.();
+    stop = undefined;
+  });
+</script>

@@ -28,6 +28,7 @@
   background: var(--header-bg);
   -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 36%, rgba(0, 0, 0, 0.86) 48%, transparent 100%);
   mask-image: linear-gradient(to bottom, #000 0%, #000 36%, rgba(0, 0, 0, 0.86) 48%, transparent 100%);
+  transition: background 0.3s;
 }
 
 .route-logo {
@@ -87,4 +88,21 @@
   .route-header {
     display: none;
   }
+}
+
+/* Over the home page's dark stage, the engine marks the document. */
+:root.on-stage .route-header {
+  --header-bg: #000;
+}
+
+:root.on-stage .route-logo img {
+  filter: invert(1);
+}
+
+:root.on-stage .route-link {
+  color: #8b8b8b;
+}
+
+:root.on-stage .route-link:hover {
+  color: #ececec;
 }

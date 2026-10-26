@@ -2,3 +2,5 @@ dist
 .astro
 pnpm-lock.yaml
 CV/index.html
+# essays are generated from ../Writings by scripts/import-writing.mjs
+src/content/writing

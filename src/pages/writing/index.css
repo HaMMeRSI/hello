@@ -1,0 +1,59 @@
+.story-page {
+  & .writing-list {
+    display: grid;
+  }
+
+  & .writing-item {
+    display: grid;
+    grid-template-columns: 2.6rem minmax(0, 1fr);
+    gap: 1rem;
+    padding-block: clamp(1.5rem, 4vw, 2.4rem);
+
+    & + .writing-item {
+      border-top: 1px solid rgba(var(--dark-rgb), 0.08);
+    }
+
+    & .writing-index {
+      color: var(--red);
+      font-family: var(--font-hand);
+      font-size: 1.1rem;
+      font-weight: 700;
+      line-height: 1.6;
+    }
+
+    & .writing-kicker {
+      margin-bottom: 0.4rem;
+      color: var(--red);
+      font-family: var(--font-hand);
+      font-size: 1rem;
+      font-weight: 700;
+    }
+
+    & h2 {
+      color: var(--dark);
+      font-family: var(--font-display);
+      font-size: clamp(1.4rem, 3vw, 2rem);
+      font-weight: 1000;
+      line-height: 1.15;
+      text-wrap: balance;
+
+      & a {
+        transition: color 0.25s;
+
+        &:hover {
+          color: var(--red);
+        }
+      }
+    }
+
+    & .writing-hook {
+      max-width: 42rem;
+      margin-top: 0.6rem;
+      color: var(--gray-600);
+      font-family: var(--font-display);
+      font-size: 1.02rem;
+      font-weight: 800;
+      line-height: 1.7;
+    }
+  }
+}
