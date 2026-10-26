@@ -11,7 +11,7 @@
     "check": "astro check",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "deploy:vps": "node ./devops/scripts/vps/deploy.ts"
+    "deploy:vps": "node ~/git/infra/deploy.ts resume"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.3",
