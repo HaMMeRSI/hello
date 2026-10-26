@@ -1,5 +1,5 @@
 .route-header {
-  --header-bg: #fdfdfb;
+  --header-bg: #fafafa;
   --header-fade-size: clamp(1.25rem, 3vw, 2.5rem);
   position: fixed;
   top: 0;
@@ -68,7 +68,7 @@
   width: 0;
   height: 2px;
   border-radius: 1px;
-  background: var(--blue);
+  background: var(--red);
   transition:
     width 0.3s var(--ease-expo),
     left 0.3s var(--ease-expo);

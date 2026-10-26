@@ -2,9 +2,9 @@
 import './index.css';
 
 const lightbulbLayers = [
-  ['lb-brush-pale', 'brush_pale_blue'],
-  ['lb-brush-bottom', 'brush_bottom_blue'],
-  ['lb-paint-inside', 'paint_inside_bulb_blue'],
+  ['lb-brush-pale', 'brush_pale_gray'],
+  ['lb-brush-bottom', 'brush_bottom_gray'],
+  ['lb-paint-inside', 'paint_inside_bulb_red'],
   ['lb-bulb', 'bulb_full'],
   ['lb-filaments', 'bulb_filaments'],
   ['lb-arc', 'bulb_inner_highlight_arc'],
@@ -17,7 +17,7 @@ const lightbulbLayers = [
   ['lb-doodle lb-tiny-dot', 'doodle_tiny_dot'],
   ['lb-doodle lb-tiny-x', 'doodle_tiny_x'],
   ['lb-doodle lb-vertical-dots', 'doodle_vertical_dots'],
-  ['lb-doodle lb-blue-star', 'doodle_blue_star'],
+  ['lb-doodle lb-star', 'doodle_red_star'],
 ] as const;
 
 const lightbulbAssets = import.meta.glob('../../assets/lightbulb/assets/*.webp', {
@@ -30,7 +30,7 @@ const assetUrl = (name: string) => lightbulbAssets[`../../assets/lightbulb/asset
 const microFlecks = ['one', 'two', 'three', 'four'] as const;
 ---
 
-<div class="lightbulb-stage" role="img" aria-label="Animated creative spark illustration">
+<div class="lightbulb-stage" role="img" aria-label="A light bulb filling with red paint">
   <canvas class="lb-particles" aria-hidden="true"></canvas>
   <span class="lb-glow"></span>
   <span class="lb-halo"></span>
@@ -235,7 +235,7 @@ const microFlecks = ['one', 'two', 'three', 'four'] as const;
             spin: randomOffset(0.16),
             life: 0,
             max: 92 + Math.random() * 72,
-            color: blue ? 'rgba(67,85,219,' : 'rgba(0,0,0,',
+            color: blue ? 'rgba(215,38,30,' : 'rgba(0,0,0,',
           });
         }
 

@@ -51,7 +51,7 @@
     justify-content: center;
     gap: clamp(1rem, 7vw, 1.75rem);
     width: 100%;
-    color: #101820;
+    color: #141414;
   }
 
   .mobile-footer-socials a {

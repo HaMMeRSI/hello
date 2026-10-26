@@ -16,7 +16,7 @@
 }
 
 .next-link small {
-  color: var(--blue);
+  color: var(--red);
   font-family: var(--font-hand);
   font-size: 1.05rem;
   font-weight: 700;
@@ -40,7 +40,7 @@
 }
 
 .next-link:hover strong {
-  color: var(--blue);
+  color: var(--red);
 }
 
 .next-link:hover strong svg {
@@ -64,7 +64,7 @@
   width: 0;
   height: 2px;
   border-radius: 1px;
-  background: var(--blue);
+  background: var(--red);
   transition: width 0.3s var(--ease-expo);
 }
 
