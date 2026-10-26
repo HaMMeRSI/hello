@@ -162,6 +162,12 @@ const structuredDataJson = JSON.stringify(structuredData).replace(/</g, '\\u003c
         if (from === '/') transition.types.add('home-leave');
         if (to === '/') transition.types.add('home-enter');
       });
+
+      // The document outlives client-side navigation, so one listener tracks every [data-track] link on every page.
+      document.addEventListener('click', event => {
+        const tracked = (event.target as Element).closest<HTMLElement>('[data-track]');
+        if (tracked) window.posthog?.capture(tracked.dataset.track!, JSON.parse(tracked.dataset.trackProps!));
+      });
     </script>
   </head>
   <body>

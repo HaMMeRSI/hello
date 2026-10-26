@@ -14,7 +14,7 @@ const { href, eyebrow, label, asideHref, asideLabel } = Astro.props;
 ---
 
 <footer class="story-next">
-  <a href={href} class="next-link" data-story-next data-destination={href} data-label={label}>
+  <a href={href} class="next-link" data-track="story_next_clicked" data-track-props={JSON.stringify({ destination: href, label })}>
     <small>{eyebrow}</small>
     <strong>
       {label}
@@ -24,27 +24,9 @@ const { href, eyebrow, label, asideHref, asideLabel } = Astro.props;
 
   {
     asideHref && asideLabel && (
-      <a href={asideHref} class="story-aside-link" data-story-next data-destination={asideHref} data-label={asideLabel}>
+      <a href={asideHref} class="story-aside-link" data-track="story_next_clicked" data-track-props={JSON.stringify({ destination: asideHref, label: asideLabel })}>
         {asideLabel}
       </a>
     )
   }
 </footer>
-
-<script is:inline>
-  function setupStoryNext() {
-    document.querySelectorAll('[data-story-next]').forEach(function (el) {
-      el.removeEventListener('click', el._phStoryNextHandler);
-      el._phStoryNextHandler = function () {
-        window.posthog?.capture('story_next_clicked', {
-          destination: el.dataset.destination,
-          label: el.dataset.label,
-        });
-      };
-      el.addEventListener('click', el._phStoryNextHandler);
-    });
-  }
-
-  document.addEventListener('DOMContentLoaded', setupStoryNext);
-  document.addEventListener('astro:page-load', setupStoryNext);
-</script>
