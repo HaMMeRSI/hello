@@ -3,25 +3,24 @@
   --hero-top: clamp(4.75rem, 7.5dvh, 6rem);
   --hero-bottom: clamp(1.25rem, 4dvh, 3rem);
   --hero-gap: clamp(1rem, 3vw, 2.5rem);
-  --hero-name-size: clamp(2.7135rem, min(6.885vw, 10.53dvh), 6.237rem);
+  --hero-name-size: clamp(2.4rem, min(4.9vw, 8.2dvh), 4.5rem);
   --hero-tagline-size: clamp(1.1745rem, min(2.0655vw, 3.402dvh), 1.8225rem);
   --bulb-stage-max: 58.75rem;
   position: relative;
   width: 100%;
   min-height: 100dvh;
-  overflow: hidden;
-  background: #fdfdfb;
+  /* clip, not hidden: a scroll container here would pin the writing stage to the page instead of the viewport */
+  overflow-x: clip;
+  background: #fafafa;
 
   @media (max-width: 860px) {
     --page-x: clamp(1rem, 5vw, 1.75rem);
     --hero-top: clamp(2.25rem, 10dvh, 6.25rem);
     --hero-bottom: clamp(1.5rem, 6dvh, 2.5rem);
     --hero-gap: clamp(2.5rem, 5.5dvh, 1.35rem);
-    --hero-name-size: clamp(3.5rem, 11.34vw, 4.617rem);
+    --hero-name-size: clamp(2.5rem, 10vw, 3.9rem);
     --hero-tagline-size: clamp(1.65rem, 5.2vw, 1.95rem);
     --hero-illustration-height: clamp(10rem, min(42vw, 24dvh), 18rem);
-    overflow-x: hidden;
-    overflow-y: visible;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -59,7 +58,7 @@
       position: relative;
       z-index: 2;
       justify-self: start;
-      width: min(100%, 620px);
+      width: min(100%, 660px);
 
       @media (max-width: 860px) {
         display: flex;
@@ -70,6 +69,21 @@
         justify-self: center;
       }
 
+      & .hero-line {
+        white-space: nowrap;
+      }
+
+      & .hero-byline {
+        margin-bottom: clamp(0.9rem, 2.4dvh, 1.4rem);
+        color: var(--gray-600);
+        font-family: var(--font-display);
+        font-size: 0.82rem;
+        font-weight: 900;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        animation: fadeUp 600ms 200ms var(--ease-expo) both;
+      }
+
       & .hero-name {
         position: relative;
         isolation: isolate;
@@ -78,11 +92,10 @@
         font-weight: 1000;
         line-height: 0.92;
         letter-spacing: 0;
-        color: #071321;
+        color: #111111;
         -webkit-text-stroke: 0.012em rgba(255, 255, 255, 0.18);
         paint-order: stroke fill;
         margin-bottom: clamp(1.7rem, min(4vw, 5dvh), 2.85rem);
-        text-wrap: balance;
         animation: nameReveal 1000ms 350ms var(--ease-expo) both;
 
         @media (max-width: 860px) {
@@ -90,7 +103,25 @@
         }
       }
 
-      & :is(.hero-tagline, .hero-actions) {
+      & .hero-lede {
+        --duration: 700ms;
+        --delay: 750ms;
+        max-width: 34rem;
+        margin-bottom: clamp(1.5rem, min(4vw, 4.5dvh), 2.5rem);
+        color: var(--gray-600);
+        font-family: var(--font-display);
+        font-size: clamp(0.92rem, 1.15vw, 1.05rem);
+        font-weight: 700;
+        line-height: 1.7;
+
+        @media (max-width: 860px) {
+          margin-inline: auto;
+          margin-top: 1.25rem;
+          margin-bottom: 0;
+        }
+      }
+
+      & :is(.hero-tagline, .hero-lede, .hero-actions) {
         animation: fadeUp var(--duration) var(--delay) var(--ease-expo) both;
       }
 
@@ -102,15 +133,15 @@
         font-weight: 400;
         line-height: 1.25;
         color: var(--dark);
-        margin-bottom: clamp(1.5rem, min(4vw, 5dvh), 3rem);
+        margin-bottom: clamp(1rem, min(2.5vw, 3dvh), 1.5rem);
 
         @media (max-width: 860px) {
           margin-bottom: 0;
         }
 
-        & .blue-underline {
+        & .red-underline {
           position: relative;
-          color: var(--blue);
+          color: var(--red);
           font-weight: 700;
           text-decoration: none;
 
@@ -121,7 +152,7 @@
             left: 0;
             width: 0;
             height: 0.14em;
-            background: var(--blue);
+            background: var(--red);
             border-radius: 999px;
             transform: rotate(-1.5deg);
             transform-origin: left center;
@@ -202,10 +233,10 @@
           }
 
           &:hover {
-            color: var(--blue);
+            color: var(--red);
 
             & svg {
-              animation: downloadBounce 700ms ease infinite;
+              transform: translateX(4px);
             }
           }
 

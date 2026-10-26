@@ -1,6 +1,5 @@
 ---
-import type { Project, ProjectMediaAsset } from '../../content/profile/projects';
-import { getAssetUrl, getOrderedMedia } from '../../lib/project-media';
+import type { Project } from '../../content/profile/projects';
 import Icon from '../Icon/index.astro';
 import './index.css';
 
@@ -10,65 +9,16 @@ interface Props {
 }
 
 const { project, eager = false } = Astro.props;
-const media = getOrderedMedia(project.media);
-const activeMedia = media[0] ?? null;
-const hasGallery = media.length > 1;
-const highlights = project.highlights ?? [];
-const hasHighlights = highlights.length > 0;
-const previewBackground =
-  project.coverBackground ??
-  `radial-gradient(circle at 18% 16%, color-mix(in srgb, ${project.accent} 18%, transparent), transparent 34%), radial-gradient(circle at 84% 82%, rgba(var(--dark-rgb), 0.06), transparent 36%), linear-gradient(135deg, #ffffff 0%, color-mix(in srgb, ${project.accent} 7%, #fdfdfb) 100%)`;
-const rowBackground = project.rowBackground ?? 'transparent';
-const accentStyle = `--accent: ${project.accent}; --preview-bg: ${previewBackground}; --row-bg: ${rowBackground};`;
-const previewClasses = ['project-preview', project.coverFit === 'contain' && !activeMedia && 'project-preview-contain'];
-const previewLoading = eager ? 'eager' : 'lazy';
-const previewFetchPriority = eager ? 'high' : undefined;
-
-function isLocalImage(asset: ProjectMediaAsset | undefined): asset is ImageMetadata {
-  return typeof asset === 'object' && asset !== null && 'src' in asset && 'width' in asset && 'height' in asset;
-}
-
-function getImageProps(
-  asset: ProjectMediaAsset,
-  alt: string,
-  loading: 'eager' | 'lazy' = previewLoading,
-  fetchpriority: 'high' | undefined = loading === previewLoading ? previewFetchPriority : undefined
-) {
-  return {
-    src: getAssetUrl(asset) ?? '',
-    alt,
-    loading,
-    decoding: 'async' as const,
-    ...(fetchpriority ? { fetchpriority } : {}),
-    ...(isLocalImage(asset) ? { width: asset.width, height: asset.height } : {}),
-  };
-}
-
-const getThumbnailImageProps = (asset: ProjectMediaAsset) => getImageProps(asset, '', 'lazy', undefined);
-
-const clientMedia = media.map(item => ({
-  type: item.type,
-  src: getAssetUrl(item.src) ?? '',
-  poster: getAssetUrl(item.poster),
-  alt: item.alt,
-}));
-
-function initials(name: string) {
-  return name
-    .replace(/[^a-zA-Z0-9 ]/g, '')
-    .split(' ')
-    .filter(Boolean)
-    .slice(0, 2)
-    .map(word => word[0]?.toUpperCase())
-    .join('');
-}
-
+const [preview] = project.media;
+const previewImage = preview.type === 'image' ? preview.src : preview.poster;
+const loading = eager ? 'eager' : 'lazy';
+const hasGallery = project.media.length > 1;
 const titleId = `project-${project.slug}-title`;
+const clientMedia = project.media.map(item => (item.type === 'image' ? { ...item, src: item.src.src } : { ...item, poster: item.poster.src }));
 ---
 
 <article
   class="project-feature reveal"
-  style={accentStyle}
   aria-labelledby={titleId}
   data-project-carousel
   data-media={JSON.stringify(clientMedia)}
@@ -76,26 +26,26 @@ const titleId = `project-${project.slug}-title`;
   data-project-name={project.name}
   data-project-slug={project.slug}>
   <figure class="feature-media">
-    <div class:list={previewClasses} role="group" aria-label={`${project.name} preview`}>
+    <div class="project-preview" role="group" aria-label={`${project.name} preview`}>
       <span class="project-preview-frame" data-preview-frame>
         {
-          activeMedia ? (
-            activeMedia.type === 'image' ? (
-              <img {...getImageProps(activeMedia.src, activeMedia.alt)} />
-            ) : (
-              <button type="button" class="project-video-poster" data-video-poster aria-label={`Play ${activeMedia.alt}`}>
-                {activeMedia.poster ? <img {...getImageProps(activeMedia.poster, '')} alt="" /> : <span class="project-video-poster-fallback" aria-hidden="true" />}
-                <span class="project-video-play" aria-hidden="true">
-                  <Icon name="play" size={22} />
-                </span>
-              </button>
-            )
-          ) : project.cover ? (
-            <img {...getImageProps(project.cover, `${project.name} preview`)} />
+          preview.type === 'image' ? (
+            <img
+              src={previewImage.src}
+              width={previewImage.width}
+              height={previewImage.height}
+              alt={preview.alt}
+              loading={loading}
+              fetchpriority={eager ? 'high' : 'auto'}
+              decoding="async"
+            />
           ) : (
-            <span class="project-preview-placeholder" aria-hidden="true">
-              <span class="project-preview-mark">{initials(project.name)}</span>
-            </span>
+            <button type="button" class="project-video-poster" data-video-poster aria-label={`Play ${preview.alt}`}>
+              <img src={previewImage.src} width={previewImage.width} height={previewImage.height} alt="" loading={loading} decoding="async" />
+              <span class="project-video-play" aria-hidden="true">
+                <Icon name="play" size={22} />
+              </span>
+            </button>
           )
         }
       </span>
@@ -112,7 +62,7 @@ const titleId = `project-${project.slug}-title`;
               </button>
             </div>
             <span class="project-carousel-count" aria-live="polite" data-carousel-count>
-              1 / {media.length}
+              1 / {project.media.length}
             </span>
           </>
         )
@@ -122,27 +72,26 @@ const titleId = `project-${project.slug}-title`;
     {
       hasGallery && (
         <div class="feature-slider" role="group" aria-label={`${project.name} gallery thumbnails`}>
-          {media.map((item, index) => (
-            <button
-              type="button"
-              class:list={['project-thumb', index === 0 && 'project-thumb-active']}
-              data-carousel-thumb={index}
-              aria-label={`Show ${item.alt}`}
-              aria-pressed={index === 0 ? 'true' : 'false'}>
-              <span class="project-thumb-frame" aria-hidden="true">
-                {item.type === 'image' ? (
-                  <img {...getThumbnailImageProps(item.src)} alt="" />
-                ) : (
-                  <>
-                    {item.poster && <img {...getThumbnailImageProps(item.poster)} alt="" />}
+          {project.media.map((item, index) => {
+            const thumbnail = item.type === 'image' ? item.src : item.poster;
+            return (
+              <button
+                type="button"
+                class:list={['project-thumb', index === 0 && 'project-thumb-active']}
+                data-carousel-thumb={index}
+                aria-label={`Show ${item.alt}`}
+                aria-pressed={index === 0 ? 'true' : 'false'}>
+                <span class="project-thumb-frame" aria-hidden="true">
+                  <img src={thumbnail.src} width={thumbnail.width} height={thumbnail.height} alt="" loading="lazy" decoding="async" />
+                  {item.type !== 'image' && (
                     <span class="project-thumb-video" aria-hidden="true">
                       <Icon name="play" size={12} />
                     </span>
-                  </>
-                )}
-              </span>
-            </button>
-          ))}
+                  )}
+                </span>
+              </button>
+            );
+          })}
         </div>
       )
     }
@@ -157,7 +106,14 @@ const titleId = `project-${project.slug}-title`;
     <h3 class="project-name" id={titleId}>
       {
         project.url ? (
-          <a class="project-link" href={project.url} target="_blank" rel="noopener noreferrer" aria-label={`Open ${project.name} website in a new tab`} data-project-link>
+          <a
+            class="project-link"
+            href={project.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`Open ${project.name} website in a new tab`}
+            data-track="project_link_clicked"
+            data-track-props={JSON.stringify({ project_name: project.name, project_slug: project.slug })}>
             {project.name}
             <span class="project-link-arrow" aria-hidden="true">
               <Icon name="externalLink" size={14} />
@@ -170,15 +126,9 @@ const titleId = `project-${project.slug}-title`;
     </h3>
     <p class="project-summary">{project.summary}</p>
 
-    {
-      hasHighlights && (
-        <ul class="project-highlights">
-          {highlights.map(highlight => (
-            <li>{highlight}</li>
-          ))}
-        </ul>
-      )
-    }
+    <ul class="project-highlights">
+      {project.highlights.map(highlight => <li>{highlight}</li>)}
+    </ul>
 
     <ul class="project-chips">
       {project.details.map(detail => <li class="project-chip">{detail}</li>)}
@@ -191,172 +141,102 @@ const titleId = `project-${project.slug}-title`;
 </article>
 
 <script>
-  import { getYouTubeEmbedUrl } from '../../lib/project-media';
+  type ClientMedia = { type: 'image'; src: string; alt: string } | { type: 'video' | 'youtube'; src: string; poster: string; alt: string };
 
-  const carouselSelector = '[data-project-carousel]';
-  const previewFrameSelector = '[data-preview-frame]';
-  const stepSelector = '[data-carousel-step]';
-  const thumbSelector = '[data-carousel-thumb]';
-  const carouselCountSelector = '[data-carousel-count]';
-  const videoPosterSelector = '[data-video-poster]';
-  const playIconTemplateSelector = '[data-play-icon-template]';
-
-  type ClientProjectMedia = {
-    type: 'image' | 'video';
-    src: string;
-    poster?: string;
-    alt: string;
-  };
-
-  const getMediaFromDataset = (feature: HTMLElement) => {
-    try {
-      const media = JSON.parse(feature.dataset.media || '[]');
-      return Array.isArray(media) ? (media as ClientProjectMedia[]) : [];
-    } catch {
-      return [];
-    }
-  };
-
-  const createRuntimeImage = (src: string, alt: string) => {
+  const createImage = (src: string, alt: string) => {
     const image = document.createElement('img');
     image.src = src;
     image.alt = alt;
-    image.loading = 'eager';
     image.decoding = 'async';
     return image;
   };
 
-  const createVideoPoster = (feature: HTMLElement, media: ClientProjectMedia) => {
+  const createVideoPoster = (feature: HTMLElement, media: Exclude<ClientMedia, { type: 'image' }>) => {
     const button = document.createElement('button');
     button.type = 'button';
     button.className = 'project-video-poster';
-    button.dataset.videoPoster = 'true';
+    button.dataset.videoPoster = '';
     button.setAttribute('aria-label', `Play ${media.alt}`);
-
-    if (media.poster) {
-      button.append(createRuntimeImage(media.poster, ''));
-    } else {
-      const fallback = document.createElement('span');
-      fallback.className = 'project-video-poster-fallback';
-      fallback.setAttribute('aria-hidden', 'true');
-      button.append(fallback);
-    }
 
     const play = document.createElement('span');
     play.className = 'project-video-play';
     play.setAttribute('aria-hidden', 'true');
-    const playIconTemplate = feature.querySelector<HTMLTemplateElement>(playIconTemplateSelector);
-    if (playIconTemplate) play.append(playIconTemplate.content.cloneNode(true));
-    button.append(play);
+    play.append(feature.querySelector<HTMLTemplateElement>('[data-play-icon-template]')!.content.cloneNode(true));
+
+    button.append(createImage(media.poster, ''), play);
     return button;
   };
 
-  const createPlayableVideoElement = (media: ClientProjectMedia) => {
-    const embedUrl = getYouTubeEmbedUrl(media.src);
-    if (embedUrl) {
+  const createPlayer = (media: Exclude<ClientMedia, { type: 'image' }>) => {
+    if (media.type === 'youtube') {
       const iframe = document.createElement('iframe');
-      iframe.src = `${embedUrl}?autoplay=1`;
+      iframe.src = `${media.src}?autoplay=1`;
       iframe.title = media.alt;
-      iframe.loading = 'lazy';
-      iframe.allow = ['accelerometer', 'autoplay', 'clipboard-write', 'encrypted-media', 'gyroscope', 'picture-in-picture', 'web-share'].join('; ');
+      iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
       iframe.allowFullscreen = true;
       return iframe;
     }
 
     const video = document.createElement('video');
     video.src = media.src;
-    if (media.poster) video.poster = media.poster;
+    video.poster = media.poster;
     video.controls = true;
     video.playsInline = true;
-    video.preload = 'metadata';
     video.autoplay = true;
     video.setAttribute('aria-label', media.alt);
     return video;
   };
 
-  const getActiveIndex = (feature: HTMLElement) => Number(feature.dataset.activeIndex || 0);
+  const showMedia = (feature: HTMLElement, media: ClientMedia[], index: number, play = false) => {
+    const activeIndex = (index + media.length) % media.length;
+    const active = media[activeIndex];
+    const frame = feature.querySelector<HTMLElement>('[data-preview-frame]')!;
 
-  const createMediaElement = (feature: HTMLElement, media: ClientProjectMedia, activateVideo = false) => {
-    if (media.type === 'image') return createRuntimeImage(media.src, media.alt);
-    return activateVideo ? createPlayableVideoElement(media) : createVideoPoster(feature, media);
-  };
-
-  const wrapIndex = (index: number, length: number) => {
-    const safeIndex = Number.isFinite(index) ? index : 0;
-    return ((safeIndex % length) + length) % length;
-  };
-
-  const setCarouselIndex = (feature: HTMLElement, media: ClientProjectMedia[], nextIndex: number, activateVideo = false) => {
-    if (!media.length) return;
-
-    const activeIndex = wrapIndex(nextIndex, media.length);
-    const activeMedia = media[activeIndex];
-    const frame = feature.querySelector<HTMLElement>(previewFrameSelector);
-    if (!frame) return;
-
-    frame.replaceChildren(createMediaElement(feature, activeMedia, activateVideo));
+    frame.replaceChildren(active.type === 'image' ? createImage(active.src, active.alt) : play ? createPlayer(active) : createVideoPoster(feature, active));
+    // Restart the frame's entry animation for the new media.
     frame.style.animation = 'none';
     void frame.offsetWidth;
     frame.style.animation = '';
 
     feature.dataset.activeIndex = String(activeIndex);
-    const count = feature.querySelector<HTMLElement>(carouselCountSelector);
+    const count = feature.querySelector('[data-carousel-count]');
     if (count) count.textContent = `${activeIndex + 1} / ${media.length}`;
-    feature.querySelectorAll<HTMLButtonElement>(thumbSelector).forEach(thumb => {
+    feature.querySelectorAll<HTMLButtonElement>('[data-carousel-thumb]').forEach(thumb => {
       const isActive = Number(thumb.dataset.carouselThumb) === activeIndex;
       thumb.classList.toggle('project-thumb-active', isActive);
-      thumb.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+      thumb.setAttribute('aria-pressed', String(isActive));
     });
   };
 
-  const initCarousel = (feature: HTMLElement) => {
-    if (feature.dataset.carouselReady === 'true') return;
+  // astro:page-load fires on the first load and after every client-side navigation.
+  document.addEventListener('astro:page-load', () => {
+    document.querySelectorAll<HTMLElement>('[data-project-carousel]').forEach(feature => {
+      const media: ClientMedia[] = JSON.parse(feature.dataset.media!);
+      const activeIndex = () => Number(feature.dataset.activeIndex);
+      const analytics = { project_name: feature.dataset.projectName, project_slug: feature.dataset.projectSlug };
 
-    const media = getMediaFromDataset(feature);
-    if (!media.length) return;
+      feature.addEventListener('click', event => {
+        const target = event.target as Element;
 
-    feature.dataset.carouselReady = 'true';
+        if (target.closest('[data-video-poster]')) {
+          window.posthog?.capture('project_video_played', analytics);
+          showMedia(feature, media, activeIndex(), true);
+          return;
+        }
 
-    const projectName = feature.dataset.projectName ?? '';
-    const projectSlug = feature.dataset.projectSlug ?? '';
+        const step = target.closest<HTMLButtonElement>('[data-carousel-step]');
+        if (step) {
+          showMedia(feature, media, activeIndex() + Number(step.dataset.carouselStep));
+          window.posthog?.capture('project_carousel_navigated', { ...analytics, method: 'arrow' });
+          return;
+        }
 
-    const projectLink = feature.querySelector<HTMLAnchorElement>('[data-project-link]');
-    if (projectLink) {
-      projectLink.addEventListener('click', () => {
-        window.posthog?.capture('project_link_clicked', { project_name: projectName, project_slug: projectSlug });
+        const thumb = target.closest<HTMLButtonElement>('[data-carousel-thumb]');
+        if (thumb) {
+          showMedia(feature, media, Number(thumb.dataset.carouselThumb));
+          window.posthog?.capture('project_carousel_navigated', { ...analytics, method: 'thumbnail' });
+        }
       });
-    }
-
-    feature.addEventListener('click', event => {
-      if (!(event.target instanceof Element)) return;
-
-      const posterButton = event.target.closest<HTMLButtonElement>(videoPosterSelector);
-      if (posterButton && feature.contains(posterButton)) {
-        window.posthog?.capture('project_video_played', { project_name: projectName, project_slug: projectSlug });
-        setCarouselIndex(feature, media, getActiveIndex(feature), true);
-        return;
-      }
-
-      const stepButton = event.target.closest<HTMLButtonElement>(stepSelector);
-      if (stepButton && feature.contains(stepButton)) {
-        const nextIndex = getActiveIndex(feature) + Number(stepButton.dataset.carouselStep || 0);
-        setCarouselIndex(feature, media, nextIndex);
-        window.posthog?.capture('project_carousel_navigated', { project_name: projectName, project_slug: projectSlug, method: 'arrow' });
-        return;
-      }
-
-      const thumbButton = event.target.closest<HTMLButtonElement>(thumbSelector);
-      if (thumbButton && feature.contains(thumbButton)) {
-        setCarouselIndex(feature, media, Number(thumbButton.dataset.carouselThumb || 0));
-        window.posthog?.capture('project_carousel_navigated', { project_name: projectName, project_slug: projectSlug, method: 'thumbnail' });
-      }
     });
-  };
-
-  const initCarousels = () => {
-    document.querySelectorAll<HTMLElement>(carouselSelector).forEach(initCarousel);
-  };
-
-  document.addEventListener('astro:page-load', initCarousels);
-  initCarousels();
+  });
 </script>

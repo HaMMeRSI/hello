@@ -4,17 +4,19 @@ import ProjectFeature from '../../components/ProjectFeature/index.astro';
 import StoryNext from '../../components/StoryNext/index.astro';
 import { profile } from '../../content/profile/site';
 import { projects } from '../../content/profile/projects';
-import { getAssetUrl } from '../../lib/project-media';
 import '../../styles/story.css';
 import './index.css';
 
+const mine = projects.filter(project => project.group === 'mine');
+const others = projects.filter(project => project.group === 'others');
 const personId = new URL('/#person', profile.siteUrl).toString();
 const projectsUrl = new URL('/projects', profile.siteUrl).toString();
 const projectListId = `${projectsUrl}#project-list`;
 const projectSchemaNodes = projects.map(project => {
   const projectType = project.type.toLowerCase();
   const schemaType = projectType.includes('game') ? 'VideoGame' : projectType.includes('product engineering') ? 'CreativeWork' : 'SoftwareApplication';
-  const imageSrc = getAssetUrl(project.media?.find(item => item.type === 'image')?.src ?? project.cover ?? project.media?.find(item => item.poster)?.poster);
+  const [preview] = project.media;
+  const image = preview.type === 'image' ? preview.src : preview.poster;
   const projectId = `${projectsUrl}#project-${project.slug}`;
   const projectPageUrl = `${projectsUrl}#project-${project.slug}-title`;
 
@@ -33,15 +35,15 @@ const projectSchemaNodes = projects.map(project => {
     genre: project.type,
     keywords: project.details,
     ...(schemaType === 'SoftwareApplication' ? { applicationCategory: project.type } : {}),
-    ...(imageSrc ? { image: new URL(imageSrc, profile.siteUrl).toString() } : {}),
+    image: new URL(image.src, profile.siteUrl).toString(),
   };
 });
 const projectsStructuredData = [
   {
     '@type': 'ItemList',
     '@id': projectListId,
-    name: 'Selected work',
-    description: 'Selected AI, SaaS, and immersive XR products by Sagi Hammer.',
+    name: 'My PaPPs',
+    description: 'Personal apps by Sagi Hammer, and products built for other people.',
     itemListElement: projects.map((project, index) => ({
       '@type': 'ListItem',
       position: index + 1,
@@ -55,45 +57,59 @@ const projectsStructuredData = [
 ---
 
 <Layout
-  title={`${profile.name} | AI, SaaS & Web3 Projects`}
-  description="Selected production work by Sagi Hammer across AI agents, SaaS, media tools, immersive XR, and AI video products."
+  title={`${profile.name} | My PaPPs`}
+  description="Problems Sagi Hammer solved with personal apps: a life and money tracker, a writing editor, a Mac AI companion and a day timeline. Plus ten years of products built for other people."
   pageType="CollectionPage"
-  breadcrumbLabel="Projects"
+  breadcrumbLabel="My PaPPs"
   pageMainEntity={projectListId}
   structuredData={projectsStructuredData}>
   <main class="story-page">
     <section class="story" aria-labelledby="projects-title">
       <header class="story-intro">
-        <p class="story-kicker">things I've built</p>
+        <p class="story-kicker">my papps</p>
         <h1 class="story-title" id="projects-title">
-          Real products, <span class="ink">not demos.</span>
+          Built for <span class="ink">one person.</span>
         </h1>
         <p class="story-lede">
-          Practical builds across AI agents, finance/life tracking, local-first media tools, VR, and production AI video, focused on shipped systems with clear user value.
+          Each of these started as a problem I kept working around. Each card shows the problem, the PaPP that solves it, and what changed. Steal the pattern for your own problems.
         </p>
-        <dl class="story-meta" aria-label="Project themes">
+        <dl class="story-meta" aria-label="Builds">
           <div class="story-meta-item">
-            <dt class="story-meta-label">theme</dt>
-            <dd class="story-meta-value">shipped systems with clear user value</dd>
+            <dt class="story-meta-label">for me</dt>
+            <dd class="story-meta-value">Gepeta · Writor · Chapeta · TimeLion</dd>
           </div>
           <div class="story-meta-item">
-            <dt class="story-meta-label">range</dt>
-            <dd class="story-meta-value">AI · SaaS · Web3 · VR · platforms</dd>
+            <dt class="story-meta-label">for others</dt>
+            <dd class="story-meta-value">FastEdit · Q.E.D · D-ID · Terragon</dd>
           </div>
         </dl>
       </header>
 
-      <section class="story-section" aria-labelledby="selected-work-title">
+      <section class="story-section" aria-labelledby="mine-title">
         <div class="story-break">
-          <h2 id="selected-work-title">Selected work</h2>
+          <h2 id="mine-title">Built for me</h2>
         </div>
 
         <div class="project-list">
-          {projects.map((project, index) => <ProjectFeature project={project} eager={index === 0} />)}
+          {mine.map((project, index) => <ProjectFeature project={project} eager={index === 0} />)}
         </div>
       </section>
 
-      <StoryNext href="/experience" eyebrow="keep reading" label="The experience timeline" asideHref="/contact" asideLabel="Jump to contact" />
+      <section class="story-section" aria-labelledby="others-title">
+        <div class="story-break">
+          <h2 id="others-title">Built for other people</h2>
+        </div>
+
+        <p class="project-group-lede">
+          Ten years of production software for users, clients and employers. This is how I know what a product needs, and how little of it a PaPP needs.
+        </p>
+
+        <div class="project-list">
+          {others.map(project => <ProjectFeature project={project} />)}
+        </div>
+      </section>
+
+      <StoryNext href="/start" eyebrow="your turn" label="Build your first PaPP" asideHref="/experience" asideLabel="How I got here" />
     </section>
   </main>
 </Layout>

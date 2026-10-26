@@ -1,22 +1,21 @@
 export const experience = [
   {
-    company: 'Independent Products',
-    role: 'Founder / Builder',
-    period: 'Present',
-    eyebrow: 'Current builds',
-    summary: 'Shipping products that turn agentic AI, local-first media, and life-tracking workflows into real user-facing tools.',
+    company: 'PaPPs',
+    role: 'Builder and writer',
+    period: '2026 - now',
+    summary: 'Building personal apps for my own problems, and writing about how anyone can build theirs with AI.',
     points: [
-      'Built Chapeta, a native macOS AI agent harness for models, tools, screenshots, files, terminal commands, AppleScript, subagents, and safety approvals.',
-      'Built Gepeta, an AI life-tracking SaaS/PWA and iOS app that structures finance, health, and productivity records from text, voice, photos, and spreadsheets.',
-      'Shipped FastEdit, a privacy-first browser media editor for local conversion, compression, cropping, trimming, batching, and export workflows.',
+      'Gepeta, a life and money tracker. Say it, type it or snap it once, and it is recorded properly.',
+      'Writor, a writing editor whose teacher marks weak spots and never rewrites me.',
+      'Chapeta, a Mac AI companion one shortcut away, with any model, my files and the web.',
+      'TimeLion, an always-visible timeline of my day, my routine, my calendars and my breaks.',
     ],
-    stack: ['Agentic AI systems', 'Native macOS automation', 'Local-first architectures', 'WebAssembly media pipelines'],
+    stack: ['PaPPs', 'AI agents', 'Writing', 'macOS and web'],
   },
   {
     company: 'Q.E.D Science',
     role: 'Founding Engineer',
     period: 'May 2025 - 2026',
-    eyebrow: 'AI product build',
     summary: 'Building the core product platform for editorial grant discovery, eligibility reasoning, evidence gathering, and application drafting.',
     points: [
       'Owned the full product pipe: frontend workflows, backend orchestration, data flow, and the AI engine in the middle.',
@@ -29,7 +28,6 @@ export const experience = [
     company: 'D-ID',
     role: 'Senior FullStack Engineer',
     period: '2021 - 2025',
-    eyebrow: 'AI product scale',
     summary: 'Designed, developed, and led foundational work for core D-ID product experiences and API surfaces.',
     points: [
       'Helped build the foundations of Studio D-ID, Chat D-ID, and Agents D-ID.',
@@ -42,7 +40,6 @@ export const experience = [
     company: 'Reality Shift Ltd.',
     role: 'Co-Founder / CTO',
     period: '2020 - 2021',
-    eyebrow: '3D and XR',
     summary: 'Co-founded a game and XR company focused on VR gameplay, procedural systems, and gesture recognition.',
     points: [
       'Developed the VR game Terragon: Symbol Of Magic.',
@@ -55,7 +52,6 @@ export const experience = [
     company: 'Israeli Defense Forces',
     role: 'Software Architect',
     period: '2018 - 2020',
-    eyebrow: 'Modernization',
     summary: 'Modernized legacy systems and led frontend architecture changes for large internal platforms.',
     points: [
       'Designed and implemented a scalable micro frontend architecture for a legacy monolith.',
@@ -68,7 +64,6 @@ export const experience = [
     company: 'Israeli Defense Forces',
     role: 'Software Developer',
     period: '2014 - 2018',
-    eyebrow: 'Early foundation',
     summary: 'Built web applications, mapping systems, and infrastructure components from scratch.',
     points: [
       'Developed multiple web app projects from the ground up.',

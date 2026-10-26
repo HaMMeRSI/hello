@@ -2,32 +2,38 @@
 import Icon from '../components/Icon/index.astro';
 import Layout from '../components/Layout/index.astro';
 import LightbulbStage from '../components/LightbulbStage/index.astro';
-import { profile } from '../content/profile/home';
+import WritingScroll from '../components/WritingScroll/index.astro';
+import { profile } from '../content/profile/site';
 import './index.css';
 ---
 
-<Layout title={`${profile.name} | Hands-on Solutions Architect`} description={profile.headline}>
+<Layout title={`${profile.name} | ${profile.tagline}`} description={profile.headline}>
   <main class="page">
     <section class="hero" aria-labelledby="hero-title">
       <div class="hero-content">
+        <p class="hero-byline">Sagi Hammer · solving problems with personal apps</p>
         <h1 class="hero-name" id="hero-title">
-          Sagi
+          <span class="hero-line">Nothing fits you</span>
           <br />
-          Hammer
+          but you.
         </h1>
         <p class="hero-tagline">
-          Engineer by <span class="blue-underline">mindset</span>.
+          &quot;I wish this <span class="red-underline">existed</span>.&quot;
           <br />
-          Creator at <span class="blue-underline">heart</span>.
+          &quot;I can <span class="red-underline">build</span> that.&quot;
+        </p>
+        <p class="hero-lede">
+          Every app starts as a problem. AI writes the code now, so building is no longer the hard part. Seeing your problem clearly is. Solve it with a PaPP, a personal app built
+          for exactly one person, and I&apos;ll show you how to start.
         </p>
         <div class="hero-actions">
-          <a href="/projects" class="btn-primary" data-hero-cta="view_work">
-            View My Work
+          <a href="/start" class="btn-primary" data-track="hero_cta_clicked" data-track-props={JSON.stringify({ cta: 'start_papp' })}>
+            Build your first PaPP
             <Icon name="arrowRight" size={16} />
           </a>
-          <a href="/CV/" class="btn-ghost" data-hero-cta="download_resume">
-            Download Resume
-            <Icon name="download" size={16} />
+          <a href="/projects" class="btn-ghost" data-track="hero_cta_clicked" data-track-props={JSON.stringify({ cta: 'view_papps' })}>
+            See my PaPPs
+            <Icon name="arrowRight" size={16} />
           </a>
         </div>
       </div>
@@ -36,20 +42,7 @@ import './index.css';
         <LightbulbStage />
       </div>
     </section>
+
+    <WritingScroll />
   </main>
 </Layout>
-
-<script is:inline>
-  function setupHeroCtas() {
-    document.querySelectorAll('[data-hero-cta]').forEach(function (el) {
-      el.removeEventListener('click', el._phHeroHandler);
-      el._phHeroHandler = function () {
-        window.posthog?.capture('hero_cta_clicked', { cta: el.dataset.heroCta });
-      };
-      el.addEventListener('click', el._phHeroHandler);
-    });
-  }
-
-  document.addEventListener('DOMContentLoaded', setupHeroCtas);
-  document.addEventListener('astro:page-load', setupHeroCtas);
-</script>

@@ -20,7 +20,7 @@
       left: 0;
       width: 2px;
       border-radius: 999px;
-      background: var(--blue);
+      background: var(--red);
     }
 
     & .milestone {
@@ -44,18 +44,18 @@
         height: var(--milestone-dot-height);
         border-radius: 50%;
         background: #fff;
-        border: var(--milestone-dot-border) solid var(--blue);
-        box-shadow: 0 0 0 5px rgba(var(--blue-rgb), 0.08);
+        border: var(--milestone-dot-border) solid var(--red);
+        box-shadow: 0 0 0 5px rgba(var(--red-rgb), 0.08);
         transform: translateX(-50%);
         transition: box-shadow 0.35s var(--ease-expo);
       }
 
       &:hover::before {
-        box-shadow: 0 0 0 9px rgba(var(--blue-rgb), 0.1);
+        box-shadow: 0 0 0 9px rgba(var(--red-rgb), 0.1);
       }
 
       & .milestone-period {
-        color: var(--blue);
+        color: var(--red);
         font-family: var(--font-hand);
         font-size: 1.15rem;
         font-weight: 700;
@@ -111,8 +111,8 @@
             width: 0.45rem;
             height: 0.45rem;
             border-radius: 50%;
-            background: rgba(var(--blue-rgb), 0.22);
-            border: 1.5px solid var(--blue);
+            background: rgba(var(--red-rgb), 0.22);
+            border: 1.5px solid var(--red);
             transform: translateY(-50%);
           }
         }
@@ -153,7 +153,7 @@
       }
 
       & em {
-        color: var(--blue);
+        color: var(--red);
         font-family: var(--font-hand);
         font-style: normal;
         font-size: 1.05rem;

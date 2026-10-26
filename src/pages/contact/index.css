@@ -1,6 +1,6 @@
 .story-page {
   --contact-mono: ui-monospace, 'SF Mono', 'JetBrains Mono', menlo, monospace;
-  --contact-live: #1fb27a;
+  --contact-live: var(--red);
 
   & .contact-clock {
     display: inline-flex;
@@ -21,7 +21,7 @@
     height: 0.55rem;
     border-radius: 999px;
     background: var(--contact-live);
-    box-shadow: 0 0 0 0 rgba(31, 178, 122, 0.45);
+    box-shadow: 0 0 0 0 rgba(var(--red-rgb), 0.45);
 
     &::after {
       content: '';
@@ -72,7 +72,7 @@
         width: 2px;
         height: 0;
         border-radius: 999px;
-        background: var(--blue);
+        background: var(--red);
         transform: translateY(-50%);
         transition: height 0.42s var(--ease-expo);
       }
@@ -107,7 +107,7 @@
       }
 
       & .contact-label {
-        color: var(--blue);
+        color: var(--red);
         font-family: var(--contact-mono);
         font-size: 0.72rem;
         font-weight: 600;
@@ -159,7 +159,7 @@
           transform 0.3s var(--ease-expo);
 
         &:hover {
-          color: var(--blue);
+          color: var(--red);
           transform: translateY(-1px);
         }
       }
@@ -176,24 +176,24 @@
 
       &:hover .contact-index,
       &:focus-within .contact-index {
-        border-color: rgba(var(--blue-rgb), 0.45);
-        color: var(--blue);
+        border-color: rgba(var(--red-rgb), 0.45);
+        color: var(--red);
       }
 
       &:hover .contact-value,
       &:focus-within .contact-value {
-        color: var(--blue);
+        color: var(--red);
         transform: translateX(0.2rem);
       }
 
       &:hover .contact-arrow,
       &:focus-within .contact-arrow {
-        color: var(--blue);
+        color: var(--red);
         transform: translate(0.4rem, -0.4rem);
       }
 
       &[data-copied='true'] .contact-action {
-        color: var(--blue);
+        color: var(--red);
       }
 
       @media (max-width: 560px) {
