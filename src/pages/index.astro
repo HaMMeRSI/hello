@@ -18,21 +18,26 @@ import './index.css';
           but you.
         </h1>
         <p class="hero-tagline">
-          &quot;I wish this <span class="red-underline">existed</span>.&quot;
-          <br />
-          &quot;I can <span class="red-underline">build</span> that.&quot;
+          <span class="hero-from">From</span>
+          <span>&quot;I wish this <span class="blue-underline">existed</span>.&quot;</span>
+          <span class="hero-from">to</span>
+          <span>&quot;I can <span class="blue-underline">build</span> that.&quot;</span>
         </p>
         <p class="hero-lede">
-          Every app starts as a problem. AI writes the code now, so building is no longer the hard part. Seeing your problem clearly is. Solve it with a PaPP, a personal app built
-          for exactly one person, and I&apos;ll show you how to start.
+          Every app starts as a problem.
+          <br />
+          AI writes the code.{' '}
+          <a href="https://apargon.com" class="hero-link" data-track="hero_link_clicked" data-track-props={JSON.stringify({ destination: 'apargon' })}>Apargon</a> runs it.
+          <br />
+          You just need to see the problem clearly. I’ll show you how.
         </p>
         <div class="hero-actions">
           <a href="/start" class="btn-primary" data-track="hero_cta_clicked" data-track-props={JSON.stringify({ cta: 'start_papp' })}>
             Build your first PaPP
             <Icon name="arrowRight" size={16} />
           </a>
-          <a href="/projects" class="btn-ghost" data-track="hero_cta_clicked" data-track-props={JSON.stringify({ cta: 'view_papps' })}>
-            See my PaPPs
+          <a href="/projects" class="btn-ghost" data-track="hero_cta_clicked" data-track-props={JSON.stringify({ cta: 'view_projects' })}>
+            See my projects
             <Icon name="arrowRight" size={16} />
           </a>
         </div>

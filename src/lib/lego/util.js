@@ -2,9 +2,6 @@
    import, so Astro can read them at build time to print real counts. */
 export const H = 1.2; // one brick layer, in stud units
 
-/* The brand red from the icon. Glossy, deep, slightly cool. */
-export const RED = '#B8061E';
-
 /* x, z: the brick's minimum corner in studs. layer: whole brick layers;
    y is the same height in units, for the engine. */
 export function brick(x, layer, z, w, d, color, extra = {}) {

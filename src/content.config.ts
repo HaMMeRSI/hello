@@ -9,9 +9,10 @@ const writing = defineCollection({
     title: z.string(),
     hook: z.string(),
     kicker: z.string(),
-    // The part of the title painted red on the home page.
+    // The part of the title highlighted in blue on the home page.
     emphasis: z.string(),
     order: z.number(),
+    published: z.coerce.date().optional(),
   }),
 });
 

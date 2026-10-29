@@ -33,7 +33,7 @@
         left: 0;
         width: 100%;
         height: 0.13em;
-        background: var(--red);
+        background: var(--blue);
         opacity: 0.86;
         border-radius: 999px;
         transform: rotate(-1.2deg) scaleX(0);
@@ -53,7 +53,7 @@
       & .story-kicker {
         display: inline-block;
         margin-bottom: 0.9rem;
-        color: var(--red);
+        color: var(--blue);
         font-family: var(--font-hand);
         font-size: clamp(0.972rem, 2.106vw, 1.2555rem);
         font-weight: 700;
@@ -69,6 +69,8 @@
         font-weight: 1000;
         line-height: 0.93;
         letter-spacing: 0;
+        word-spacing: -0.08em;
+        text-wrap: balance;
         animation: storyNameReveal 900ms 220ms var(--ease-expo) both;
 
         @media (max-width: 560px) {
@@ -110,7 +112,7 @@
 
         & .story-meta-label {
           display: inline-block;
-          color: var(--red);
+          color: var(--blue);
           font-family: var(--font-hand);
           font-size: 0.8424rem;
           line-height: 1;
@@ -141,7 +143,7 @@
         width: 0.6rem;
         height: 0.6rem;
         border-radius: 50%;
-        background: var(--red);
+        background: var(--blue);
       }
 
       & h2 {

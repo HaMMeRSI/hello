@@ -3,7 +3,7 @@
   --hero-top: clamp(4.75rem, 7.5dvh, 6rem);
   --hero-bottom: clamp(1.25rem, 4dvh, 3rem);
   --hero-gap: clamp(1rem, 3vw, 2.5rem);
-  --hero-name-size: clamp(2.4rem, min(4.9vw, 8.2dvh), 4.5rem);
+  --hero-name-size: clamp(2.4rem, min(4.7vw, 8.2dvh), 4.5rem);
   --hero-tagline-size: clamp(1.1745rem, min(2.0655vw, 3.402dvh), 1.8225rem);
   --bulb-stage-max: 58.75rem;
   position: relative;
@@ -11,7 +11,7 @@
   min-height: 100dvh;
   /* clip, not hidden: a scroll container here would pin the writing stage to the page instead of the viewport */
   overflow-x: clip;
-  background: #fafafa;
+  background: #fdfdfb;
 
   @media (max-width: 860px) {
     --page-x: clamp(1rem, 5vw, 1.75rem);
@@ -119,6 +119,20 @@
           margin-top: 1.25rem;
           margin-bottom: 0;
         }
+
+        & .hero-link {
+          color: inherit;
+          text-decoration: underline;
+          text-decoration-color: color-mix(in srgb, var(--blue) 45%, transparent);
+          text-decoration-thickness: 0.08em;
+          text-underline-offset: 0.25em;
+          transition: color 150ms, text-decoration-color 150ms;
+
+          &:hover {
+            color: var(--blue);
+            text-decoration-color: var(--blue);
+          }
+        }
       }
 
       & :is(.hero-tagline, .hero-lede, .hero-actions) {
@@ -133,15 +147,29 @@
         font-weight: 400;
         line-height: 1.25;
         color: var(--dark);
+        display: grid;
+        grid-template-columns: auto auto;
+        justify-content: start;
+        column-gap: 0.3em;
         margin-bottom: clamp(1rem, min(2.5vw, 3dvh), 1.5rem);
 
         @media (max-width: 860px) {
+          justify-content: center;
+          text-align: start;
           margin-bottom: 0;
         }
 
-        & .red-underline {
+        & .hero-from {
+          justify-self: end;
+        }
+
+        & > :last-child {
+          --underline-delay: 1200ms;
+        }
+
+        & .blue-underline {
           position: relative;
-          color: var(--red);
+          color: var(--blue);
           font-weight: 700;
           text-decoration: none;
 
@@ -152,19 +180,12 @@
             left: 0;
             width: 0;
             height: 0.14em;
-            background: var(--red);
+            background: var(--blue);
             border-radius: 999px;
             transform: rotate(-1.5deg);
             transform-origin: left center;
             opacity: 0.86;
-          }
-
-          &:first-of-type::after {
-            animation: underlineGrow 700ms 1000ms var(--ease-expo) forwards;
-          }
-
-          &:last-of-type::after {
-            animation: underlineGrow 700ms 1200ms var(--ease-expo) forwards;
+            animation: underlineGrow 700ms var(--underline-delay, 1000ms) var(--ease-expo) forwards;
           }
         }
       }
@@ -233,7 +254,7 @@
           }
 
           &:hover {
-            color: var(--red);
+            color: var(--blue);
 
             & svg {
               transform: translateX(4px);

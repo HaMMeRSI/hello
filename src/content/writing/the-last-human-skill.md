@@ -3,7 +3,7 @@ title: "The last human skill standing"
 hook: "AI can build anything. It still cannot see your problem for you. Nobody taught you how, so here is the thinking process."
 kicker: "problem solving"
 emphasis: "human skill"
-order: 2
+order: 3
 ---
 
 With AI anyone can build anything today. My 16-year-old cousin built her personal app with a little push in the right direction. Yet there is one skill that will stay human forever: Problem solving.

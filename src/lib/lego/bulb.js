@@ -1,14 +1,15 @@
 /* Variant E: a light bulb that switches on at the end.
    It stands upright on its contact, the way a bulb sits in a socket: the
-   red brick from the opening shot is that contact. Above it, a black
+   blue brick from the opening shot is that contact. Above it, a black
    insulator, a threaded silver screw base, then a clear glass globe on a
    short stem, with a filament of round bricks in the middle. Each layer is
    a disc sampled onto the stud grid; the globe is hollowed to a one-stud
    shell and packed into real brick sizes like the orca. When the last
    bricks close the top, the filament comes on and the room goes warm. */
-import { RED, H, chunk, packLayer, attachOrder } from './util.js';
+import { H, chunk, packLayer, attachOrder } from './util.js';
 
-const BLACK = '#1C1D21',
+const BLUE = '#1E4FE6', // the site blue, a shade deeper so it reads as glossy plastic
+  BLACK = '#1C1D21',
   SILVER = '#C3C8CE',
   STEEL = '#8E959E';
 const GLASS = '#E6F0F4',
@@ -30,7 +31,7 @@ const N = 16,
 const dist = (i, k) => Math.hypot(O + i + 0.5, O + k + 0.5); // from the bulb's axis
 const disc = (R, colour) => Array.from({ length: N }, (_, i) => Array.from({ length: N }, (_, k) => (dist(i, k) <= R ? colour : null)));
 
-const solid = [...BASE.map((R, L) => disc(R, L === 0 ? RED : L === 1 ? BLACK : L % 2 ? STEEL : SILVER)), ...GLOBE.map(R => disc(R, GLASS))];
+const solid = [...BASE.map((R, L) => disc(R, L === 0 ? BLUE : L === 1 ? BLACK : L % 2 ? STEEL : SILVER)), ...GLOBE.map(R => disc(R, GLASS))];
 
 // The globe keeps a one-stud shell: a cell stays if an empty cell is next
 // to it, or nothing is above or below it. It also stays where it is the

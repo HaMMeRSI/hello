@@ -16,7 +16,7 @@
   }
 
   @media (max-width: 860px) {
-    &:not(:first-child)::before {
+    &:not(:first-of-type)::before {
       content: '';
       position: absolute;
       top: calc(var(--project-list-gap, clamp(3rem, 7vw, 6rem)) / -2);
@@ -28,7 +28,7 @@
     }
   }
 
-  &:nth-child(even) {
+  &:nth-of-type(even) {
     & .feature-content {
       order: 0;
     }
@@ -247,7 +247,7 @@
       padding: 0.32rem 0.55rem;
       border-radius: 999px;
       background: rgba(255, 255, 255, 0.74);
-      color: color-mix(in srgb, var(--red) 50%, var(--dark));
+      color: color-mix(in srgb, var(--blue) 50%, var(--dark));
       font-family: var(--font-display);
       font-size: 0.72rem;
       font-weight: 900;
@@ -284,7 +284,7 @@
       padding: 0;
       overflow: hidden;
       background: #fff;
-      border: 1px solid color-mix(in srgb, var(--red) 13%, rgba(var(--dark-rgb), 0.08));
+      border: 1px solid color-mix(in srgb, var(--blue) 13%, rgba(var(--dark-rgb), 0.08));
       border-radius: 12px;
       appearance: none;
       -webkit-appearance: none;
@@ -301,11 +301,11 @@
       &:focus-visible,
       &.project-thumb-active {
         transform: translateY(-2px);
-        border-color: var(--red);
+        border-color: var(--blue);
       }
 
       &.project-thumb-active {
-        box-shadow: 0 0 0 2px color-mix(in srgb, var(--red) 20%, transparent);
+        box-shadow: 0 0 0 2px color-mix(in srgb, var(--blue) 20%, transparent);
         animation: projectThumbPop 0.34s var(--ease-spring) both;
       }
 
@@ -356,7 +356,7 @@
       align-items: center;
       flex-wrap: wrap;
       gap: 0.55rem;
-      color: color-mix(in srgb, var(--red) 72%, var(--dark));
+      color: color-mix(in srgb, var(--blue) 72%, var(--dark));
       font-family: var(--font-display);
       font-size: 0.78rem;
       font-weight: 900;
@@ -392,7 +392,7 @@
         & .project-link-arrow {
           display: inline-grid;
           place-items: center;
-          color: color-mix(in srgb, var(--red) 24%, var(--gray-600));
+          color: color-mix(in srgb, var(--blue) 24%, var(--gray-600));
           line-height: 0;
           opacity: 0.32;
           transform: translate(-0.08em, -0.62em);
@@ -407,7 +407,7 @@
 
         &:hover,
         &:focus-visible {
-          color: color-mix(in srgb, var(--red) 70%, var(--dark));
+          color: color-mix(in srgb, var(--blue) 70%, var(--dark));
 
           & .project-link-arrow {
             opacity: 0.52;
@@ -416,7 +416,7 @@
         }
 
         &:focus-visible {
-          outline: 2px solid color-mix(in srgb, var(--red) 34%, transparent);
+          outline: 2px solid color-mix(in srgb, var(--blue) 34%, transparent);
           outline-offset: 0.2rem;
           border-radius: 0.18em;
         }
@@ -439,7 +439,7 @@
       margin: 1.1rem 0 0;
       padding: 0;
       list-style: none;
-      color: color-mix(in srgb, var(--dark) 78%, var(--red));
+      color: color-mix(in srgb, var(--dark) 78%, var(--blue));
       font-family: var(--font-display);
       font-size: 0.88rem;
       font-weight: 750;
@@ -458,8 +458,8 @@
         width: 0.42rem;
         height: 0.42rem;
         border-radius: 50%;
-        background: var(--red);
-        box-shadow: 0 0 0 0.22rem color-mix(in srgb, var(--red) 12%, transparent);
+        background: var(--blue);
+        box-shadow: 0 0 0 0.22rem color-mix(in srgb, var(--blue) 12%, transparent);
       }
     }
 
@@ -477,9 +477,9 @@
         align-items: center;
         padding: 0.32rem 0.62rem;
         border-radius: 7px;
-        border: 1px solid color-mix(in srgb, var(--red) 20%, rgba(var(--dark-rgb), 0.12));
+        border: 1px solid color-mix(in srgb, var(--blue) 20%, rgba(var(--dark-rgb), 0.12));
         background: transparent;
-        color: color-mix(in srgb, var(--red) 40%, var(--dark));
+        color: color-mix(in srgb, var(--blue) 40%, var(--dark));
         font-family: var(--font-display);
         font-size: 0.7rem;
         font-weight: 800;
@@ -493,9 +493,9 @@
       }
 
       & .project-chip:hover {
-        border-color: color-mix(in srgb, var(--red) 50%, transparent);
-        background: color-mix(in srgb, var(--red) 8%, transparent);
-        color: color-mix(in srgb, var(--red) 62%, var(--dark));
+        border-color: color-mix(in srgb, var(--blue) 50%, transparent);
+        background: color-mix(in srgb, var(--blue) 8%, transparent);
+        color: color-mix(in srgb, var(--blue) 62%, var(--dark));
       }
     }
   }

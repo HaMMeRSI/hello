@@ -2,8 +2,8 @@
 title: "How does that damn AI control your computer?"
 hook: "A text-spitting machine moving your mouse. The trick is a piece of software called a harness, and you can understand it in ten minutes."
 kicker: "harnesses"
-emphasis: "control your computer"
-order: 3
+emphasis: "your computer"
+order: 4
 ---
 
 Have you ever wondered how AI, a text-spitting machine, can control physical items, like your computer? I have. It does it with a piece of software called a "harness".

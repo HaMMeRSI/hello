@@ -1,5 +1,18 @@
 export const experience = [
   {
+    company: 'Apargon',
+    role: 'Creator',
+    period: '2026 - now',
+    summary: 'Building the open-source runtime for PaPPs: AI writes the app, Apargon runs it with a double-click.',
+    points: [
+      'A PaPP is one file on your computer. No servers, no hosting, no setup.',
+      'Sandboxed by default: a PaPP asks for every permission and the user approves it before any code runs.',
+      'Ships a papp skill so any AI agent knows how to write PaPPs.',
+      'Free and open source, for macOS and Linux.',
+    ],
+    stack: ['Sandboxed GUI', 'Permissions', 'AI agents', 'macOS and Linux'],
+  },
+  {
     company: 'PaPPs',
     role: 'Builder and writer',
     period: '2026 - now',

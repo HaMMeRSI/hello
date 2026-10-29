@@ -3,7 +3,7 @@ title: "How to build personal software in the AI era"
 hook: "Everything you need to build a PaPP: the core principles, the five questions, the recipe. No code required."
 kicker: "the guide"
 emphasis: "personal software"
-order: 4
+order: 5
 ---
 
 Have you ever told yourself, "Damn, I wish this app existed - it would have saved me a ton of work," or "If only this app had this feature it would be perfect"? Or maybe you noticed a task that you do again and again that an app could automate?
@@ -75,13 +75,17 @@ A PaPP has one goal and one goal only: solve your problem. And this goal does no
 We need to understand some key concepts about every piece of software out there.
 - Shape of software - mobile app, desktop app, script, web app, Excel automation etc.
 - Cloud - Literally four walls, and inside them are a bunch of computers that are not yours but are rented to you.
-- Server: a computer, that's it. Your laptop is a server, and the computers in the cloud are servers.
-- Client - the software interacting with the server. It could be your notes app interacting with your computer, a browser like Google Chrome interacting with the cloud, and it could be your calendar interacting with Google servers.
+- Server: a computer, that's it. Your laptop is a server, and the computers in the cloud are servers. "localhost" is your laptop acting as the server.
 - Secret - Usually, but not limited to, a piece of text - a key that you paid for, and that grants you access to a server owned by someone else.
 - API - A contract between the server and the client on how they can talk to each other.
+- Client - the software interacting with the server. It could be your notes app interacting with your computer, a browser like Google Chrome interacting with the cloud, and it could be your calendar interacting with Google servers.
+- UI (User Interface) - everything you see and touch. Screens, panels, buttons, the text box you type in.
+- Library (or package) - code someone else wrote to solve one problem well, and gave away. Buttons, charts, calendars, reading a PDF - there is a library for almost everything. Your agent pulls them in instead of writing them from scratch.
+- Framework - a big library that decides the shape of the whole project. React, Electron, Next.js - you will hear these names from the agent. It picks one; you don't need to understand it.
+- Renderer - the software that draws the UI on your screen. Almost always a browser engine, even inside a desktop app.
 - Coding agent (or harness) - a piece of software that knows how to read, write, and execute code.
 
-It is important that we understand the role of a server.
+It is important that we understand the roles of a server & client.
 
 You are probably asking yourself: if a server is my computer, why are there clouds?
 It is a nuance you must grasp.
@@ -98,6 +102,18 @@ Another limit is your computer itself - it is weak. If you want to serve your ow
 
 And the last reason we need servers is to keep shared secrets safe. You see, everything, and I mean **everything**, that is stored on the client is visible to everyone. A server, however, is protected. There are very few ways to access and communicate with it.
 That's why we store the secret in a remote secure server.
+
+A client, on the other hand, is the software that interacts with the server. Sometimes it is just a script with no UI, but most of the time it has a UI. You need to understand how the UI gets built, because this is where most new builders waste their time.
+
+You do not design the UI. You describe it: which panels (rectangle containers), what sits on each, what is next to what. A pen and paper sketch is great; a mental picture is enough. Take a photo of the sketch or describe the picture, and give it to the agent.
+
+You never draw a button. Nobody does anymore. UI libraries hold thousands of ready-made parts - buttons, tables, menus, date pickers - and the agent picks one and assembles your app from it. This is the single biggest reason a PaPP takes a prompt and a half: the parts already exist.
+
+Nearly every app you use - web, desktop, and more mobile apps than you'd think - is a browser under the hood. That is the renderer. It is also why AI is so good at UI: it has read the entire web.
+
+One distinction will save you money: a library runs on your machine and is free. A service runs on someone else's server, needs an API and a secret, and costs. Before anything custom, ask the agent: "Is there a library for this?"
+
+If you want to go deeper: open the gallery of any popular UI library and scroll. You'll learn the vocabulary - sidebar, modal, toast, tab - and next time you'll describe your PaPP in the words the agent thinks in.
 
 ## How the code comes alive
 It is good to know for yourself what is going on behind the scenes, at a basic level. Most of it a coding agent will handle.
@@ -348,13 +364,13 @@ Forget about one-shots. Those viral posts about crazy apps people say they one-s
 
 The reason for the separation is context management.
 
-You see, just like you can remember a limited amount of information - so can the AI. Its memory is called "The Context Window". Each new empty chat between you and the AI is called a session, and each turn between you and the AI fills the context window with information in that session. After a certain threshold the results of the AI degrade - that is just their nature.
+You see, just like you can remember a limited amount of information - so can the AI. Its memory is called "The Context Window". Each new empty chat between you and the AI is called a session, and each turn between you and the AI fills the context window with information in that session. After a certain threshold the results of the AI degrade, and when it reaches its max limit, a compaction process is executed to compress the chat so far - that is just their nature.
 
-So you want to make sure that you work with a close-to-empty context window, and have a habit of creating new sessions, even for similar work.
+So you want to make sure that for each unit of work - a task - you start in a new session. Similar tasks still get their own sessions: a button with its functionality - one session, its design - a different session, iterations on that design - same session.
 
 **The sauce**
 ```
-Below is how I work today and my answers about the app I want to build. I build with an AI harness in small steps, one fresh session per step, to keep the context small.
+Below is how I work today and my answers about the app I want to build. I build with an AI harness in small steps, one fresh session per unit of work.
 
 Step 1: Give me a plan only. Don't write any prompts yet.
 - Your tech choices, in one short paragraph.
@@ -374,7 +390,7 @@ Every prompt after the scaffold has three parts:
 
 [your process and answers - your preparations]
 ```
-This prompt will break your PaPP into small units of work to keep the context window small and increase the chances of success. It may, and probably will, ask you further questions to fill gaps. Answer as you see fit.
+This prompt will break your PaPP into small units of work, one per session, to increase the chances of success. It may, and probably will, ask you further questions to fill gaps. Answer as you see fit.
 
 **Addition & Subtraction**
 A tip - many software engineers themselves skip it. This is the key ingredient that will remove slop and enable a proper PaPP build.

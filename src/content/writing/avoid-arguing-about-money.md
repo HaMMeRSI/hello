@@ -2,8 +2,8 @@
 title: "How my wife and I avoid arguing about money"
 hook: "A new month starts and nobody knows where the money went. We tried the spreadsheet, five apps and praying. Then we built our own."
 kicker: "money"
-emphasis: "arguing about money"
-order: 1
+emphasis: "about money"
+order: 2
 ---
 
 We've all been there. A new month starts and you have no idea what the heck is going on with your money. You ask yourselves: Have we over-spent? Over-saved? Are we on track for that vacation we've been saving for? That unexpected expense definitely did not help.

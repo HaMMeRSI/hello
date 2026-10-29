@@ -9,11 +9,13 @@
     "build": "astro check && astro build",
     "preview": "astro preview",
     "check": "astro check",
+    "og": "node scripts/og-images.mjs",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "deploy:vps": "node ~/git/infra/deploy.ts resume"
+    "deploy": "astro build && wrangler deploy"
   },
   "dependencies": {
+    "@astrojs/markdown-satteri": "^0.4.5",
     "@astrojs/sitemap": "^3.7.3",
     "astro": "latest",
     "lucide-astro": "0.468.0",
@@ -26,7 +28,9 @@
     "@astrojs/check": "^0.9.9",
     "@types/node": "^25.9.1",
     "@types/three": "0.185.0",
+    "opentype.js": "^2.0.0",
     "prettier": "^3.8.3",
-    "prettier-plugin-astro": "^0.14.1"
+    "prettier-plugin-astro": "^0.14.1",
+    "wrangler": "^4.154.0"
   }
 }

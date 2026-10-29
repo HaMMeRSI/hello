@@ -55,19 +55,20 @@ export const steps = [
     body: 'Write it down in painful detail. What happens today, what hurts, what the ideal solution looks like for you. This is 80% of the work, and the part no AI can do for you.',
   },
   {
-    title: 'Answer five questions',
-    body: "Where does it run? What does it remember? How do the parts talk? How does it decide? How do you keep it alive? You don't need the jargon. Brainstorm the answers with the AI.",
+    title: 'Install Apargon',
+    body: "Apargon runs PaPPs. A PaPP is one file on your computer: no server, no hosting, no setup. On first open, say yes to the papp skill so your AI knows how to write them. It's free and open source, for macOS and Linux.",
+    link: { href: 'https://apargon.com/#download', label: 'Download Apargon' },
   },
   {
-    title: 'Get a harness',
-    body: 'A harness is an app that lets AI write code, run it and use your computer. Claude Code, Codex, or Chapeta, which I built for PaPP creators. Pick a folder, and your PaPP lives there.',
+    title: 'Get a coding agent',
+    body: 'A coding agent is an app that lets AI write code on your computer. Claude Code, Codex, or Chapeta, which I built for PaPP creators. Pick a folder, and your PaPP lives there.',
   },
   {
     title: 'Build it in small parts',
-    body: 'One prompt to set up an empty app. One for the bare-bones version. Then one feature at a time, each in a fresh chat, because the AI gets worse as a chat gets long.',
+    body: 'Tell the agent what you need, not how. It writes the .papp file, and the open window reloads every time it saves. Start with the bare bones, then add one feature at a time, each in a fresh chat, because the AI gets worse as a chat gets long.',
   },
   {
     title: 'Check it solves the problem',
-    body: "Open it. Use it. Tell the AI what's broken, what's missing and what you don't like. Go back to your definition. Done means the problem is gone.",
+    body: "Double-click the .papp. Before any of its code runs, Apargon shows what it wants to touch: read it, then click Allow. Use it. Tell the AI what's broken, what's missing and what you don't like. Go back to your definition. Done means the problem is gone.",
   },
 ];

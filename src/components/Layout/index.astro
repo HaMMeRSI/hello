@@ -16,9 +16,25 @@ interface Props {
   breadcrumbLabel?: string;
   pageMainEntity?: string | StructuredDataNode;
   structuredData?: StructuredDataNode[];
+  // Link-preview image, a 1200x630 PNG under public/og (scripts/og-images.mjs).
+  image?: string;
+  ogType?: 'website' | 'article';
+  publishedTime?: Date;
+  noindex?: boolean;
 }
 
-const { title = profile.name, description = profile.headline, pageType = 'ProfilePage', breadcrumbLabel, pageMainEntity, structuredData: extraStructuredData = [] } = Astro.props;
+const {
+  title = profile.name,
+  description = profile.headline,
+  pageType = 'ProfilePage',
+  breadcrumbLabel,
+  pageMainEntity,
+  structuredData: extraStructuredData = [],
+  image = '/og/default.png',
+  ogType = 'website',
+  publishedTime,
+  noindex = false,
+} = Astro.props;
 
 const normalizePath = (pathname: string) => {
   const withoutIndex = pathname.replace(/\/index\.html$/, '/');
@@ -123,17 +139,22 @@ const structuredDataJson = JSON.stringify(structuredData).replace(/</g, '\\u003c
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
     <meta name="author" content={profile.name} />
-    <meta name="theme-color" content="#fafafa" />
-    <link rel="canonical" href={canonicalHref} />
-    <meta property="og:type" content="website" />
+    <meta name="theme-color" content="#fdfdfb" />
+    {noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonicalHref} />}
+    <meta property="og:type" content={ogType} />
     <meta property="og:site_name" content={profile.name} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonicalHref} />
     <meta property="og:locale" content="en_US" />
-    <meta name="twitter:card" content="summary" />
+    <meta property="og:image" content={toAbsoluteUrl(image)} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    {publishedTime && <meta property="article:published_time" content={publishedTime.toISOString()} />}
+    <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={toAbsoluteUrl(image)} />
     <link rel="icon" href="/favicon/favicon.ico" sizes="any" />
     <link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg" />
     <link rel="icon" type="image/png" sizes="96x96" href="/favicon/favicon-96x96.png" />

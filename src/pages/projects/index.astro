@@ -7,8 +7,6 @@ import { projects } from '../../content/profile/projects';
 import '../../styles/story.css';
 import './index.css';
 
-const mine = projects.filter(project => project.group === 'mine');
-const others = projects.filter(project => project.group === 'others');
 const personId = new URL('/#person', profile.siteUrl).toString();
 const projectsUrl = new URL('/projects', profile.siteUrl).toString();
 const projectListId = `${projectsUrl}#project-list`;
@@ -42,8 +40,8 @@ const projectsStructuredData = [
   {
     '@type': 'ItemList',
     '@id': projectListId,
-    name: 'My PaPPs',
-    description: 'Personal apps by Sagi Hammer, and products built for other people.',
+    name: 'My projects',
+    description: 'Software Sagi Hammer has built: apps, AI products and a VR game.',
     itemListElement: projects.map((project, index) => ({
       '@type': 'ListItem',
       position: index + 1,
@@ -57,59 +55,31 @@ const projectsStructuredData = [
 ---
 
 <Layout
-  title={`${profile.name} | My PaPPs`}
-  description="Problems Sagi Hammer solved with personal apps: a life and money tracker, a writing editor, a Mac AI companion and a day timeline. Plus ten years of products built for other people."
+  title={`My projects | ${profile.name}`}
+  description="Things Sagi Hammer has built: a life and money tracker, a writing editor, a Mac AI companion, a day timeline, a media editor, AI products at D-ID and Q.E.D, and a VR game."
   pageType="CollectionPage"
-  breadcrumbLabel="My PaPPs"
+  breadcrumbLabel="My projects"
   pageMainEntity={projectListId}
   structuredData={projectsStructuredData}>
   <main class="story-page">
     <section class="story" aria-labelledby="projects-title">
       <header class="story-intro">
-        <p class="story-kicker">my papps</p>
+        <p class="story-kicker">my projects</p>
         <h1 class="story-title" id="projects-title">
-          Built for <span class="ink">one person.</span>
+          Things I’ve <span class="ink">built.</span>
         </h1>
         <p class="story-lede">
-          Each of these started as a problem I kept working around. Each card shows the problem, the PaPP that solves it, and what changed. Steal the pattern for your own problems.
+          Some are my own apps, some I built at the companies I worked for, and one is a VR game I shipped and sold.
         </p>
-        <dl class="story-meta" aria-label="Builds">
-          <div class="story-meta-item">
-            <dt class="story-meta-label">for me</dt>
-            <dd class="story-meta-value">Gepeta · Writor · Chapeta · TimeLion</dd>
-          </div>
-          <div class="story-meta-item">
-            <dt class="story-meta-label">for others</dt>
-            <dd class="story-meta-value">FastEdit · Q.E.D · D-ID · Terragon</dd>
-          </div>
-        </dl>
       </header>
 
-      <section class="story-section" aria-labelledby="mine-title">
-        <div class="story-break">
-          <h2 id="mine-title">Built for me</h2>
-        </div>
-
+      <div class="story-section">
         <div class="project-list">
-          {mine.map((project, index) => <ProjectFeature project={project} eager={index === 0} />)}
+          {projects.map((project, index) => <ProjectFeature project={project} eager={index === 0} />)}
         </div>
-      </section>
+      </div>
 
-      <section class="story-section" aria-labelledby="others-title">
-        <div class="story-break">
-          <h2 id="others-title">Built for other people</h2>
-        </div>
-
-        <p class="project-group-lede">
-          Ten years of production software for users, clients and employers. This is how I know what a product needs, and how little of it a PaPP needs.
-        </p>
-
-        <div class="project-list">
-          {others.map(project => <ProjectFeature project={project} />)}
-        </div>
-      </section>
-
-      <StoryNext href="/start" eyebrow="your turn" label="Build your first PaPP" asideHref="/experience" asideLabel="How I got here" />
+      <StoryNext href="/experience" eyebrow="the person behind them" label="How I got here" asideHref="/start" asideLabel="Build your own PaPP" />
     </section>
   </main>
 </Layout>

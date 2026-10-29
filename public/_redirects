@@ -1,0 +1,4 @@
+/sitemap.xml /sitemap-index.xml 301
+/writing /blog 301
+/writing/* /blog/:splat 301
+/cv /CV 301

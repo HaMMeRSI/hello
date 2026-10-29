@@ -8,7 +8,7 @@ import './index.css';
 ---
 
 <Layout
-  title={`${profile.name} | Build your first PaPP`}
+  title={`Build your first PaPP | ${profile.name}`}
   description="Solve your own problems with a PaPP, a personal app built with AI. Why now is different, which problems it solves, and how to start."
   pageType="AboutPage"
   breadcrumbLabel="Start here">
@@ -22,7 +22,7 @@ import './index.css';
           <span class="ink">first PaPP.</span>
         </h1>
         <p class="story-lede">
-          A PaPP is a personal app that solves one of your problems. The AI writes the code. Your job is the problem: spotting it, defining it, and checking the fix. You don&apos;t
+          A PaPP is a personal app that solves one of your problems. The AI writes the code and Apargon runs it. Your job is the problem: spotting it, defining it, and checking the fix. You don’t
           need to be an engineer for that.
         </p>
       </header>
@@ -75,14 +75,24 @@ import './index.css';
             steps.map(step => (
               <li class="start-step reveal">
                 <h3>{step.title}</h3>
-                <p>{step.body}</p>
+                <p>
+                  {step.body}
+                  {step.link && (
+                    <>
+                      {' '}
+                      <a href={step.link.href} data-track="start_step_link_clicked" data-track-props={JSON.stringify({ label: step.link.label })}>
+                        {step.link.label}
+                      </a>
+                    </>
+                  )}
+                </p>
               </li>
             ))
           }
         </ol>
       </section>
 
-      <StoryNext href="/projects" eyebrow="keep reading" label="See my PaPPs" asideHref="/contact" asideLabel="Stuck? Send me your problem" />
+      <StoryNext href="/projects" eyebrow="keep reading" label="See my projects" asideHref="/contact" asideLabel="Stuck? Send me your problem" />
     </section>
   </main>
 </Layout>

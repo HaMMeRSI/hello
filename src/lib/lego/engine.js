@@ -242,24 +242,8 @@ export function run(plan, stage, scroller) {
   addEventListener('pointerup', endDrag, { signal });
   addEventListener('pointercancel', endDrag, { signal });
 
-  /* ------------------------------------------------------------ HUD */
-  const stepNumber = stage.querySelector('[data-step]');
-  const partsList = stage.querySelector('[data-parts]');
-  const progressBar = stage.querySelector('[data-fill]');
+  /* ----------------------------------------------------------- hint */
   const scrollHint = stage.querySelector('[data-hint]');
-  let shownStep = -1;
-
-  function showStep(k) {
-    stepNumber.textContent = String(k + 1).padStart(2, '0');
-    const parts = new Map();
-    for (const s of plan.steps[k]) {
-      const key = `${s.w}|${s.d}|${s.color}`;
-      parts.set(key, { s, n: (parts.get(key)?.n ?? 0) + 1 });
-    }
-    partsList.innerHTML = [...parts.values()]
-      .map(({ s, n }) => `<li><i style="background:${s.color}"></i><span>${Math.min(s.w, s.d)}×${Math.max(s.w, s.d)}</span><b>${n}×</b></li>`)
-      .join('');
-  }
 
   /* ----------------------------------------------------------- loop */
   const pose = new THREE.Object3D();
@@ -386,11 +370,6 @@ export function run(plan, stage, scroller) {
     placeCamera(progress, time, dt);
     const on = switchOn(progress);
 
-    // the current step: the last one that has started
-    let step = 0;
-    for (let k = 0; k < plan.steps.length; k++) if (stepStart[k] < build) step = k;
-    if (step !== shownStep) showStep((shownStep = step));
-    progressBar.style.transform = `scaleX(${build.toFixed(4)})`;
     scrollHint.classList.toggle('gone', progress > 0.02);
 
     if (on > 0) composer.render();

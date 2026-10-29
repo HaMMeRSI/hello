@@ -38,8 +38,8 @@ export const profileSchema = {
 export const navItems = [
   { label: 'Home', to: '/' },
   { label: 'Start here', to: '/start' },
-  { label: 'Writing', to: '/writing' },
-  { label: 'My PaPPs', to: '/projects' },
+  { label: 'Blog', to: '/blog' },
+  { label: 'My projects', to: '/projects' },
   { label: 'Story', to: '/experience' },
   { label: 'Contact', to: '/contact' },
 ] as const;

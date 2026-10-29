@@ -34,9 +34,9 @@
     z-index: 0;
     background: radial-gradient(
       closest-side circle at calc(50% + var(--mx, 0) * 20%) calc(48% + var(--my, 0) * 20%),
-      rgba(var(--red-rgb), 0.13),
-      rgba(var(--red-rgb), 0.05) 34%,
-      rgba(var(--red-rgb), 0.015) 54%,
+      rgba(var(--blue-rgb), 0.13),
+      rgba(var(--blue-rgb), 0.05) 34%,
+      rgba(var(--blue-rgb), 0.015) 54%,
       transparent 78%
     );
     animation: lbStageGlowIn 1200ms 700ms ease-out forwards;
@@ -49,7 +49,7 @@
     width: 40%;
     aspect-ratio: 1.45;
     border-radius: 999px;
-    background: radial-gradient(ellipse at 38% 54%, rgba(var(--red-rgb), 0.22), rgba(var(--red-rgb), 0.1) 42%, transparent 72%);
+    background: radial-gradient(ellipse at 38% 54%, rgba(var(--blue-rgb), 0.22), rgba(var(--blue-rgb), 0.1) 42%, transparent 72%);
     filter: blur(12px);
     mix-blend-mode: multiply;
     transform: translate(-50%, -50%) rotate(-18deg) scale(0.92);
@@ -85,7 +85,7 @@
     --y: 45%;
     --z: 2;
     --anim: lbGlowIgnite 2200ms var(--ease-expo) 0.85s both;
-    background: radial-gradient(circle, rgba(var(--red-rgb), 0.34), rgba(var(--red-rgb), 0.18) 28%, rgba(var(--red-rgb), 0.05) 52%, transparent 72%);
+    background: radial-gradient(circle, rgba(var(--blue-rgb), 0.34), rgba(var(--blue-rgb), 0.18) 28%, rgba(var(--blue-rgb), 0.05) 52%, transparent 72%);
     filter: blur(18px);
   }
 
@@ -94,7 +94,7 @@
     --y: 44%;
     --z: 3;
     --anim: lbHaloPulse 1800ms var(--ease-expo) 1.05s both;
-    border: 2px solid rgba(var(--red-rgb), 0.2);
+    border: 2px solid rgba(var(--blue-rgb), 0.2);
   }
 
   & .lb-asset {
@@ -128,7 +128,7 @@
     --sweep-x: -20%;
     --sweep-y: 8%;
     --origin: 0 50%;
-    --anim: lbBrushSlash var(--lb-cycle) var(--ease-expo) 0.42s both;
+    --anim: lbBlueSlash var(--lb-cycle) var(--ease-expo) 0.42s both;
   }
 
   & .lb-paint-inside {
@@ -136,7 +136,7 @@
     --x: 30.8%;
     --y: 17%;
     --z: 6;
-    --filter: drop-shadow(0 12px 18px rgba(var(--red-rgb), 0.22));
+    --filter: drop-shadow(0 12px 18px rgba(var(--blue-rgb), 0.22));
     --anim: lbPaintBurst var(--lb-cycle) var(--ease-spring) 0.92s both;
     clip-path: circle(0% at 22% 50%);
   }
@@ -257,13 +257,13 @@
     --delay: 2.16s;
   }
 
-  & .lb-star {
+  & .lb-blue-star {
     --w: 4%;
     --x: 68.4%;
     --y: 57%;
     --delay: 1.86s;
     --pop: lbStarBirth;
-    --filter: drop-shadow(0 0 12px rgba(var(--red-rgb), 0.35));
+    --filter: drop-shadow(0 0 12px rgba(var(--blue-rgb), 0.35));
     --idle: lbStarTwinkle 1.8s ease-in-out 2.4s infinite alternate;
   }
 
@@ -274,7 +274,7 @@
     width: var(--size, 0.46rem);
     aspect-ratio: 1;
     border-radius: 50%;
-    background: var(--red);
+    background: var(--blue);
     opacity: 0;
     filter: blur(0.15px);
     animation: lbMicroFleck var(--lb-cycle) var(--ease-expo) var(--delay) forwards;
@@ -378,7 +378,7 @@
   }
 }
 
-@keyframes lbBrushSlash {
+@keyframes lbBlueSlash {
   0%,
   8% {
     opacity: 0;
@@ -554,10 +554,10 @@
 @keyframes lbStarTwinkle {
   0%,
   100% {
-    filter: drop-shadow(0 0 8px rgba(var(--red-rgb), 0.32));
+    filter: drop-shadow(0 0 8px rgba(var(--blue-rgb), 0.32));
   }
   50% {
-    filter: drop-shadow(0 0 24px rgba(var(--red-rgb), 0.62));
+    filter: drop-shadow(0 0 24px rgba(var(--blue-rgb), 0.62));
   }
 }
 

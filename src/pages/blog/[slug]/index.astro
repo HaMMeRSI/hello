@@ -10,14 +10,15 @@ export async function getStaticPaths() {
   const posts = (await getCollection('writing')).sort((a, b) => a.data.order - b.data.order);
   return posts.map((post, index) => ({
     params: { slug: post.id },
-    props: { post, next: posts[(index + 1) % posts.length] },
+    props: { post, next: posts[index + 1] },
   }));
 }
 
 const { post, next } = Astro.props;
 const { Content } = await render(post);
-const postUrl = new URL(`/writing/${post.id}`, profile.siteUrl).toString();
+const postUrl = new URL(`/blog/${post.id}`, profile.siteUrl).toString();
 const personId = new URL('/#person', profile.siteUrl).toString();
+const image = `/og/blog/${post.id}.png`;
 const article = {
   '@type': 'BlogPosting',
   '@id': `${postUrl}#article`,
@@ -28,6 +29,8 @@ const article = {
   author: { '@id': personId },
   publisher: { '@id': personId },
   mainEntityOfPage: { '@id': postUrl },
+  image: new URL(image, profile.siteUrl).toString(),
+  datePublished: post.data.published?.toISOString(),
 };
 ---
 
@@ -37,7 +40,10 @@ const article = {
   pageType="WebPage"
   breadcrumbLabel={post.data.title}
   pageMainEntity={article['@id']}
-  structuredData={[article]}>
+  structuredData={[article]}
+  image={image}
+  ogType="article"
+  publishedTime={post.data.published}>
   <main class="story-page">
     <article class="story">
       <header class="story-intro">
@@ -50,7 +56,13 @@ const article = {
         <Content />
       </div>
 
-      <StoryNext href={`/writing/${next.id}`} eyebrow="next piece" label={next.data.title} asideHref="/writing" asideLabel="All writing" />
+      {
+        next ? (
+          <StoryNext href={`/blog/${next.id}`} eyebrow="next piece" label={next.data.title} asideHref="/blog" asideLabel="All posts" />
+        ) : (
+          <StoryNext href="/start" eyebrow="your turn" label="Build your first PaPP" asideHref="/blog" asideLabel="All posts" />
+        )
+      }
     </article>
   </main>
 </Layout>

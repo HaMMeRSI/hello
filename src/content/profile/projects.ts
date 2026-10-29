@@ -28,8 +28,6 @@ export type ProjectMedia = { type: 'image'; src: ImageMetadata; alt: string } | 
 
 export type Project = {
   name: string;
-  /** 'mine' is software built for one person, me. 'others' is built for users, clients or employers. */
-  group: 'mine' | 'others';
   url?: string;
   slug: string;
   type: string;
@@ -46,7 +44,6 @@ export const projects: Project[] = [
     name: 'Gepeta',
     url: 'https://gepeta.app',
     slug: 'gepeta',
-    group: 'mine',
     type: 'Life and money tracker',
     status: 'Live',
     summary: "Say what you bought, snap the receipt, or drop in the monthly sheet. It's recorded properly, and I know where every dollar goes in ten minutes a month.",
@@ -73,7 +70,6 @@ export const projects: Project[] = [
     name: 'Writor',
     url: 'https://writor.orcaryn.com',
     slug: 'writor',
-    group: 'mine',
     type: 'Writing editor',
     status: 'Release ready',
     summary: 'An essay editor with a teacher that marks my mistakes and never rewrites me. I built it to get better at English, my second language.',
@@ -89,7 +85,6 @@ export const projects: Project[] = [
     name: 'Chapeta',
     url: 'https://chapeta.net',
     slug: 'chapeta',
-    group: 'mine',
     type: 'Mac AI companion',
     status: 'Live, used every day',
     summary: 'An AI that works across my Mac, one shortcut away. Any model, my files, the web, and it makes images, video and audio.',
@@ -110,7 +105,6 @@ export const projects: Project[] = [
   {
     name: 'TimeLion',
     slug: 'timelion',
-    group: 'mine',
     type: 'Day timeline for macOS',
     status: 'Release ready',
     summary: 'A thin timeline of my day that floats above every window: my routine, my calendars and my breaks.',
@@ -126,7 +120,6 @@ export const projects: Project[] = [
     name: 'FastEdit',
     url: 'https://fastedit.net',
     slug: 'fastedit',
-    group: 'others',
     type: 'Last-mile media editor',
     status: 'Shipped product',
     summary:
@@ -152,7 +145,6 @@ export const projects: Project[] = [
   {
     name: 'Editorial Grant Agent',
     slug: 'grant-agent',
-    group: 'others',
     type: 'AI research automation',
     status: 'Q.E.D Science',
     summary: 'An AI research automation workflow that turns grant discovery, eligibility checks, evidence gathering, and drafting into a repeatable product flow.',
@@ -174,7 +166,6 @@ export const projects: Project[] = [
   {
     name: 'D-ID Product Foundations',
     slug: 'd-id',
-    group: 'others',
     type: 'AI video product engineering',
     status: 'Professional work',
     summary: 'Production product engineering across D-ID Studio, Chat, Agents, and API-facing AI video surfaces used to create and integrate generative video workflows.',
@@ -193,7 +184,6 @@ export const projects: Project[] = [
   {
     name: 'Terragon: Symbol Of Magic',
     slug: 'terragon',
-    group: 'others',
     type: 'VR game systems',
     status: 'Reality Shift',
     summary: 'A VR game systems build that combined real-time interaction design, procedural gameplay, enemy behavior, and ML-backed gesture recognition.',

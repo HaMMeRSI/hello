@@ -1,35 +1,35 @@
 .story-next {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
+  align-items: last baseline;
   justify-content: space-between;
-  gap: 1.5rem;
-  margin-top: clamp(3.5rem, 8vw, 6rem);
-  padding-top: clamp(1.4rem, 3vw, 2rem);
-  border-top: 2px solid rgba(var(--dark-rgb), 0.16);
+  gap: 1rem;
+  margin-top: clamp(2.5rem, 5vw, 3.5rem);
+  padding-top: clamp(0.9rem, 2vw, 1.25rem);
+  border-top: 1px solid rgba(var(--dark-rgb), 0.12);
 }
 
 .next-link {
   display: inline-flex;
   flex-direction: column;
-  gap: 0.15rem;
+  gap: 0.1rem;
 }
 
 .next-link small {
-  color: var(--red);
+  color: var(--blue);
   font-family: var(--font-hand);
-  font-size: 1.05rem;
+  font-size: 0.95rem;
   font-weight: 700;
 }
 
 .next-link strong {
   display: inline-flex;
   align-items: center;
-  gap: 0.55rem;
+  gap: 0.4rem;
   color: var(--dark);
   font-family: var(--font-display);
-  font-size: clamp(1.35rem, 3vw, 2rem);
-  font-weight: 1000;
+  font-size: clamp(1.1rem, 1.8vw, 1.3rem);
+  font-weight: 900;
   transition: color 0.3s var(--ease-expo);
 }
 
@@ -40,7 +40,7 @@
 }
 
 .next-link:hover strong {
-  color: var(--red);
+  color: var(--blue);
 }
 
 .next-link:hover strong svg {
@@ -51,8 +51,8 @@
   position: relative;
   color: var(--gray-600);
   font-family: var(--font-display);
-  font-size: 0.95rem;
-  font-weight: 900;
+  font-size: 0.88rem;
+  font-weight: 700;
   transition: color 0.25s;
 }
 
@@ -64,7 +64,7 @@
   width: 0;
   height: 2px;
   border-radius: 1px;
-  background: var(--red);
+  background: var(--blue);
   transition: width 0.3s var(--ease-expo);
 }
 
